@@ -4,9 +4,13 @@ const AboutUs = () => {
 	return (
 		<div className="container py-32">
 			<section className="md:grid grid-cols-2 items-center gap-4">
-				<img src="/monthly_saving_stat.svg" alt="Monthly Saving Stat" />
+				<img
+					src="/monthly_saving_stat.svg"
+					alt="Monthly Saving Stat"
+					className="fade-right animate-on-scroll"
+				/>
 
-				<div className="space-y-5">
+				<div className="space-y-5 fade-up animate-on-scroll">
 					<p className="tag tag-white">About Us</p>
 					<h2 className="subtitle">
 						Revolutionizing Finance, One Score at a Time
@@ -40,7 +44,7 @@ const AboutUs = () => {
 			</section>
 
 			<section className="md:grid grid-cols-2 items-center gap-4 mt-48 mb-20">
-				<div className="space-y-5">
+				<div className="space-y-5 fade-left animate-on-scroll">
 					<p className="tag tag-white">Featured</p>
 					<h2 className="subtitle">Your Credit Score, Simplified.</h2>
 
@@ -63,7 +67,11 @@ const AboutUs = () => {
 					<Button variant="outline-secondary">Get Started</Button>
 				</div>
 
-				<img src="/credit_score_simplified.svg" alt="Credit Score Simplified" />
+				<img
+					src="/credit_score_simplified.svg"
+					alt="Credit Score Simplified"
+					className="fade-up animate-on-scroll delay-3"
+				/>
 			</section>
 		</div>
 	);

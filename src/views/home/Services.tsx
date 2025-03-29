@@ -16,12 +16,13 @@ const Services = () => {
 							<img
 								src="/neural_cash_mobile_preview.png"
 								alt="Neural Cash Mobile Preview"
+								className="fade-left animate-on-scroll"
 							/>
 
 							<img
 								src="/convertor_screen.png"
 								alt="Convertor Screen Preview"
-								className="-ml-20 mt-10"
+								className="-ml-20 mt-10 fade-right animate-on-scroll"
 							/>
 						</div>
 
@@ -72,11 +73,15 @@ const Services = () => {
 							</div>
 
 							<div className="relative">
-								<img src="/dashboard_1.png" alt="Dashboard" />
+								<img
+									src="/dashboard_1.png"
+									alt="Dashboard"
+									className="fade-left animate-on-scroll"
+								/>
 								<img
 									src="/total_balance.png"
 									alt="Total Balance"
-									className="absolute right-10 top-20"
+									className="absolute right-10 top-20 fade-right animate-on-scroll"
 								/>
 							</div>
 						</div>

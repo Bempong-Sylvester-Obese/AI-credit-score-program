@@ -4,11 +4,11 @@ import { Button } from '@/components/ui/button';
 
 const Footer = () => {
 	return (
-		<footer className="pt-[5rem] pb-[7rem]">
+		<footer className="py-[7rem] bg-[#F6F9F8]">
 			<div className="container">
 				<div className="bg-[#001229] text-white rounded-[20px]">
 					<div className="md:grid grid-cols-2 p-10 px-12 pb-0">
-						<div className="space-y-5 flex flex-col justify-center">
+						<div className="space-y-5 flex flex-col justify-center fade-left animate-on-scroll">
 							<h2 className="text-5xl">Are you ready to start?</h2>
 
 							<p>
@@ -21,7 +21,7 @@ const Footer = () => {
 							</Button>
 						</div>
 
-						<div className="flex justify-center">
+						<div className="flex justify-center fade-right animate-on-scroll">
 							<img
 								src="/footer_mobile_dashboard_2.png"
 								alt="Mobile App Dashboard"

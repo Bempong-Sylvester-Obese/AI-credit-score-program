@@ -2,7 +2,7 @@ const Partners = () => {
 	return (
 		<section className="bg-[#00B512]">
 			<div className="container">
-				<div className="flex justify-between py-5 flex-wrap">
+				<div className="flex justify-between py-5 gap-4">
 					<img src="/spherule.svg" alt="Spherule" />
 					<img src="/samsung_pay.svg" alt="Samsung Pay" />
 					<img src="/visa.svg" alt="Visa" />

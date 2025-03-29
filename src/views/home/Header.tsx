@@ -10,7 +10,6 @@ function Header() {
     return navigate("/generate-credit");
   };
 
-
   return (
     <div>
       <nav className="main-navigation absolute left-0 right-0 text-center space-x-10 top-6">
@@ -36,8 +35,8 @@ function Header() {
               <span className="text-[#00B512]">Future</span>
             </h1>
             <p className="text-[1.125rem] max-w-[523px] font-medium text-[#DCDCDC] capitalize">
-              Get an instant, AI-driven credit score and unlock better financial
-              opportunities. No bias, no hassle, just smarter lending decisions
+              Understand Your Money, Master Your Future - Track, Analyse And
+              Improve your MoMo Habits With NEURALCASH{" "}
             </p>
 
             <Button

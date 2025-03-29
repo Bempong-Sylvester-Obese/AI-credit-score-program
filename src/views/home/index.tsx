@@ -1,11 +1,8 @@
-import { Button } from '@/components/ui/button';
+import Header from './Header';
+import './Home.css';
 
 function Home() {
-	return (
-		<div className="flex flex-col items-center justify-center min-h-svh">
-			<Button>Click me</Button>
-		</div>
-	);
+	return <Header />;
 }
 
 export default Home;

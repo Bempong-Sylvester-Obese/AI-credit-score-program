@@ -1,0 +1,10 @@
+.main-header {
+	background: #023543;
+	background-image: url('/public/header_background.png');
+	background-repeat: round;
+	color: white;
+}
+
+.trust {
+	background: rgba(255, 255, 255, 0.18);
+}

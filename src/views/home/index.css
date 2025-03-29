@@ -2,7 +2,8 @@
 	color: #fff;
 	background: #023543;
 	background-image: url('/header_background.png');
-	background-repeat: round;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .trust {
@@ -107,4 +108,37 @@
 	background: #023543;
 	background-image: url('/header_background.png');
 	background-repeat: round;
+}
+
+.card-light,
+.card-dark:hover {
+	color: #000;
+	background: #F6F9F8;
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	border-radius: 20px;
+
+	transition: all 0.2s ease-in-out;
+}
+
+.card-dark,
+.card-light:hover {
+	color: #fff;
+	background: #001027;
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	border-radius: 20px;
+}
+
+.secondary-title {
+	font-family: 'Montserrat';
+	font-size: 2.4rem;
+	text-align: left;
+	font-weight: 600;
+
+	line-height: 1.2;
+}
+
+.expense-details {
+	background-image: url('/expense_details.png');
+	background-repeat: no-repeat;
+	background-position: bottom right;
 }

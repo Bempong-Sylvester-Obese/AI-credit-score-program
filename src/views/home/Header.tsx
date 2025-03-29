@@ -17,7 +17,7 @@ function Header() {
 					</p>
 
 					<Button variant="primary" className="mt-9">
-						Get Your Score
+						<span className="z-20">Get Your Score</span>
 					</Button>
 				</div>
 

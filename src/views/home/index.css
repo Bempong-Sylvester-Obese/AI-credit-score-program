@@ -108,7 +108,7 @@
 .trustworthiness {
 	color: #fff;
 	background: #023543;
-	background-image: url('/header_background.png');
+	background-image: url('/trust_bg.png');
 	background-repeat: round;
 }
 
@@ -162,6 +162,41 @@
 		color: #29ad8d;
 	}
 }
+
+.footer-card {
+	background-image: url('/header_background.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+/* .btn-secondary {
+	position: relative;
+	overflow: hidden;
+}
+
+.btn-secondary.btn-secondary.btn-secondary:hover {
+	color: #fff !important;
+}
+
+.btn-secondary:hover::before {
+	transform: scale(1);
+} 
+
+.btn-secondary::before {
+	display: inline-block;
+	content: '';
+
+	position: absolute;
+	width: 105%;
+	height: 105%;
+	z-index: -1;
+
+	background: #29ad8d;
+	border-radius: 20px;
+	
+	transform: scale(0);
+	transition: all .5s cubic-bezier(.77,0,.175,1);
+}*/
 
 .animate.fade-right {
 	animation-delay: .15s;

@@ -31,7 +31,7 @@ function App() {
 				<Link to="/">Settings</Link>
 
 				<Button variant="outline" className="ml-20">
-					Sign In/ Log In
+					<span className="z-20">Sign In/ Log In</span>
 				</Button>
 			</nav>
 

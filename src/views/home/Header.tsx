@@ -6,10 +6,8 @@ function Header() {
 		<header className="main-header pt-40 pb-16">
 			<div className="container text-white md:grid grid-cols-2">
 				<div className="flex flex-col justify-center gap-5">
-					<p className="w-fit bg-[#FFFFFF2E] text-[#F9FAFB] px-4 py-1 rounded-[16px] text-[0.875rem] uppercase font-normal">
-						100% Trusted Platform
-					</p>
-					<h1 className="!text-6xl font-semibold uppercase tracking-[1px]">
+					<p className="tag">100% Trusted Platform</p>
+					<h1 className="!text-6xl font-semibold uppercase tracking-[1px] leading-[1.2]">
 						Know Your Score. Own Your{' '}
 						<span className="text-[#00B512]">Future</span>
 					</h1>

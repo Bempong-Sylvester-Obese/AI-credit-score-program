@@ -1,6 +1,6 @@
 const Partners = () => {
 	return (
-		<div className="bg-[#00B512]">
+		<section className="bg-[#00B512]">
 			<div className="container">
 				<div className="flex justify-between py-5 flex-wrap">
 					<img src="/spherule.svg" alt="Spherule" />
@@ -11,7 +11,7 @@ const Partners = () => {
 					<img src="/alipay.svg" alt="Alipay" />
 				</div>
 			</div>
-		</div>
+		</section>
 	);
 };
 

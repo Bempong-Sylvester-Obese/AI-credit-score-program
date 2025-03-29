@@ -1,12 +1,14 @@
+import AboutUs from './AboutUs';
 import Header from './Header';
 import Partners from './Partners';
-import './Home.css';
+import './index.css';
 
 function Home() {
 	return (
 		<>
 			<Header />
 			<Partners />
+			<AboutUs />
 		</>
 	);
 }

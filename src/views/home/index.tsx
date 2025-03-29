@@ -1,4 +1,5 @@
 import AboutUs from './AboutUs';
+import Footer from './Footer';
 import Header from './Header';
 import Partners from './Partners';
 import Services from './Services';
@@ -13,6 +14,7 @@ function Home() {
 			<AboutUs />
 			<Trustworthiness />
 			<Services />
+			<Footer />
 		</>
 	);
 }

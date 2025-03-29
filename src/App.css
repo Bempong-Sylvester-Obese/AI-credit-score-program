@@ -183,6 +183,10 @@
 	}
 }
 
+a.ommit:hover {
+	color: #E2FF54 !important;
+}
+
 .footer-card {
 	background-image: url('/header_background.png');
 	background-repeat: no-repeat;
@@ -305,4 +309,32 @@
 
 .font-montserrat {
 	font-family: 'Montserrat';
+}
+
+.is-loading {
+	position: relative;
+}
+
+.is-loading span {
+	padding-left: 25px;
+}
+
+.is-loading::before {
+	content: "";
+      box-sizing: border-box;
+      position: absolute;
+      left: 20px;
+	width: 18px;
+	height: 18px;
+      border-radius: 50%;
+      border: 5px solid #FFF;
+      animation: prixClipFix 2s linear infinite ;
+}
+
+ @keyframes prixClipFix {
+	0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+	25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+	50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+	75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+	100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
 }

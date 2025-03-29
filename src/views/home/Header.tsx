@@ -19,9 +19,12 @@ function Header() {
 				<Link to="/">AI Insights</Link>
 				<Link to="/">Settings</Link>
 
-				<Button variant="outline" className="ml-20">
+				<Link
+					to="/login"
+					className="border bg-transparent text-white !hover:text-[#E2FF54] hover:border-[#E2FF54] ease-in-out duration-500 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all w-fit !p-[1rem] rounded-full uppercase ml-16 ommit"
+				>
 					<span className="z-20">Sign In/ Log In</span>
-				</Button>
+				</Link>
 			</nav>
 			<header className="main-header pt-40 pb-16">
 				<div className="container text-white md:grid grid-cols-2">

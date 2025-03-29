@@ -30,7 +30,7 @@ const CreditScoreEvaluation = () => {
   return (
     <div className="container">
       <div>
-        <Card className="p-6 bg-black text-white rounded-2xl shadow-lg w-full max-w-2x1">
+        <Card className="p-6 bg-black text-white rounded-2xl shadow-lg w-350 h-190">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold">Credit Score Evaluation</h2>
             <DropdownMenu>
@@ -71,7 +71,7 @@ const CreditScoreEvaluation = () => {
           </div>
 
           <div className="mt-4">
-            <h3 className="text-lg font-semibold">Key Factors</h3>
+            <h2 className="text-lg font-semibold">Key Factors</h2>
             <div className="mt-2 space-y-1">
               <div className="flex justify-between text-sm">
                 <span>On-time Payments</span> <span>100%</span>

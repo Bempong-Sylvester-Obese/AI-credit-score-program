@@ -1,10 +1,21 @@
-import { Button } from '@/components/ui/button';
+import AboutUs from './AboutUs';
+import Footer from './Footer';
+import Header from './Header';
+import Partners from './Partners';
+import Services from './Services';
+import Trustworthiness from './Trustworthiness';
+import './index.css';
 
 function Home() {
 	return (
-		<div className="flex flex-col items-center justify-center min-h-svh">
-			<Button>Click me</Button>
-		</div>
+		<>
+			<Header />
+			<Partners />
+			<AboutUs />
+			<Trustworthiness />
+			<Services />
+			<Footer />
+		</>
 	);
 }
 

@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 
-import { Home, GenerateCredit } from './views';
+import { Home, GenerateCredit, Login } from './views';
 import './App.css';
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
 		<Routes>
 			<Route path="/" element={<Home />} />
 			<Route path="/generate-credit" element={<GenerateCredit />} />
+			<Route path="/login" element={<Login />} />
 		</Routes>
 	);
 }

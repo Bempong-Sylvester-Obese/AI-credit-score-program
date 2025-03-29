@@ -102,3 +102,9 @@
 	list-style: disc;
 }
 
+.trustworthiness {
+	color: #fff;
+	background: #023543;
+	background-image: url('/header_background.png');
+	background-repeat: round;
+}

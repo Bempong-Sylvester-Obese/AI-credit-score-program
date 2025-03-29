@@ -1,6 +1,7 @@
 import AboutUs from './AboutUs';
 import Header from './Header';
 import Partners from './Partners';
+import Trustworthiness from './Trustworthiness';
 import './index.css';
 
 function Home() {
@@ -9,6 +10,7 @@ function Home() {
 			<Header />
 			<Partners />
 			<AboutUs />
+			<Trustworthiness />
 		</>
 	);
 }

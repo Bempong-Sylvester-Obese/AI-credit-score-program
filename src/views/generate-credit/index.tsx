@@ -68,7 +68,7 @@ const GenerateCredit = () => {
 					<Button
 						type="submit"
 						variant="primary"
-						className="mt-16 mb-40 w-[250px]"
+						className={`mt-16 mb-40 w-[250px] ${isLoading ? 'is-loading' : ''}`}
 					>
 						{isLoading ? 'Processing... Please wait!' : 'Generate my credit'}
 					</Button>

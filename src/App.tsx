@@ -25,6 +25,7 @@ function App() {
 			<Route path="/" element={<Home />} />
 			<Route path="/generate-credit" element={<GenerateCredit />} />
 			<Route path="/login" element={<Login />} />
+		
 		</Routes>
 	);
 }

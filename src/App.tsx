@@ -23,7 +23,7 @@ function App() {
 
 	return (
 		<>
-			<nav className="main-navigation absolute left-0 right-0 text-center space-x-5 top-6">
+			<nav className="main-navigation absolute left-0 right-0 text-center space-x-10 top-6">
 				<Link to="/">Home</Link>
 				<Link to="/">Credit Score</Link>
 				<Link to="/">Loan Offers</Link>

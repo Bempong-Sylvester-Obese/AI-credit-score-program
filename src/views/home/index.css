@@ -146,8 +146,21 @@
 	background-position: bottom right;
 }
 
-.footer-links a {
-	color: #646161;
+
+.footer-links,
+.main-navigation {
+	a {
+		color: #646161;
+
+		transition: all 0.2s ease-in-out;
+	}
+}
+
+.footer-links,
+.main-navigation {
+	a:hover {
+		color: #29ad8d;
+	}
 }
 
 .animate.fade-right {

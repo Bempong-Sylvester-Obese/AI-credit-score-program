@@ -6,7 +6,11 @@ const Login = () => {
 		<main className="">
 			<div className="container md:grid grid-cols-3 min-h-screen">
 				<section className="col-span-2 mr-20">
-					<img src="/login-banner.png" alt="Login Banner" className="mt-5" />
+					<img
+						src="/login-banner.png"
+						alt="Login Banner"
+						className="mt-5 translate-y-10"
+					/>
 				</section>
 
 				<section className="flex flex-col justify-between py-8 h-full">

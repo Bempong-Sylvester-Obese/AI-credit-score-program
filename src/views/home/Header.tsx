@@ -10,12 +10,13 @@ function Header() {
     return navigate("/generate-credit");
   };
 
+
   return (
     <div>
       <nav className="main-navigation absolute left-0 right-0 text-center space-x-10 top-6">
         <Link to="/">Home</Link>
         <Link to="/generate-credit">Generate Credit</Link>
-        <Link to="/">Credit Offers</Link>
+        <Link to="/take-credit">Credit Offers</Link>
         <Link to="/">AI Insights</Link>
         <Link to="/">Settings</Link>
 

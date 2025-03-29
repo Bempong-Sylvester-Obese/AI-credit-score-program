@@ -14,7 +14,8 @@ const CreditCalculator = () => {
         <input
           type="number"
           value="Credit Amount"
-          className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded"
+                  placeholder="400.00"
         />
       </div>
       <div className="flex justify-between mb-4">
@@ -25,9 +26,9 @@ const CreditCalculator = () => {
           <input
             type="number"
             value="8 %"
-            className="w-20 p-2 border rounded"
+                      className="w-112 p-2 border rounded"
+                      placeholder="8%"
           />
-          %
         </div>
       </div>
       <div>
@@ -37,7 +38,8 @@ const CreditCalculator = () => {
         <input
           type="number"
           value="10 Days"
-          className="w-20 p-2 border rounded"
+                  className="w-100 p-2 border rounded"
+                  placeholder="10"
         />{" "}
         Days
       </div>

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+
 
 const AboutUs = () => {
   return (
@@ -64,7 +64,7 @@ const AboutUs = () => {
             <li>We're committed to adding more exciting features!</li>
           </ul>
 
-          <Button variant="outline-secondary">Get Started</Button>
+          
         </div>
 
         <img

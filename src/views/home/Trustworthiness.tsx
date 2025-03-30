@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+
 
 const Trustworthiness = () => {
 	return (
@@ -13,13 +13,11 @@ const Trustworthiness = () => {
 					</h2>
 
 					<p className="text-[1rem] text-[#dbdbdb]">
-						Our mission is to make finance more accessible, transparent, and
-						secure for everyone. With cutting.
+						Our mission is to make financial decisions more accessible, informed, and
+						secure for everyone.
 					</p>
 
-					<Button variant="primary" className="mt-10">
-						Get Started
-					</Button>
+					
 				</div>
 			</div>
 		</section>

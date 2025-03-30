@@ -38,13 +38,8 @@ const GenerateCredit = () => {
 
       <main className="container">
         <h1 className="font-bold text-6xl max-w-[700px] leading-[1.2] font-montserrat py-10 animate fade-up">
-          Generate Your Credit Score
+          Generate Your Financial Profile Score
         </h1>
-
-        <p className="text-[1rem] text-[#737B7D] w-[547px] mb-20 animate fade-up">
-          Need an experienced and skilled hand with custom IT projects? Fill out
-          the form to get a free consultation.
-        </p>
 
         <form onSubmit={handleFormSubmit} className="animate fade-up delay-30">
           <div className="md:grid grid-cols-2 md:gap-16 md:gap-x-30">
@@ -75,11 +70,7 @@ const GenerateCredit = () => {
             onClick={handleNavigateToSeeScore}
           >
             <span>
-              
-                {isLoading
-                  ? "Processing... Please wait!"
-                  : "Generate my credit"}
-              
+              {isLoading ? "Processing... Please wait!" : "Generate my credit"}
             </span>
           </Button>
         </form>

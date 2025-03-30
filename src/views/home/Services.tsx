@@ -40,13 +40,13 @@ const Services = () => {
 								<img src="/chart_up.svg" alt="Chart Up" />
 
 								<h4 className="secondary-title">
-									Create A Card That Is Unique And Customized
+									Visualize your Financial Profile Score(FPS)
 								</h4>
 
 								<p className="text-[#676666] capitalize">
 									we offer a comprehensive range of innovative financial
 									services tailored to meet your needs. Our services include
-									High-Yield Savings Accounts.
+									monitoring your financial behaviour.
 								</p>
 							</div>
 

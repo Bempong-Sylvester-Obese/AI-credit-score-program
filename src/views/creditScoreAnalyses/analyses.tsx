@@ -48,7 +48,7 @@ const CreditScoreEvaluation = () => {
           <div className="flex items-center gap-2">
             <span className="text-4xl font-bold">800.6</span>
             <Badge className="bg-green-500 text-white">Excellent</Badge>
-            <span className="text-red-500">-1.5%</span>
+            <span className="text-green-500">+1.5%</span>
           </div>
 
           <div className="h-40 mt-4">
@@ -71,22 +71,43 @@ const CreditScoreEvaluation = () => {
           </div>
 
           <div className="mt-4">
-            <h2 className="text-lg font-semibold">Key Factors</h2>
+            <h2 className="text-lg font-semibold">Smart Credit Strategies</h2>
             <div className="mt-2 space-y-1">
               <div className="flex justify-between text-sm">
-                <span>On-time Payments</span> <span>100%</span>
+                <span>On-time Payments</span>{" "}
+                <span>
+                  <p>Seamless, stress free payments- right on time!</p>
+                </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span>Credit Utilization</span> <span>5.24%</span>
+                <span>Credit Utilization</span>{" "}
+                <span>
+                  <p>
+                    Use your good credit to finance assests that appreciate in
+                    value.
+                  </p>
+                </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span>Credit Age</span> <span>4y 1m</span>
+                <span>Credit Age</span>{" "}
+                <span>
+                  <p>
+                    Great Score! Grow your financial reputation with every
+                    month.
+                  </p>
+                </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span>New Accounts</span> <span>5</span>
+                <span>Spending vs. Savings </span>{" "}
+                <span>
+                  <p>You deposit ₵500 weekly but withdraw 20% within 7 days.</p>
+                </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span>Credit Mix</span> <span>6</span>
+                <span>Credit Mix</span>{" "}
+                <span>
+                  <p>Expand wisely. Know when to use credit cards or loans.</p>
+                </span>
               </div>
             </div>
           </div>

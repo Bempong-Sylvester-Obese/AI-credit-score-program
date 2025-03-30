@@ -62,16 +62,22 @@ const GenerateCredit = () => {
             />
             <Input id="email" type="email" placeholder="Email (Optional)" />
           </div>
+          <div className="text-center mt-4">
+            <input id="terms" type="checkbox" />
+            <label htmlFor="terms" className="ml-2">
+              I agree to give my data to NeuralCash for information purposes.
+            </label>
+          </div>
 
           <Button
             type="submit"
             variant="primary"
-            className={`mt-16 mb-40 w-[250px] ${isLoading ? "is-loading" : ""}`}
+            className={`mt-16 mb-40 w-[250px] h-[30px] mx-auto block text-center ${
+              isLoading ? "is-loading" : ""
+            }`}
             onClick={handleNavigateToSeeScore}
           >
-            <span>
-              {isLoading ? "Processing... Please wait!" : "Generate my credit"}
-            </span>
+            {isLoading ? "Processing... Please wait!" : "Generate my credit"}
           </Button>
         </form>
 

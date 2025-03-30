@@ -16,9 +16,6 @@ const GenerateCredit = () => {
 			navigate('/analyses');
 		}, 1000);
 	};
-	const handleNavigateToSeeScore = () => {
-		return navigate('/analyses');
-	};
 
 	return (
 		<div>
@@ -62,7 +59,8 @@ const GenerateCredit = () => {
 						/>
 						<Input id="email" type="email" placeholder="Email (Optional)" />
 					</div>
-					<div className="text-center mt-4">
+
+					<div className="mt-16">
 						<input id="terms" type="checkbox" />
 						<label htmlFor="terms" className="ml-2">
 							I agree to give my data to NeuralCash for information purposes.
@@ -72,12 +70,11 @@ const GenerateCredit = () => {
 					<Button
 						type="submit"
 						variant="primary"
-						className={`mt-16 mb-40 w-[250px] mx-auto block text-center ${
+						className={`mt-8 mb-40 w-[250px] mx-auto text-center ${
 							isLoading ? 'is-loading' : ''
 						}`}
-						// onClick={handleNavigateToSeeScore}
 					>
-						{isLoading ? 'Processing... Please wait!' : 'Generate FPS'}
+						{isLoading ? 'Processing...' : 'Generate FPS'}
 					</Button>
 				</form>
 

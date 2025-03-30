@@ -32,7 +32,7 @@ const CreditScoreEvaluation = () => {
       <div>
         <Card className="p-6 bg-black text-white rounded-2xl shadow-lg w-350 h-190">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Credit Score Evaluation</h2>
+            <h2 className="text-lg font-semibold">Financiial Profile Score (FPS) Evaluation</h2>
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center text-gray-400">
                 Last 6 Months <ChevronDown className="ml-1 h-4 w-4" />

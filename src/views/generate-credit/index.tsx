@@ -77,7 +77,7 @@ const GenerateCredit = () => {
             }`}
             onClick={handleNavigateToSeeScore}
           >
-            {isLoading ? "Processing... Please wait!" : "Generate my credit"}
+            {isLoading ? "Processing... Please wait!" : "Generate FPS"}
           </Button>
         </form>
 

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 const Services = () => {
 	return (
 		<section className="pt-[5rem] pb-[8rem]">
-			<div className="container text-center">
+			<div className="nc-container text-center">
 				<p className="tag tag-white mx-auto">Services</p>
 
 				<h2 className="text-5xl max-w-[615px] capitalize leading-[1.2] mx-auto mt-[1rem] mb-14">

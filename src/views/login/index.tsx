@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 const Login = () => {
 	return (
 		<main className="">
-			<div className="container md:grid grid-cols-3 min-h-screen">
+			<div className="nc-container md:grid grid-cols-3 min-h-screen">
 				<section className="col-span-2 mr-20">
 					<img
 						src="/login-banner.png"
@@ -13,7 +13,7 @@ const Login = () => {
 					/>
 				</section>
 
-				<section className="flex flex-col justify-between py-8 h-full">
+				<section className="flex flex-col justify-between py-8 h-full animate fade-up">
 					<img
 						src="/login-logo.svg"
 						alt="Login Logo. I run out of name ideas here!"

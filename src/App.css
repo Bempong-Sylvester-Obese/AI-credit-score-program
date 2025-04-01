@@ -183,8 +183,8 @@
 	}
 }
 
-a.ommit:hover {
-	color: #E2FF54 !important;
+.omit:hover {
+	color: #E2FF54;
 }
 
 .footer-card {

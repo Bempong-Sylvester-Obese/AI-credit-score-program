@@ -17,7 +17,7 @@ const AboutUs = () => {
 					<ul className="space-y-[12px] features">
 						<li>
 							<h4>AI-Driven Accuracy</h4>
-							<p>Smarter assessments, bettter decisions with our AI sytsem</p>
+							<p>Smarter assessments, better decisions with our AI system</p>
 						</li>
 
 						<li>

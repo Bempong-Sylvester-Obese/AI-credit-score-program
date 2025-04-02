@@ -41,11 +41,11 @@ const GenerateCredit = () => {
 				<form onSubmit={handleFormSubmit} className="animate fade-up delay-30">
 					<div className="md:grid grid-cols-2 md:gap-16 md:gap-x-30">
 						<Input
-							id="firstname"
-							type="firstname"
+							id="first name"
+							type="first name"
 							placeholder="Your First Name"
 						/>
-						<Input id="lastname" type="lastname" placeholder="Your Last Name" />
+						<Input id="last name" type="last name" placeholder="Your Last Name" />
 						<Input
 							id="postalAddress"
 							type="postalAddress"

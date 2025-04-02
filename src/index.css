@@ -1,7 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* Replacing @custom-variant with a valid CSS approach */
+.dark * {
+  --variant: dark;
+}
 
 :root {
   font-family: "Poppins", system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -106,7 +109,7 @@ h1 {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-@theme inline {
+:root {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -146,9 +149,11 @@ h1 {
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border: var(--border);
+    outline: 50% solid var(--ring);
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
   }
 }

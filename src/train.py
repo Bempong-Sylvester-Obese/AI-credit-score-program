@@ -1,6 +1,6 @@
 import joblib
 from sklearn.ensemble import RandomForestClassifier
-from src.features.build_features import engineer_features
+from .features.build_features import engineer_features  # Relative import
 
 def train_model(data_path: str, output_path: str):
     # Load & preprocess

@@ -1,0 +1,12 @@
+model:
+  name: "random_forest"
+  params:
+    n_estimators: 150
+    max_depth: 10
+    class_weight: "balanced"
+
+features:
+  required:
+    - "dwr"
+    - "txn_frequency"
+    - "avg_deposit"

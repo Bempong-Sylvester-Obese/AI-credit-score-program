@@ -1,0 +1,8 @@
+txn_count
+net_amount
+avg_amount
+amount_std
+dwr
+customer_duration_days
+hour_mean
+hour_std

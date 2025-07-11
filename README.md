@@ -84,7 +84,7 @@ The AI Credit Score Program is a comprehensive financial technology solution tha
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/ai-credit-score-program.git
+   git clone https://github.com/Bempong-Sylvester-Obese/AI-credit-score-program.git
    cd ai-credit-score-program
    ```
 

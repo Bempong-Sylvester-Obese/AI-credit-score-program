@@ -12,4 +12,16 @@ export default defineConfig({
 			'@': path.resolve(__dirname, './src'),
 		},
 	},
+	build: {
+		rollupOptions: {
+			output: {
+				manualChunks: {
+					'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+					'vendor-ui': ['@radix-ui/react-dropdown-menu', '@radix-ui/react-slot'],
+					'vendor-charts': ['recharts'],
+				},
+			},
+		},
+		chunkSizeWarningLimit: 600,
+	},
 });

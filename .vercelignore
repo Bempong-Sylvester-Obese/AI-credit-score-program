@@ -1,0 +1,38 @@
+# Python files and directories
+*.py
+*.pyc
+__pycache__/
+*.so
+*.egg
+*.egg-info
+dist-python/
+build/
+eggs/
+.Python
+
+# Data files
+Data/
+*.csv
+
+# Model files (large binary files)
+models/*.pkl
+models/*.joblib
+models/*.png
+
+# Development files
+.vscode/
+.idea/
+*.log
+.DS_Store
+
+# Testing files
+testing.py
+utils.py
+
+# Node modules (already in .gitignore but explicit here)
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+

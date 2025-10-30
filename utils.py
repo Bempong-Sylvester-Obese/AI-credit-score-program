@@ -5,9 +5,6 @@ import numpy as np
 from sklearn.cluster import KMeans
 
 def preprocess_data(df, features):
-    """
-    Preprocess the dataset by selecting features, handling missing values, and scaling.
-    """
     if not all(feature in df.columns for feature in features):
         raise ValueError("One or more required features are missing from the dataset.")
     
@@ -24,9 +21,6 @@ def preprocess_data(df, features):
     return df_scaled
 
 def plot_elbow_curve(df_scaled, max_clusters=10):
-    """
-    Plot the elbow curve to determine the optimal number of clusters.
-    """
     wcss = []
     for i in range(1, max_clusters + 1):
         kmeans = KMeans(n_clusters=i, random_state=42, n_init=10)

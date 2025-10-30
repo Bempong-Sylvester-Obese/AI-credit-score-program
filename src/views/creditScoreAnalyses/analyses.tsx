@@ -15,22 +15,50 @@ import {
 	DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
 import { ChevronDown } from 'lucide-react';
+import { useLocation, Link } from 'react-router-dom';
+import { getRiskThreshold } from '@/constants/credit';
+import type { PredictionResult } from '@/types/credit';
 import './analyses.css';
 
-const data = [
-	{ name: 'Jan', score: 600 },
-	{ name: 'Feb', score: 650 },
-	{ name: 'Mar', score: 615 },
-	{ name: 'Apr', score: 700 },
-	{ name: 'May', score: 750 },
-	{ name: 'Jun', score: 800 },
-];
-
 const CreditScoreEvaluation = () => {
+	const location = useLocation();
+	const prediction = (location.state as { prediction: PredictionResult })?.prediction;
+
+	const generateHistoricalData = (currentScore: number) => {
+		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+		const baseVariation = currentScore * 0.1;
+		return months.map((name, index) => ({
+			name,
+			score: Math.round(currentScore - baseVariation + (index * baseVariation) / months.length),
+		}));
+	};
+
+	if (!prediction) {
+		return (
+			<div className="container mx-auto p-8">
+				<Card className="p-12 bg-black text-white rounded-2xl shadow-lg text-center">
+					<h2 className="text-2xl font-semibold mb-4">No Credit Score Data</h2>
+					<p className="text-gray-400 mb-8">
+						Please generate your Financial Profile Score first
+					</p>
+					<Link
+						to="/generate-credit"
+						className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+					>
+						Generate FPS
+					</Link>
+				</Card>
+			</div>
+		);
+	}
+
+	const riskThreshold = getRiskThreshold(prediction.credit_score);
+	const chartData = generateHistoricalData(prediction.credit_score);
+
 	return (
 		<div className="container mx-auto">
 			<div>
-				<Card className="p-6 bg-black text-white rounded-2xl shadow-lg w-350 h-190">
+				<Card className="p-6 bg-black text-white rounded-2xl shadow-lg w-full max-w-4xl">
 					<div className="flex justify-between items-center mb-4">
 						<h2 className="text-lg font-semibold">
 							Financial Profile Score (FPS) Evaluation
@@ -48,14 +76,16 @@ const CreditScoreEvaluation = () => {
 					</div>
 
 					<div className="flex items-center gap-2">
-						<span className="text-4xl font-bold">800.6</span>
-						<Badge className="bg-green-500 text-white">Excellent</Badge>
+						<span className="text-4xl font-bold">{prediction.credit_score}</span>
+						<Badge className={`${riskThreshold.badgeColor} text-white`}>
+							{prediction.risk_category}
+						</Badge>
 						<span className="text-green-500">+1.5%</span>
 					</div>
 
 					<div className="h-40 mt-4">
 						<ResponsiveContainer width="100%" height="100%">
-							<LineChart data={data}>
+							<LineChart data={chartData}>
 								<XAxis dataKey="name" stroke="#aaa" />
 								<YAxis domain={[400, 1000]} stroke="#aaa" />
 								<Tooltip

@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom';
-
 import { Button } from '@/components/ui/button';
 import mobileUi from '../../assets/images/mobile_ui.png';
 

@@ -10,10 +10,6 @@ import os
 from pathlib import Path
 
 class CreditScorePredictor:
-    """
-    A class to handle credit score predictions using the trained model.
-    """
-    
     def __init__(self, model_path='models/model.pkl', scaler_path='models/scaler.pkl', features_path='models/features.csv'):
         """
         Initialize the predictor with trained model artifacts.
@@ -31,7 +27,6 @@ class CreditScorePredictor:
         self._load_artifacts()
     
     def _load_artifacts(self):
-        """Load the model, scaler, and feature list."""
         try:
             if not self.model_path.exists():
                 raise FileNotFoundError(f"Model file not found at {self.model_path}")

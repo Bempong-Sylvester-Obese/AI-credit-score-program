@@ -25,13 +25,12 @@ const GenerateCredit = () => {
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { id, value, type, checked } = e.target;
 		setFormData((prev) => {
-			const updated = { ...prev };
 			if (type === 'checkbox') {
-				(updated as any).termsAccepted = checked;
-			} else if (id in prev) {
-				(updated as any)[id] = value;
+				return { ...prev, termsAccepted: checked };
+			} else if (id in prev && id !== 'termsAccepted') {
+				return { ...prev, [id]: value };
 			}
-			return updated;
+			return prev;
 		});
 	};
 

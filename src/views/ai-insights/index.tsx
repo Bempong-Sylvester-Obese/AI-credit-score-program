@@ -4,42 +4,42 @@ import { Button } from '@/components/ui/button';
 const AIInsights = () => {
 	const features = [
 		{
-			name: 'Transaction Count (txn_count)',
+			name: 'Transaction Count',
 			description: 'The total number of transactions made by a customer. Higher transaction frequency indicates active account usage.',
 			impact: 'More transactions can signal financial stability and regular income flow.',
 		},
 		{
-			name: 'Net Amount (net_amount)',
+			name: 'Net Amount',
 			description: 'The sum of all deposits minus withdrawals. Represents the overall financial position.',
 			impact: 'Positive net amounts indicate savings accumulation, while negative suggests overdraft risk.',
 		},
 		{
-			name: 'Average Amount (avg_amount)',
+			name: 'Average Amount',
 			description: 'The mean value of all transactions, indicating typical transaction size.',
 			impact: 'Consistent average amounts show predictable spending patterns.',
 		},
 		{
-			name: 'Amount Standard Deviation (amount_std)',
+			name: 'Amount Standard Deviation',
 			description: 'Measures the variability in transaction amounts. Low deviation means consistent spending.',
 			impact: 'Lower deviation suggests better financial planning and predictability.',
 		},
 		{
-			name: 'Deposit to Withdrawal Ratio (dwr)',
+			name: 'Deposit to Withdrawal Ratio',
 			description: 'Ratio of total deposits to withdrawals. Key indicator of saving behavior.',
 			impact: 'Higher ratios (>1) indicate good saving habits and financial discipline.',
 		},
 		{
-			name: 'Customer Duration (customer_duration_days)',
+			name: 'Customer Duration',
 			description: 'The number of days between first and last transaction, showing account longevity.',
 			impact: 'Longer customer relationships suggest stability and reliability.',
 		},
 		{
-			name: 'Transaction Hour Mean (hour_mean)',
+			name: 'Transaction Hour Mean',
 			description: 'Average hour of day when transactions occur, indicating transaction timing patterns.',
 			impact: 'Regular patterns may indicate stable routine and employment status.',
 		},
 		{
-			name: 'Transaction Hour Standard Deviation (hour_std)',
+			name: 'Transaction Hour Standard Deviation',
 			description: 'Variability in transaction timing throughout the day.',
 			impact: 'Consistent timing shows regular routines and financial discipline.',
 		},

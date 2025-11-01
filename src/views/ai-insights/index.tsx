@@ -83,7 +83,7 @@ const AIInsights = () => {
 			<main className="nc-container pt-40 pb-20">
 				{/* Hero Section */}
 				<section className="text-center mb-32 animate fade-up">
-					<p className="tag">AI Insights</p>
+					<p className="tag tag-no-emoji">AI Insights</p>
 					<h1 className="font-bold text-6xl max-w-[800px] mx-auto leading-[1.2] font-montserrat py-10">
 						Understanding Our AI-Powered Credit Scoring System
 					</h1>
@@ -115,7 +115,7 @@ const AIInsights = () => {
 				{/* Features Section */}
 				<section className="mb-32">
 					<div className="text-center mb-16 animate fade-up">
-						<p className="tag">Key Parameters</p>
+						<p className="tag tag-no-emoji">Key Parameters</p>
 						<h2 className="subtitle">Transaction Features Analyzed</h2>
 						<p className="text-gray-600 max-w-[600px] mx-auto mt-4">
 							Our AI model analyzes eight key features extracted from your transaction
@@ -147,7 +147,7 @@ const AIInsights = () => {
 				{/* Model Parameters Section */}
 				<section className="mb-32">
 					<div className="text-center mb-16 animate fade-up">
-						<p className="tag">Model Configuration</p>
+						<p className="tag tag-no-emoji">Model Configuration</p>
 						<h2 className="subtitle">Machine Learning Model Parameters</h2>
 						<p className="text-gray-600 max-w-[600px] mx-auto mt-4">
 							Our credit scoring model is built using state-of-the-art machine learning
@@ -212,7 +212,7 @@ const AIInsights = () => {
 				{/* Score Interpretation */}
 				<section className="mb-32">
 					<div className="text-center mb-12 animate fade-up">
-						<p className="tag">Score Understanding</p>
+						<p className="tag tag-no-emoji">Score Understanding</p>
 						<h2 className="subtitle">Understanding Your Credit Score</h2>
 					</div>
 

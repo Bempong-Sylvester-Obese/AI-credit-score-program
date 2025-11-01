@@ -51,6 +51,10 @@
 	margin-right: 5px;
 }
 
+.tag-no-emoji::before {
+	content: '';
+}
+
 .tag-white {
 	color: #031b1d;
 	background-color: #f9fafb;

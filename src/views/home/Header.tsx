@@ -16,7 +16,7 @@ function Header() {
 				<Link to="/generate-credit">Generate FPS</Link>
 				<Link to="/take-credit">Credit Offers</Link>
 				<Link to="/ai-insights">AI Insights</Link>
-				<Link to="/">Settings</Link>
+				<Link to="/settings">Settings</Link>
 
 				<Link
 					to="/login"

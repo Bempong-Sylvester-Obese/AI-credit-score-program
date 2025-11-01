@@ -77,7 +77,7 @@ const AIInsights = () => {
 				<Link to="/ai-insights" className="font-semibold">
 					AI Insights
 				</Link>
-				<Link to="/">Settings</Link>
+				<Link to="/settings">Settings</Link>
 			</nav>
 
 			<main className="nc-container pt-40 pb-20">
@@ -274,7 +274,7 @@ const AIInsights = () => {
 						<Link to="/ai-insights" className="font-semibold">
 							AI Insights
 						</Link>
-						<Link to="/">Settings</Link>
+						<Link to="/settings">Settings</Link>
 					</div>
 				</div>
 			</footer>

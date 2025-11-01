@@ -46,7 +46,7 @@ const Footer = () => {
 					<Link to="/generate-credit">Credit Score</Link>
 					<Link to="/take-credit">Loan Offers</Link>
 					<Link to="/ai-insights">AI Insights</Link>
-					<Link to="/">Settings</Link>
+					<Link to="/settings">Settings</Link>
 				</div>
 			</div>
 		</footer>

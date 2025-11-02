@@ -12,4 +12,3 @@ export interface ApiError {
   message: string;
   status_code?: number;
 }
-

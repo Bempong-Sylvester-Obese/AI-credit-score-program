@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Home, GenerateCredit, Login } from "./views";
 import CreditScoreEvaluation from "./views/creditScoreAnalyses/analyses";
 import CreditCalculator from "./views/takeCredit/takeCredit";
+import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 
 function App() {
@@ -24,10 +25,31 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/generate-credit" element={<GenerateCredit />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/analyses" element={<CreditScoreEvaluation />} />
-      <Route path="/take-credit" element={<CreditCalculator />} />
+      <Route
+        path="/generate-credit"
+        element={
+          <ProtectedRoute>
+            <GenerateCredit />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/analyses"
+        element={
+          <ProtectedRoute>
+            <CreditScoreEvaluation />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/take-credit"
+        element={
+          <ProtectedRoute>
+            <CreditCalculator />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }

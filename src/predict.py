@@ -23,7 +23,6 @@ class CreditScorePredictor:
         self.scaler_path = Path(scaler_path)
         self.features_path = Path(features_path)
         
-        # Load model artifacts
         self._load_artifacts()
     
     def _load_artifacts(self):
@@ -38,7 +37,6 @@ class CreditScorePredictor:
             self.model = joblib.load(self.model_path)
             self.scaler = joblib.load(self.scaler_path)
             
-            # Load feature names
             features_df = pd.read_csv(self.features_path, header=None)
             self.features = features_df.iloc[:, 0].tolist()
             
@@ -59,7 +57,6 @@ class CreditScorePredictor:
             float: Risk probability score (0-1)
         """
         try:
-            # Convert dict to DataFrame if necessary
             if isinstance(transaction_data, dict):
                 transaction_data = pd.DataFrame([transaction_data])
             
@@ -179,4 +176,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

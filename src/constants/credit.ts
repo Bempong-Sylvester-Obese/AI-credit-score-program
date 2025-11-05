@@ -52,4 +52,3 @@ export const getRiskThreshold = (score: number): RiskThreshold => {
   const category = getRiskCategory(score);
   return RISK_THRESHOLDS[category];
 };
-

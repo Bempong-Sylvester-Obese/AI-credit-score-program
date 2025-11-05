@@ -201,4 +201,3 @@ export const getScoreHistory = async (limit: number = 12): Promise<ScoreHistoryI
 
   return response.json();
 };
-

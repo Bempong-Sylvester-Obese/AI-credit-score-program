@@ -8,9 +8,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, roc_auc_score, confusion_matrix
 from sklearn.preprocessing import StandardScaler
 from features.build_features import engineer_features
+import argparse
 
 class CreditScorer:
-    """Inference pipeline class with robust error handling"""
     def __init__(self, model_path='models/model.pkl', scaler_path='models/scaler.pkl'):
         try:
             self.model = joblib.load(model_path)
@@ -21,14 +21,13 @@ class CreditScorer:
             raise ValueError(f"Failed to load model artifacts: {str(e)}")
     
     def predict(self, raw_data):
-        """Predict risk probability with graceful feature handling"""
         try:
             processed_data = engineer_features(raw_data)
             available_features = [f for f in self.features if f in processed_data.columns]
             
             if len(available_features) != len(self.features):
                 missing = set(self.features) - set(processed_data.columns)
-                print(f"⚠️ Warning: Missing features {missing} - using available features")
+                print(f"Warning: Missing features {missing} - using available features")
                 
             scaled_data = self.scaler.transform(processed_data[available_features])
             return float(self.model.predict_proba(scaled_data)[0, 1])
@@ -37,7 +36,6 @@ class CreditScorer:
             raise ValueError(f"Prediction failed: {str(e)}")
 
 def plot_feature_importance(model, features, output_dir):
-    """Save feature importance visualization"""
     importance = pd.DataFrame({
         'Feature': features,
         'Importance': model.feature_importances_
@@ -51,7 +49,6 @@ def plot_feature_importance(model, features, output_dir):
     plt.close()
 
 def train_model(data_path, output_dir="models"):
-    """Complete training pipeline with error handling"""
     try:
         # 1. Load and preprocess data
         print("🛠️ Engineering features...")
@@ -82,7 +79,7 @@ def train_model(data_path, output_dir="models"):
         X_test_scaled = scaler.transform(X_test)
         
         # 4. Hyperparameter tuning
-        print("🔍 Tuning hyperparameters...")
+        print("Tuning hyperparameters...")
         param_grid = {
             'n_estimators': [100, 150, 200],
             'max_depth': [5, 10, 15],
@@ -103,8 +100,8 @@ def train_model(data_path, output_dir="models"):
         y_pred = best_model.predict(X_test_scaled)
         y_proba = best_model.predict_proba(X_test_scaled)[:, 1]
         
-        print("\n🏆 Best Parameters:", grid_search.best_params_)
-        print("\n📊 Classification Report:")
+        print("\nBest Parameters:", grid_search.best_params_)
+        print("\nClassification Report:")
         print(classification_report(y_test, y_pred))
         print(f"AUC-ROC: {roc_auc_score(y_test, y_proba):.2f}")
         
@@ -117,18 +114,17 @@ def train_model(data_path, output_dir="models"):
         # 7. Visualizations
         plot_feature_importance(best_model, features, output_dir)
         
-        print(f"\n✅ Model and artifacts saved to {output_dir}/")
+        print(f"\nModel and artifacts saved to {output_dir}/")
         return CreditScorer(
             model_path=f"{output_dir}/model.pkl",
             scaler_path=f"{output_dir}/scaler.pkl"
         )
         
     except Exception as e:
-        print(f"❌ Training failed: {str(e)}")
+        print(f"Training failed: {str(e)}")
         raise
 
 if __name__ == "__main__":
-    import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", default="data/raw/dataset1.csv", help="Path to input CSV")
     parser.add_argument("--output", default="models", help="Output directory for models")
@@ -145,7 +141,7 @@ if __name__ == "__main__":
             'Phone Number': '233123456789',
             'Amount': -500.00
         }])
-        print(f"\n🧪 Test prediction: {scorer.predict(test_sample):.2f}")
+        print(f"\nTest prediction: {scorer.predict(test_sample):.2f}")
         
     except Exception as e:
-        print(f"❌ Fatal error: {str(e)}")
+        print(f"Fatal error: {str(e)}")

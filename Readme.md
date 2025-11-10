@@ -24,24 +24,28 @@ The AI Credit Score Program is a comprehensive financial technology solution tha
 ## ✨ Key Features
 
 ### 🎨 **Modern Web Interface**
+
 - **Responsive Design**: Beautiful, mobile-first UI built with React and Tailwind CSS
 - **Interactive Dashboards**: Real-time credit score visualization with Recharts
 - **Smooth Animations**: Engaging user experience with scroll-triggered animations
 - **Professional UI Components**: Custom-built components using Radix UI primitives
 
 ### 🤖 **AI-Powered Credit Scoring**
+
 - **Machine Learning Model**: Random Forest classifier trained on transaction data
 - **Feature Engineering**: Advanced feature extraction from transaction patterns
 - **Risk Assessment**: Predictive modeling for creditworthiness evaluation
 - **Model Persistence**: Trained models saved for production inference
 
 ### 📊 **Financial Analytics**
+
 - **Transaction Analysis**: Deep insights into spending and saving patterns
 - **Score Tracking**: Historical credit score progression over time
 - **Smart Recommendations**: Personalized financial improvement strategies
 - **Risk Visualization**: Feature importance analysis and model interpretability
 
 ### 🔐 **User Management**
+
 - **Profile Generation**: Comprehensive user onboarding and data collection
 - **Secure Authentication**: Protected user sessions and data privacy
 - **Credit Calculator**: Interactive tools for credit assessment
@@ -50,6 +54,7 @@ The AI Credit Score Program is a comprehensive financial technology solution tha
 ## 🏗️ Technology Stack
 
 ### **Frontend**
+
 - **React 19** - Modern UI framework with hooks and functional components
 - **TypeScript** - Type-safe development with enhanced IDE support
 - **Vite** - Lightning-fast build tool and development server
@@ -59,6 +64,7 @@ The AI Credit Score Program is a comprehensive financial technology solution tha
 - **React Router** - Client-side routing for SPA navigation
 
 ### **Backend & AI**
+
 - **Python 3.x** - Core AI/ML development language
 - **Scikit-learn** - Machine learning algorithms and preprocessing
 - **Pandas** - Data manipulation and analysis
@@ -67,6 +73,7 @@ The AI Credit Score Program is a comprehensive financial technology solution tha
 - **Joblib** - Model serialization and persistence
 
 ### **Development Tools**
+
 - **ESLint** - Code quality and consistency
 - **PostCSS** - CSS processing and optimization
 - **Autoprefixer** - CSS vendor prefixing
@@ -83,27 +90,28 @@ The AI Credit Score Program is a comprehensive financial technology solution tha
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/Bempong-Sylvester-Obese/AI-credit-score-program.git
    cd ai-credit-score-program
    ```
-
 2. **Install frontend dependencies**
+
    ```bash
    npm install
    ```
-
 3. **Install Python dependencies**
+
    ```bash
    pip install pandas numpy scikit-learn matplotlib joblib
    ```
-
 4. **Start the development server**
+
    ```bash
    npm run dev
    ```
-
 5. **Train the AI model** (optional)
+
    ```bash
    python src/train.py --data Data/raw/dataset1.csv
    ```
@@ -132,6 +140,7 @@ AI-credit-score-program/
 ## 🎮 Usage
 
 ### **For Users**
+
 1. **Navigate to the homepage** - Explore services and features
 2. **Generate Credit Score** - Fill out the profile form with your information
 3. **View Analysis** - Get detailed insights into your financial profile
@@ -139,6 +148,7 @@ AI-credit-score-program/
 5. **Get Recommendations** - Receive personalized financial advice
 
 ### **For Developers**
+
 1. **Model Training**: Use `train.py` to retrain the ML model with new data
 2. **Feature Engineering**: Modify `features/` to add new predictive features
 3. **UI Customization**: Update components in `src/components/ui/`
@@ -147,6 +157,7 @@ AI-credit-score-program/
 ## 📈 Model Performance
 
 The AI model achieves:
+
 - **High Accuracy**: Robust credit risk prediction
 - **Feature Importance**: Transaction count, net amount, and timing patterns
 - **Scalability**: Handles large transaction datasets efficiently
@@ -166,13 +177,13 @@ We welcome contributions! Please see our contributing guidelines:
 
 <div align="center">
 
-| Role | Contributor |
-|------|-------------|
-| **AI & Data Visualization** | [Sylvester Bempong](mailto:Sylvesterobese6665@gmail.com) |
-| **UI Development & Mentorship** | Numo Francis |
-| **UX Design** | Felicitas Christo |
-| **Backend Development** | Julien Addy |
-| **Testing & Debugging** | Ramzy Konde |
+| Role                                  | Contributor                                           |
+| ------------------------------------- | ----------------------------------------------------- |
+| **AI & Data Visualization**     | [Sylvester Bempong](mailto:Sylvesterobese6665@gmail.com) |
+| **UI Development & Mentorship** | Numo Francis                                          |
+| **UX Design**                   | Felicitas Christo                                     |
+| **Backend Development**         | Julien Addy                                           |
+| **Testing & Debugging**         | Ramzy Konde                                           |
 
 </div>
 

@@ -38,12 +38,28 @@ def engineer_features(raw_df):
     
     # 4. Time-based features
     raw_df['Date'] = pd.to_datetime(raw_df['Date'])
-    raw_df['Hour'] = pd.to_datetime(raw_df['Time']).dt.hour
+    
+    # Parse Time column to extract hour
+    if 'Time' in raw_df.columns:
+        try:
+            # Handle both HH:MM format and full datetime strings
+            raw_df['Hour'] = pd.to_datetime(raw_df['Time'], format='%H:%M', errors='coerce').dt.hour
+            # Fallback for any remaining NaN values
+            raw_df['Hour'] = raw_df['Hour'].fillna(12.0)
+        except (ValueError, TypeError):
+            # If parsing fails, set default hour
+            raw_df['Hour'] = 12.0
+    else:
+        raw_df['Hour'] = 12.0
+    
     time_features = raw_df.groupby('Phone Number').agg({
         'Date': lambda x: (x.max() - x.min()).days,
         'Hour': ['mean', 'std']
     })
     time_features.columns = ['customer_duration_days', 'hour_mean', 'hour_std']
+    
+    # Fill NaN std values for customers with single transaction
+    time_features['hour_std'] = time_features['hour_std'].fillna(0.0)
     
     # Combine all features
     features_df = customer_features.join(time_features)

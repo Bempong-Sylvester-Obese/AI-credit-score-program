@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom';
-
 import { Button } from '@/components/ui/button';
 import mobileUi from '../../assets/images/mobile_ui.png';
 
@@ -16,8 +15,8 @@ function Header() {
 				<Link to="/">Home</Link>
 				<Link to="/generate-credit">Generate FPS</Link>
 				<Link to="/take-credit">Credit Offers</Link>
-				<Link to="/">AI Insights</Link>
-				<Link to="/">Settings</Link>
+				<Link to="/ai-insights">AI Insights</Link>
+				<Link to="/settings">Settings</Link>
 
 				<Link
 					to="/login"

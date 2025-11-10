@@ -16,9 +16,8 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000
  */
 const getAuthToken = async (): Promise<string | null> => {
   const user = auth.currentUser;
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
+
   try {
     return await user.getIdToken();
   } catch (error) {
@@ -65,10 +64,6 @@ const handleApiError = async (response: Response): Promise<never> => {
 /**
  * Predict credit score from uploaded CSV file
  */
-import type { PredictionResult, ApiError } from '@/types/credit';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-
 export const predictCreditScore = async (file: File): Promise<PredictionResult> => {
   const formData = new FormData();
   formData.append('file', file);
@@ -79,38 +74,24 @@ export const predictCreditScore = async (file: File): Promise<PredictionResult> 
   try {
     const token = await getAuthToken();
     const headers: HeadersInit = {};
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
+    if (token) headers['Authorization'] = `Bearer ${token}`;
 
     const response = await fetch(`${API_BASE_URL}/api/predict`, {
       method: 'POST',
       headers,
-    const response = await fetch(`${API_BASE_URL}/api/predict`, {
-      method: 'POST',
       body: formData,
       signal: controller.signal,
     });
 
     clearTimeout(timeoutId);
 
-    if (!response.ok) {
-      await handleApiError(response);
-      const errorData: ApiError = await response.json().catch(() => ({
-        error: 'Unknown error',
-        message: `HTTP ${response.status}: ${response.statusText}`,
-        status_code: response.status,
-      }));
+    if (!response.ok) await handleApiError(response);
 
-      throw new Error(errorData.message || errorData.error || 'Failed to predict credit score');
-    }
-
-    const data: PredictionResult = await response.json();
-    return data;
+    return response.json();
   } catch (error) {
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
-        throw new Error('Request timeout - please try again');
+        throw new Error('Request timeout — please try again');
       }
       throw error;
     }
@@ -126,16 +107,11 @@ export const createUserProfile = async (
 ): Promise<UserProfile> => {
   const response = await authenticatedFetch(`${API_BASE_URL}/api/profile`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(profileData),
   });
 
-  if (!response.ok) {
-    await handleApiError(response);
-  }
-
+  if (!response.ok) await handleApiError(response);
   return response.json();
 };
 
@@ -144,11 +120,7 @@ export const createUserProfile = async (
  */
 export const getUserProfile = async (): Promise<UserProfile> => {
   const response = await authenticatedFetch(`${API_BASE_URL}/api/profile`);
-
-  if (!response.ok) {
-    await handleApiError(response);
-  }
-
+  if (!response.ok) await handleApiError(response);
   return response.json();
 };
 
@@ -160,16 +132,11 @@ export const updateUserProfile = async (
 ): Promise<UserProfile> => {
   const response = await authenticatedFetch(`${API_BASE_URL}/api/profile`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(profileData),
   });
 
-  if (!response.ok) {
-    await handleApiError(response);
-  }
-
+  if (!response.ok) await handleApiError(response);
   return response.json();
 };
 
@@ -177,8 +144,8 @@ export const updateUserProfile = async (
  * Get user's prediction history
  */
 export const getUserPredictions = async (
-  limit: number = 10,
-  offset: number = 0
+  limit = 10,
+  offset = 0
 ): Promise<PredictionListResponse> => {
   const params = new URLSearchParams({
     limit: limit.toString(),
@@ -189,17 +156,14 @@ export const getUserPredictions = async (
     `${API_BASE_URL}/api/predictions?${params.toString()}`
   );
 
-  if (!response.ok) {
-    await handleApiError(response);
-  }
-
+  if (!response.ok) await handleApiError(response);
   return response.json();
 };
 
 /**
  * Get user's historical credit scores
  */
-export const getScoreHistory = async (limit: number = 12): Promise<ScoreHistoryItem[]> => {
+export const getScoreHistory = async (limit = 12): Promise<ScoreHistoryItem[]> => {
   const params = new URLSearchParams({
     limit: limit.toString(),
   });
@@ -208,9 +172,6 @@ export const getScoreHistory = async (limit: number = 12): Promise<ScoreHistoryI
     `${API_BASE_URL}/api/scores/history?${params.toString()}`
   );
 
-  if (!response.ok) {
-    await handleApiError(response);
-  }
-
+  if (!response.ok) await handleApiError(response);
   return response.json();
 };

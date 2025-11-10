@@ -6,8 +6,12 @@ from firebase_admin import auth, credentials
 import os
 import json
 
+def _is_production() -> bool:
+    return os.getenv("ENVIRONMENT", "development").lower() == "production"
+
 _firebase_initialized = False
 
+# Initialize Firebase Admin SDK
 try:
     try:
         firebase_admin.get_app()
@@ -33,31 +37,27 @@ try:
                     _firebase_initialized = True
                     break
             else:
-                # For development, allow initialization without credentials
-                # In production, this should be required
-                print("Warning: Firebase credentials not found. Authentication will be disabled.")
-                print("Set FIREBASE_CREDENTIALS or FIREBASE_CREDENTIALS_PATH environment variables.")
+                if _is_production():
+                    raise ValueError(
+                        "Firebase credentials are required in production. "
+                        "Set FIREBASE_CREDENTIALS or FIREBASE_CREDENTIALS_PATH."
+                    )
+                else:
+                    print("Warning: Firebase credentials not found. Authentication will be disabled.")
+                    print("Set FIREBASE_CREDENTIALS or FIREBASE_CREDENTIALS_PATH environment variables.")
 except Exception as e:
-    print(f"Warning: Firebase Admin initialization failed: {e}")
-    print("Authentication will be disabled. Set FIREBASE_CREDENTIALS or FIREBASE_CREDENTIALS_PATH environment variables.")
+    if _is_production():
+        raise
+    else:
+        print(f"Warning: Firebase Admin initialization failed: {e}")
+        print("Authentication will be disabled.")
 
 security = HTTPBearer()
 
 async def verify_firebase_token(
     credentials: HTTPAuthorizationCredentials = Depends(security)
 ) -> dict:
-    """
-    Verify Firebase ID token and return decoded token.
-    
-    Args:
-        credentials: HTTP Bearer token credentials
-        
-    Returns:
-        Decoded Firebase token containing user information
-        
-    Raises:
-        HTTPException: If token is invalid or missing
-    """
+    """Verify Firebase ID token and return decoded token."""
     if not _firebase_initialized:
         raise HTTPException(
             status_code=503,
@@ -65,59 +65,28 @@ async def verify_firebase_token(
         )
     
     token = credentials.credentials
-    
     try:
         decoded_token = auth.verify_id_token(token)
         return decoded_token
     except auth.InvalidIdTokenError:
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid authentication token"
-        )
-    except auth.ExpiredIdTokenError:
-        raise HTTPException(
-            status_code=401,
-            detail="Authentication token has expired"
-        )
+        raise HTTPException(status_code=401, detail="Invalid authentication token")
     except Exception as e:
-        raise HTTPException(
-            status_code=401,
-            detail=f"Authentication error: {str(e)}"
-        )
-
+        raise HTTPException(status_code=401, detail=f"Authentication error: {str(e)}")
 
 def get_current_user(
     token_data: dict = Depends(verify_firebase_token)
 ) -> dict:
-    """
-    Get current user from verified token.
-    
-    Args:
-        token_data: Decoded Firebase token
-        
-    Returns:
-        User information dictionary with uid and email
-    """
+    """Get current user from verified token."""
     return {
         "uid": token_data.get("uid"),
         "email": token_data.get("email"),
         "firebase_claims": token_data
     }
 
-
 async def get_optional_user(
     authorization: Optional[str] = Header(None)
 ) -> Optional[dict]:
-    """
-    Optional authentication - returns user if token is present, None otherwise.
-    Useful for endpoints that work with or without authentication.
-    
-    Args:
-        authorization: Optional Authorization header
-        
-    Returns:
-        User information if authenticated, None otherwise
-    """
+    """Optional authentication - returns user if token is present, None otherwise."""
     if not authorization or not authorization.startswith("Bearer "):
         return None
     

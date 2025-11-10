@@ -45,20 +45,20 @@ const AboutUs = () => {
 				<div className="space-y-5 fade-left animate-on-scroll">
 					<p className="tag tag-white">Featured</p>
 					<h2 className="subtitle">
-						Having Financial Troubles??. You Can Apply For Credit Today!
+						Having Financial Troubles?. You Can Apply For Credit Today!
 					</h2>
 
 					<ul className="space-y-[12px] benefits">
 						<li>Extra Spending Power when you have Neural Cash</li>
 
-						<li>Your data, protected with cutting edge encryption</li>
+						<li>Your data, protected with cutting-edge encryption</li>
 
 						<li>
 							We're committed to giving instant feedback on your financial
-							standing
+							standings
 						</li>
 
-						<li>We're committed to adding more exciting features!</li>
+						<li>We're committed to adding more exciting features soon!</li>
 					</ul>
 				</div>
 

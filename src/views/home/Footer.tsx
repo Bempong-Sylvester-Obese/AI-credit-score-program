@@ -43,10 +43,10 @@ const Footer = () => {
 
 				<div className="text-center space-x-10 footer-links">
 					<Link to="/">Home</Link>
-					<Link to="/">Credit Score</Link>
-					<Link to="/">Loan Offers</Link>
-					<Link to="/">AI Insights</Link>
-					<Link to="/">Settings</Link>
+					<Link to="/generate-credit">Credit Score</Link>
+					<Link to="/take-credit">Loan Offers</Link>
+					<Link to="/ai-insights">AI Insights</Link>
+					<Link to="/settings">Settings</Link>
 				</div>
 			</div>
 		</footer>

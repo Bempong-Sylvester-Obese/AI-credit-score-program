@@ -59,6 +59,25 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pathlib import Path
+import sys
+from src.predict import CreditScorePredictor
+from src.features.build_features import engineer_features
+import pandas as pd
+import io
+import uvicorn
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+app = FastAPI(
+    title="AI Credit Score API",
+    description="ML-powered credit score prediction API",
+    version="1.0.0"
+)
+
+# Enable CORS for React frontend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"],
@@ -66,6 +85,23 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Initialize predictor on startup
+predictor = None
+
+@app.on_event("startup")
+async def startup_event():
+    global predictor
+    try:
+        predictor = CreditScorePredictor(
+            model_path='models/model.pkl',
+            scaler_path='models/scaler.pkl',
+            features_path='models/features.csv'
+        )
+        print("Model loaded successfully")
+    except Exception as e:
+        print(f"Error loading model: {str(e)}")
+        raise
 
 @app.get("/")
 async def root():
@@ -78,6 +114,7 @@ async def root():
             "/api/profile": "User profile management (GET, POST, PUT)",
             "/api/predictions": "Get prediction history (GET)",
             "/api/scores/history": "Get historical credit scores (GET)"
+            "/api/predict": "Credit score prediction (POST)"
         }
     }
 
@@ -93,6 +130,7 @@ async def predict(
     file: UploadFile = File(...),
     current_user: dict = Depends(get_current_user)
 ):
+async def predict(file: UploadFile = File(...)):
     """
     Predict credit score from uploaded transaction CSV file
     
@@ -283,3 +321,6 @@ async def get_score_history(
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+

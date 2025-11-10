@@ -65,6 +65,10 @@ const handleApiError = async (response: Response): Promise<never> => {
 /**
  * Predict credit score from uploaded CSV file
  */
+import type { PredictionResult, ApiError } from '@/types/credit';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+
 export const predictCreditScore = async (file: File): Promise<PredictionResult> => {
   const formData = new FormData();
   formData.append('file', file);
@@ -82,6 +86,8 @@ export const predictCreditScore = async (file: File): Promise<PredictionResult> 
     const response = await fetch(`${API_BASE_URL}/api/predict`, {
       method: 'POST',
       headers,
+    const response = await fetch(`${API_BASE_URL}/api/predict`, {
+      method: 'POST',
       body: formData,
       signal: controller.signal,
     });
@@ -90,6 +96,13 @@ export const predictCreditScore = async (file: File): Promise<PredictionResult> 
 
     if (!response.ok) {
       await handleApiError(response);
+      const errorData: ApiError = await response.json().catch(() => ({
+        error: 'Unknown error',
+        message: `HTTP ${response.status}: ${response.statusText}`,
+        status_code: response.status,
+      }));
+
+      throw new Error(errorData.message || errorData.error || 'Failed to predict credit score');
     }
 
     const data: PredictionResult = await response.json();

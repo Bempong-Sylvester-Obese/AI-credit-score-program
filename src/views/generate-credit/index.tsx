@@ -68,9 +68,9 @@ const GenerateCredit = () => {
 					<div className="secondary-navigation space-x-5">
 						<Link to="/">Home</Link>
 						<Link to="/generate-credit">Generate Credit</Link>
-						<Link to="/">Credit Offers</Link>
-						<Link to="/">AI Insights</Link>
-						<Link to="/">Settings</Link>
+						<Link to="/take-credit">Credit Offers</Link>
+						<Link to="/ai-insights">AI Insights</Link>
+						<Link to="/settings">Settings</Link>
 					</div>
 				</div>
 			</nav>

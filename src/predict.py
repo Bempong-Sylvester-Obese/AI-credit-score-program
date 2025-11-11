@@ -2,7 +2,6 @@
 Credit Score Prediction Module
 This module provides inference functionality for the trained credit scoring model.
 """
-
 import pandas as pd
 import numpy as np
 import joblib

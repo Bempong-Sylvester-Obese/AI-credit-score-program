@@ -19,6 +19,8 @@ const Login = () => {
 		} catch (err) {
 			setError(err instanceof Error ? err.message : 'Failed to sign in with Google');
 			setIsLoading(false);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 

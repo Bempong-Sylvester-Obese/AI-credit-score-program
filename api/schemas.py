@@ -22,24 +22,32 @@ class UserProfileUpdate(BaseModel):
 
 
 class UserProfileResponse(BaseModel):
-    id: int
-    user_id: int
+    id: Optional[str] = None
+    user_id: Optional[str] = None
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     postal_address: Optional[str] = None
     mobile: Optional[str] = None
     employment_status: Optional[str] = None
     email: Optional[str] = None
-    created_at: datetime
+    created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
 
 
+class PredictionAssessment(BaseModel):
+    """Lightweight model for immediate prediction assessment (no id/user_id/created_at)"""
+    credit_score: int
+    risk_probability: float
+    risk_category: str
+    interpretation: Optional[str] = None
+
+
 class PredictionResponse(BaseModel):
-    id: int
-    user_id: int
+    id: str
+    user_id: str
     credit_score: int
     risk_probability: float
     risk_category: str
@@ -47,7 +55,7 @@ class PredictionResponse(BaseModel):
     feature_values: Optional[dict] = None
     transaction_count: Optional[int] = None
     file_name: Optional[str] = None
-    created_at: datetime
+    created_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True

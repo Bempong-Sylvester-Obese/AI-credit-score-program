@@ -13,6 +13,7 @@ import io
 import uvicorn
 from typing import List
 from contextlib import asynccontextmanager
+from datetime import datetime
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -25,7 +26,8 @@ from api.services_firestore import (
     create_or_update_user_profile,
     save_prediction,
     get_user_predictions,
-    get_user_score_history
+    get_user_score_history,
+    get_latest_prediction
 )
 from api.schemas import (
     UserProfileCreate,
@@ -33,7 +35,8 @@ from api.schemas import (
     UserProfileResponse,
     PredictionResponse,
     PredictionListResponse,
-    ScoreHistoryItem
+    ScoreHistoryItem,
+    PredictionAssessment
 )
 
 # -----------------------------------------------------
@@ -104,6 +107,28 @@ async def health_check():
     }
 
 # -----------------------------------------------------
+# Helper Functions
+# -----------------------------------------------------
+
+def convert_firestore_timestamp(ts):
+    """Convert Firestore Timestamp to Python datetime"""
+    if ts is None:
+        return None
+    if isinstance(ts, datetime):
+        return ts
+    # Handle Firestore Timestamp objects
+    if hasattr(ts, 'timestamp'):
+        try:
+            # Firestore Timestamp.timestamp() returns seconds since epoch as float
+            return datetime.fromtimestamp(ts.timestamp())
+        except (ValueError, OSError, AttributeError):
+            # Fallback: try to_datetime if available (some SDK versions)
+            if hasattr(ts, 'to_datetime'):
+                return ts.to_datetime()
+            return None
+    return None
+
+# -----------------------------------------------------
 # Prediction Endpoint
 # -----------------------------------------------------
 
@@ -149,26 +174,52 @@ async def predict(
         assessment = predictor.predict_full_assessment(feature_dict)
 
         # Firestore operations
-        get_or_create_user(current_user["uid"], current_user.get("email"))
-        save_prediction(
-            uid=current_user["uid"],
-            assessment=assessment,
-            feature_values=feature_dict,
-            transaction_count=len(df),
-            file_name=file.filename
-        )
-
         try:
             get_or_create_user(current_user["uid"], current_user.get("email"))
-            save_prediction(
+            prediction_id = save_prediction(
                 uid=current_user["uid"],
                 assessment=assessment,
                 feature_values=feature_dict,
                 transaction_count=len(df),
-                file_name=file.filename)
+                file_name=file.filename
+            )
+            
+            # Get the saved prediction to return with id/user_id/created_at
+            latest_prediction = get_latest_prediction(current_user["uid"])
+            if latest_prediction:
+                # Convert Firestore Timestamp to datetime
+                created_at = convert_firestore_timestamp(latest_prediction.get('created_at'))
+                
+                return PredictionResponse(
+                    id=latest_prediction.get('id', prediction_id),
+                    user_id=latest_prediction.get('user_id', current_user["uid"]),
+                    credit_score=assessment['credit_score'],
+                    risk_probability=assessment['risk_probability'],
+                    risk_category=assessment['risk_category'],
+                    interpretation=assessment.get('interpretation'),
+                    feature_values=feature_dict,
+                    transaction_count=len(df),
+                    file_name=file.filename,
+                    created_at=created_at
+                )
+            else:
+                # Fallback if we can't retrieve the saved prediction
+                return PredictionResponse(
+                    id=prediction_id,
+                    user_id=current_user["uid"],
+                    credit_score=assessment['credit_score'],
+                    risk_probability=assessment['risk_probability'],
+                    risk_category=assessment['risk_category'],
+                    interpretation=assessment.get('interpretation'),
+                    feature_values=feature_dict,
+                    transaction_count=len(df),
+                    file_name=file.filename,
+                    created_at=datetime.now()
+                )
         except Exception as db_error:
             print(f"Warning: failed to persist prediction: {db_error}")
-        return assessment
+            # Return assessment without id/user_id/created_at if save fails
+            raise HTTPException(status_code=500, detail=f"Failed to save prediction: {str(db_error)}")
 
     except pd.errors.EmptyDataError:
         raise HTTPException(status_code=400, detail="Empty CSV file")
@@ -189,6 +240,13 @@ async def create_profile(
     """Create or update user profile"""
     get_or_create_user(current_user["uid"], current_user.get("email"))
     profile = create_or_update_user_profile(current_user["uid"], profile_data.model_dump())
+    
+    # Convert Firestore Timestamps to datetime
+    if 'created_at' in profile:
+        profile['created_at'] = convert_firestore_timestamp(profile['created_at'])
+    if 'updated_at' in profile:
+        profile['updated_at'] = convert_firestore_timestamp(profile['updated_at'])
+    
     return profile
 
 
@@ -198,6 +256,15 @@ async def get_profile(current_user: dict = Depends(get_current_user)):
     profile = get_user_profile(current_user["uid"])
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
+    
+    # Add id and user_id if missing, and convert Firestore Timestamps
+    profile['id'] = profile.get('id', 'profile')
+    profile['user_id'] = profile.get('user_id', current_user["uid"])
+    if 'created_at' in profile:
+        profile['created_at'] = convert_firestore_timestamp(profile['created_at'])
+    if 'updated_at' in profile:
+        profile['updated_at'] = convert_firestore_timestamp(profile['updated_at'])
+    
     return profile
 
 
@@ -208,6 +275,13 @@ async def update_profile(
 ):
     """Update user profile"""
     profile = create_or_update_user_profile(current_user["uid"], profile_data.model_dump())
+    
+    # Convert Firestore Timestamps to datetime
+    if 'created_at' in profile:
+        profile['created_at'] = convert_firestore_timestamp(profile['created_at'])
+    if 'updated_at' in profile:
+        profile['updated_at'] = convert_firestore_timestamp(profile['updated_at'])
+    
     return profile
 
 # -----------------------------------------------------
@@ -222,10 +296,23 @@ async def get_predictions(
 ):
     """Get user's prediction history"""
     predictions = get_user_predictions(current_user["uid"], limit=limit, offset=offset)
+    
+    # Convert Firestore Timestamps to datetime for each prediction
+    converted_predictions = []
+    for pred in predictions:
+        converted_pred = dict(pred)
+        if 'created_at' in converted_pred:
+            converted_pred['created_at'] = convert_firestore_timestamp(converted_pred['created_at'])
+        converted_predictions.append(converted_pred)
+    
+    # Get total count (we'd need to query separately for this, but for now use the returned count)
+    # Note: This returns count of items returned, not total. For accurate total, need separate query.
+    total_count = len(converted_predictions)
+    
     return {
-        "predictions": predictions,
-        "total": len(predictions),
-        "count": len(predictions),
+        "predictions": converted_predictions,
+        "total": total_count,
+        "count": len(converted_predictions),
         "limit": limit,
         "offset": offset
     }

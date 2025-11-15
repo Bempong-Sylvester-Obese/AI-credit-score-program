@@ -5,7 +5,6 @@ import CreditScoreEvaluation from "./views/creditScoreAnalyses/analyses";
 import CreditCalculator from "./views/takeCredit/takeCredit";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
-import { AuthProvider } from "@/contexts/AuthProvider";
 
 function App() {
   useEffect(() => {
@@ -26,7 +25,6 @@ function App() {
   }, []);
 
   return (
-    <AuthProvider>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -54,17 +52,18 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/ai-insights" element={<AIInsights />} />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <Settings />
-            </ProtectedRoute>
-          }
-        />
+        <Routes>
+  <Route path="/ai-insights" element={<AIInsights />} />
+  <Route
+    path="/settings"
+    element={
+      <ProtectedRoute>
+        <Settings />
+      </ProtectedRoute>
+    }
+  />
+</Routes>
       </Routes>
-    </AuthProvider>
   );
 }
 

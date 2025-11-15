@@ -55,7 +55,14 @@ function App() {
           }
         />
         <Route path="/ai-insights" element={<AIInsights />} />
-        <ProtectedRoute> <Route path="/settings" element={<Settings />} /> </ProtectedRoute>
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </AuthProvider>
   );

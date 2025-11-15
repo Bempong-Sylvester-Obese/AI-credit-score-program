@@ -45,8 +45,8 @@ export interface UserProfileUpdate {
 }
 
 export interface PredictionResponse {
-  id: number;
-  user_id: number;
+  id: string;
+  user_id: string;
   credit_score: number;
   risk_probability: number;
   risk_category: RiskCategory;

@@ -10,9 +10,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, roc_auc_score
 from sklearn.preprocessing import StandardScaler
 import argparse
-from src.features.build_features import engineer_features
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
+from src.features.build_features import engineer_features
 
 class CreditScorer:
     def __init__(self, model_path='models/model.pkl', scaler_path='models/scaler.pkl'):

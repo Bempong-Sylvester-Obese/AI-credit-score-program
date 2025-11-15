@@ -1,0 +1,164 @@
+# AI Credit Score Program - Cursor Rules
+
+## Project Overview
+This is an AI-powered financial technology application that uses machine learning to generate Financial Profile Scores (FPS) from transaction data. The project consists of:
+- **Frontend**: React 19 + TypeScript + Vite + Tailwind CSS 4
+- **Backend**: Python + FastAPI + scikit-learn
+- **AI/ML**: Random Forest classifier for credit risk prediction
+- **Authentication**: Firebase
+
+## Technology Stack Preferences
+
+### Frontend
+- **React**: Use functional components with hooks (React 19)
+- **TypeScript**: Strict typing, avoid `any` types
+- **Styling**: Tailwind CSS 4 utility classes, prefer composition over custom CSS
+- **UI Components**: Use Radix UI primitives for accessibility
+- **Routing**: React Router v7 for client-side navigation
+- **Charts**: Recharts for data visualization
+- **State Management**: React Context API or hooks for local state
+
+### Backend
+- **Python**: Follow PEP 8 style guide
+- **API Framework**: FastAPI with async/await patterns
+- **ML Framework**: scikit-learn for model training and inference
+- **Data Processing**: Pandas and NumPy for data manipulation
+- **Model Persistence**: Joblib for model serialization
+
+## Code Style & Conventions
+
+### TypeScript/React
+- Use TypeScript interfaces for type definitions (avoid `type` aliases for object shapes)
+- Prefer named exports over default exports
+- Use functional components with hooks
+- Extract reusable logic into custom hooks
+- Use `clsx` or `tailwind-merge` for conditional class names
+- Follow the existing component structure in `src/components/ui/`
+- Use path aliases (`@/*`) for imports from `src/`
+
+### Python
+- Follow PEP 8: 4 spaces for indentation, max 88 characters per line
+- Use type hints for function parameters and return types
+- Use docstrings for classes and functions
+- Prefer f-strings for string formatting
+- Use meaningful variable names, especially for ML features
+- Handle exceptions explicitly with try-except blocks
+
+### File Organization
+- **Frontend components**: `src/components/ui/` for reusable UI, `src/views/` for page components
+- **Backend API**: `api/main.py` for FastAPI routes
+- **ML code**: `src/train.py` for training, `src/predict.py` for inference
+- **Features**: `src/features/` for feature engineering pipeline
+- **Types**: `src/types/` for TypeScript type definitions
+- **Utils**: `src/lib/` for frontend utilities, root level for Python utilities
+
+## AI/ML Best Practices
+
+### Model Training (`src/train.py`)
+- Always validate input data before training
+- Use train-test splits with proper stratification
+- Save model artifacts (model, scaler, feature list) to `models/` directory
+- Log model performance metrics (accuracy, AUC-ROC, confusion matrix)
+- Include feature importance analysis
+- Document hyperparameters and model version
+
+### Model Inference (`src/predict.py`)
+- Validate input data matches expected features
+- Handle missing features gracefully with warnings
+- Use the same feature engineering pipeline as training
+- Return predictions with confidence scores when applicable
+
+### Feature Engineering (`src/features/`)
+- Keep feature engineering functions modular and reusable
+- Document feature calculations and business logic
+- Ensure feature consistency between training and inference
+- Handle edge cases (empty data, missing values, outliers)
+
+## Security & Privacy
+
+### Financial Data Handling
+- Never log or expose sensitive financial data in production
+- Use environment variables for API keys and secrets
+- Validate and sanitize all user inputs
+- Implement proper authentication and authorization
+- Follow data protection regulations (GDPR, etc.)
+
+### API Security
+- Use HTTPS in production
+- Implement rate limiting for API endpoints
+- Validate request payloads with Pydantic models
+- Handle errors gracefully without exposing internal details
+
+## Development Guidelines
+
+### Git Workflow
+- Use descriptive commit messages
+- Create feature branches from `main` or `backend-functionality`
+- Keep commits focused and atomic
+
+### Testing
+- Write unit tests for ML feature engineering functions
+- Test API endpoints with sample data
+- Validate frontend components render correctly
+- Test model predictions with known inputs
+
+### Performance
+- Optimize React components with `React.memo` when appropriate
+- Use lazy loading for large components
+- Cache API responses when appropriate
+- Optimize ML inference for low latency
+
+## Code Generation Preferences
+
+### When Creating Components
+- Use the existing UI component patterns (see `src/components/ui/`)
+- Include proper TypeScript types
+- Make components responsive and accessible
+- Use Tailwind utility classes consistently
+
+### When Creating API Endpoints
+- Use FastAPI dependency injection for reusable logic
+- Include request/response models with Pydantic
+- Add proper error handling and status codes
+- Document endpoints with docstrings
+
+### When Modifying ML Code
+- Maintain backward compatibility with existing models
+- Version model artifacts when making breaking changes
+- Update feature engineering pipeline consistently
+- Document any changes to model architecture
+
+## Common Patterns
+
+### Frontend API Calls
+- Use the API utilities in `src/lib/api.ts`
+- Handle loading and error states
+- Use React Query or similar for data fetching patterns
+
+### Authentication
+- Use Firebase Auth context (`src/contexts/AuthContext.tsx`)
+- Protect routes with `ProtectedRoute` component
+- Handle authentication state changes gracefully
+
+### Data Visualization
+- Use Recharts for consistent chart styling
+- Make charts responsive and accessible
+- Include proper labels and legends
+
+## Error Handling
+- Frontend: Use try-catch blocks and display user-friendly error messages
+- Backend: Return appropriate HTTP status codes and error messages
+- ML: Handle data validation errors and model loading failures gracefully
+
+## Documentation
+- Add JSDoc comments for complex functions
+- Document API endpoints with FastAPI's automatic docs
+- Include docstrings for Python functions and classes
+- Update README.md when adding major features
+
+## Dependencies
+- Keep dependencies up to date but test before upgrading
+- Prefer well-maintained packages with active communities
+- Avoid adding unnecessary dependencies
+- Document any special dependency requirements
+

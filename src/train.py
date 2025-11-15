@@ -3,12 +3,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import joblib
 import os
+import sys
+from pathlib import Path
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, roc_auc_score, confusion_matrix
+from sklearn.metrics import classification_report, roc_auc_score
 from sklearn.preprocessing import StandardScaler
-from features.build_features import engineer_features
 import argparse
+from src.features.build_features import engineer_features
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 class CreditScorer:
     def __init__(self, model_path='models/model.pkl', scaler_path='models/scaler.pkl'):

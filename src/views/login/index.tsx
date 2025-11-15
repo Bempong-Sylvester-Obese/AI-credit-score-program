@@ -1,7 +1,29 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/useAuth';
 
 const Login = () => {
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState('');
+	const { signInWithGoogle } = useAuth();
+	const navigate = useNavigate();
+
+	const handleGoogleSignIn = async () => {
+		try {
+			setIsLoading(true);
+			setError('');
+			await signInWithGoogle();
+			navigate('/');
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'Failed to sign in with Google');
+			setIsLoading(false);
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
 	return (
 		<main className="">
 			<div className="nc-container md:grid grid-cols-3 min-h-screen">
@@ -27,9 +49,25 @@ const Login = () => {
 							See what is going on with your business
 						</p>
 
-						<Button className="w-full rounded-[5px] bg-transparent border border-[#E8E8E8] text-[#828282] capitalize my-5 hover:bg-transparent">
-							<img src="/google-icon.svg" alt="Google" />
-							<span>Continue with Google</span>
+						{error && (
+							<div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded text-sm">
+								{error}
+							</div>
+						)}
+
+						<Button
+							onClick={handleGoogleSignIn}
+							disabled={isLoading}
+							className="w-full rounded-[5px] bg-transparent border border-[#E8E8E8] text-[#828282] capitalize my-5 hover:bg-transparent"
+						>
+							{isLoading ? (
+								<span>Signing in...</span>
+							) : (
+								<>
+									<img src="/google-icon.svg" alt="Google" />
+									<span>Continue with Google</span>
+								</>
+							)}
 						</Button>
 
 						<span className="text-[#A1A1A1] text-xs flex items-center justify-center mb-5">

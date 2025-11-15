@@ -33,7 +33,7 @@ def engineer_features(raw_df):
     # 3. Calculate financial ratios
     customer_features['dwr'] = (
         customer_features['total_deposits'] / 
-        (customer_features['total_withdrawals'] + 1e-6)  # Added missing parenthesis
+        (customer_features['total_withdrawals'] + 1e-6)
     )
     
     # 4. Time-based features

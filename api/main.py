@@ -3,38 +3,49 @@ FastAPI Backend for Credit Score Prediction
 Provides REST API endpoints for the ML credit scoring model
 """
 
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 import sys
-from src.predict import CreditScorePredictor
-from src.features.build_features import engineer_features
 import pandas as pd
 import io
 import uvicorn
+from typing import List
+from contextlib import asynccontextmanager
+from datetime import datetime
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-app = FastAPI(
-    title="AI Credit Score API",
-    description="ML-powered credit score prediction API",
-    version="1.0.0"
+from src.predict import CreditScorePredictor
+from src.features.build_features import engineer_features
+from api.auth_middleware import get_current_user
+from api.services_firestore import (
+    get_or_create_user,
+    get_user_profile,
+    create_or_update_user_profile,
+    save_prediction,
+    get_user_predictions,
+    get_user_score_history,
+    get_latest_prediction
+)
+from api.schemas import (
+    UserProfileCreate,
+    UserProfileUpdate,
+    UserProfileResponse,
+    PredictionResponse,
+    PredictionListResponse,
+    ScoreHistoryItem,
+    PredictionAssessment
 )
 
-# Enable CORS for React frontend
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# -----------------------------------------------------
+# FastAPI Application Configuration
+# -----------------------------------------------------
 
-# Initialize predictor on startup
 predictor = None
 
-@app.on_event("startup")
-async def startup_event():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     global predictor
     try:
         predictor = CreditScorePredictor(
@@ -45,7 +56,32 @@ async def startup_event():
         print("Model loaded successfully")
     except Exception as e:
         print(f"Error loading model: {str(e)}")
-        raise
+    yield
+
+
+app = FastAPI(
+    title="AI Credit Score API",
+    description="ML-powered credit score prediction API",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+# Enable CORS for React frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# -----------------------------------------------------
+# Root and Health Check
+# -----------------------------------------------------
 
 @app.get("/")
 async def root():
@@ -54,9 +90,13 @@ async def root():
         "version": "1.0.0",
         "endpoints": {
             "/health": "Health check",
-            "/api/predict": "Credit score prediction (POST)"
+            "/api/predict": "Credit score prediction (POST)",
+            "/api/profile": "User profile management (GET, POST, PUT)",
+            "/api/predictions": "Get prediction history (GET)",
+            "/api/scores/history": "Get historical credit scores (GET)"
         }
     }
+
 
 @app.get("/health")
 async def health_check():
@@ -65,69 +105,121 @@ async def health_check():
         "model_loaded": predictor is not None
     }
 
-@app.post("/api/predict")
-async def predict(file: UploadFile = File(...)):
-    """
-    Predict credit score from uploaded transaction CSV file
-    
-    Args:
-        file: CSV file containing transaction data
-        
-    Returns:
-        JSON with credit_score, risk_probability, risk_category, and interpretation
-    """
+# -----------------------------------------------------
+# Helper Functions
+# -----------------------------------------------------
+
+def convert_firestore_timestamp(ts):
+    """Convert Firestore Timestamp to Python datetime"""
+    if ts is None:
+        return None
+    if isinstance(ts, datetime):
+        return ts
+    # Handle Firestore Timestamp objects
+    if hasattr(ts, 'timestamp'):
+        try:
+            # Firestore Timestamp.timestamp() returns seconds since epoch as float
+            return datetime.fromtimestamp(ts.timestamp())
+        except (ValueError, OSError, AttributeError):
+            # Fallback: try to_datetime if available (some SDK versions)
+            if hasattr(ts, 'to_datetime'):
+                return ts.to_datetime()
+            return None
+    return None
+
+# -----------------------------------------------------
+# Prediction Endpoint
+# -----------------------------------------------------
+
+@app.post("/api/predict", response_model=PredictionResponse)
+async def predict(
+    file: UploadFile = File(...),
+    current_user: dict = Depends(get_current_user)
+):
+    """Predict credit score from uploaded transaction CSV file"""
     if predictor is None:
         raise HTTPException(status_code=503, detail="Model not loaded")
-    
-    # Validate file type
-    if not file.filename.endswith('.csv'):
+
+    if not file.filename.endswith(".csv"):
         raise HTTPException(status_code=400, detail="File must be a CSV file")
-    
+
     try:
-        # Read uploaded file
         contents = await file.read()
-        
-        df = pd.read_csv(io.StringIO(contents.decode('utf-8')))
-        
-        # Validate required columns
-        required_columns = ['Date', 'Time', 'Transaction Type', 'Phone Number', 'Amount']
+        df = pd.read_csv(io.StringIO(contents.decode("utf-8")))
+
+        required_columns = ["Date", "Time", "Transaction Type", "Phone Number", "Amount"]
         missing_columns = [col for col in required_columns if col not in df.columns]
         if missing_columns:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Missing required columns: {missing_columns}"
-            )
-        
-        # Engineer features
+            raise HTTPException(status_code=400, detail=f"Missing columns: {missing_columns}")
+
         processed_data = engineer_features(df)
-        
-        # Extract features for first customer
-        customer_id = df['Phone Number'].iloc[0] if len(df) > 0 else None
+        customer_id = df["Phone Number"].iloc[0] if len(df) > 0 else None
         if customer_id is None:
             raise HTTPException(status_code=400, detail="No valid customer data found")
-        
-        # Get customer features
-        customer_row = processed_data[processed_data['Phone Number'] == customer_id].iloc[0]
-        
-        # Prepare feature dict for prediction
+
+        customer_row = processed_data[processed_data["Phone Number"] == customer_id].iloc[0]
+
         feature_dict = {
-            'txn_count': customer_row['txn_count'],
-            'net_amount': customer_row['net_amount'],
-            'avg_amount': customer_row['avg_amount'],
-            'amount_std': customer_row['amount_std'],
-            'dwr': customer_row['dwr'],
-            'customer_duration_days': customer_row['customer_duration_days'],
-            'hour_mean': customer_row['hour_mean'],
-            'hour_std': customer_row['hour_std']
+            "txn_count": customer_row["txn_count"],
+            "net_amount": customer_row["net_amount"],
+            "avg_amount": customer_row["avg_amount"],
+            "amount_std": customer_row["amount_std"],
+            "dwr": customer_row["dwr"],
+            "customer_duration_days": customer_row["customer_duration_days"],
+            "hour_mean": customer_row["hour_mean"],
+            "hour_std": customer_row["hour_std"]
         }
-        
-        # Get prediction
+
         assessment = predictor.predict_full_assessment(feature_dict)
-        
-        return assessment
-        
-    except HTTPException:
-        raise
+
+        # Firestore operations
+        try:
+            get_or_create_user(current_user["uid"], current_user.get("email"))
+            prediction_id = save_prediction(
+                uid=current_user["uid"],
+                assessment=assessment,
+                feature_values=feature_dict,
+                transaction_count=len(df),
+                file_name=file.filename
+            )
+            
+            # Get the saved prediction to return with id/user_id/created_at
+            latest_prediction = get_latest_prediction(current_user["uid"])
+            if latest_prediction:
+                # Convert Firestore Timestamp to datetime
+                created_at = convert_firestore_timestamp(latest_prediction.get('created_at'))
+                
+                return PredictionResponse(
+                    id=latest_prediction.get('id', prediction_id),
+                    user_id=latest_prediction.get('user_id', current_user["uid"]),
+                    credit_score=assessment['credit_score'],
+                    risk_probability=assessment['risk_probability'],
+                    risk_category=assessment['risk_category'],
+                    interpretation=assessment.get('interpretation'),
+                    feature_values=feature_dict,
+                    transaction_count=len(df),
+                    file_name=file.filename,
+                    created_at=created_at
+                )
+            else:
+                # Fallback if we can't retrieve the saved prediction
+                return PredictionResponse(
+                    id=prediction_id,
+                    user_id=current_user["uid"],
+                    credit_score=assessment['credit_score'],
+                    risk_probability=assessment['risk_probability'],
+                    risk_category=assessment['risk_category'],
+                    interpretation=assessment.get('interpretation'),
+                    feature_values=feature_dict,
+                    transaction_count=len(df),
+                    file_name=file.filename,
+                    created_at=datetime.now()
+                )
+        except Exception as db_error:
+            print(f"Warning: failed to persist prediction: {db_error}")
+            # Return assessment without id/user_id/created_at if save fails
+            raise HTTPException(status_code=500, detail=f"Failed to save prediction: {str(db_error)}")
+
     except pd.errors.EmptyDataError:
         raise HTTPException(status_code=400, detail="Empty CSV file")
     except pd.errors.ParserError:
@@ -135,6 +227,104 @@ async def predict(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction error: {str(e)}")
 
+# -----------------------------------------------------
+# Profile Management Endpoints
+# -----------------------------------------------------
+
+@app.post("/api/profile", response_model=UserProfileResponse)
+async def create_profile(
+    profile_data: UserProfileCreate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Create or update user profile"""
+    get_or_create_user(current_user["uid"], current_user.get("email"))
+    profile = create_or_update_user_profile(current_user["uid"], profile_data.model_dump())
+    
+    # Convert Firestore Timestamps to datetime
+    if 'created_at' in profile:
+        profile['created_at'] = convert_firestore_timestamp(profile['created_at'])
+    if 'updated_at' in profile:
+        profile['updated_at'] = convert_firestore_timestamp(profile['updated_at'])
+    
+    return profile
+
+
+@app.get("/api/profile", response_model=UserProfileResponse)
+async def get_profile(current_user: dict = Depends(get_current_user)):
+    """Get user profile"""
+    profile = get_user_profile(current_user["uid"])
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    
+    # Add id and user_id if missing, and convert Firestore Timestamps
+    profile['id'] = profile.get('id', 'profile')
+    profile['user_id'] = profile.get('user_id', current_user["uid"])
+    if 'created_at' in profile:
+        profile['created_at'] = convert_firestore_timestamp(profile['created_at'])
+    if 'updated_at' in profile:
+        profile['updated_at'] = convert_firestore_timestamp(profile['updated_at'])
+    
+    return profile
+
+
+@app.put("/api/profile", response_model=UserProfileResponse)
+async def update_profile(
+    profile_data: UserProfileUpdate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Update user profile"""
+    profile = create_or_update_user_profile(current_user["uid"], profile_data.model_dump())
+    
+    # Convert Firestore Timestamps to datetime
+    if 'created_at' in profile:
+        profile['created_at'] = convert_firestore_timestamp(profile['created_at'])
+    if 'updated_at' in profile:
+        profile['updated_at'] = convert_firestore_timestamp(profile['updated_at'])
+    
+    return profile
+
+# -----------------------------------------------------
+# Prediction History and Score History
+# -----------------------------------------------------
+
+@app.get("/api/predictions", response_model=PredictionListResponse)
+async def get_predictions(
+    current_user: dict = Depends(get_current_user),
+    limit: int = Query(10, ge=1, le=100),
+    offset: int = Query(0, ge=0)
+):
+    """Get user's prediction history"""
+    predictions = get_user_predictions(current_user["uid"], limit=limit, offset=offset)
+    
+    # Convert Firestore Timestamps to datetime for each prediction
+    converted_predictions = []
+    for pred in predictions:
+        converted_pred = dict(pred)
+        if 'created_at' in converted_pred:
+            converted_pred['created_at'] = convert_firestore_timestamp(converted_pred['created_at'])
+        converted_predictions.append(converted_pred)
+    
+    # Get total count (we'd need to query separately for this, but for now use the returned count)
+    # Note: This returns count of items returned, not total. For accurate total, need separate query.
+    total_count = len(converted_predictions)
+    
+    return {
+        "predictions": converted_predictions,
+        "total": total_count,
+        "count": len(converted_predictions),
+        "limit": limit,
+        "offset": offset
+    }
+
+
+@app.get("/api/scores/history", response_model=List[ScoreHistoryItem])
+async def get_score_history(
+    current_user: dict = Depends(get_current_user),
+    limit: int = Query(12, ge=1, le=100)
+):
+    """Get user's historical credit scores"""
+    history = get_user_score_history(current_user["uid"], limit=limit)
+    return history
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
-

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/contexts/UseAuth';
+import { useAuth } from '@/contexts/useAuth';
 import {
 	DropdownMenu,
 	DropdownMenuTrigger,
@@ -26,6 +26,8 @@ function Header() {
 			navigate('/');
 		} catch (error) {
 			console.error('Error signing out:', error);
+			setIsSigningOut(false);
+		} finally {
 			setIsSigningOut(false);
 		}
 	};

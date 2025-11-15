@@ -65,3 +65,4 @@ class PredictionListResponse(BaseModel):
     total: int
     limit: int
     offset: int
+    count: int

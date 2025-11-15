@@ -15,7 +15,7 @@ uvicorn>=0.23.0
 python-multipart>=0.0.6
 
 # Firebase (Auth + Firestore)
-firebase-admin>=6.0.0
+firebase-admin>=7.1.0
 
 # Validation
 pydantic>=2.4.0

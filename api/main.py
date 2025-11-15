@@ -3,6 +3,7 @@ FastAPI Backend for Credit Score Prediction
 Provides REST API endpoints for the ML credit scoring model
 """
 
+from fileinput import filename
 from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
@@ -157,6 +158,16 @@ async def predict(
             file_name=file.filename
         )
 
+        try:
+            get_or_create_user(current_user["uid"], current_user.get("email"))
+            save_prediction(
+                uid=current_user["uid"],
+                assessment=assessment,
+                feature_values=feature_dict,
+                transaction_count=len(df),
+                file_name=file.filename)
+        except Exception as db_error:
+            print(f"Warning: failed to persist prediction: {db_error}")
         return assessment
 
     except pd.errors.EmptyDataError:
@@ -214,6 +225,7 @@ async def get_predictions(
     return {
         "predictions": predictions,
         "total": len(predictions),
+        "count": len(predictions),
         "limit": limit,
         "offset": offset
     }

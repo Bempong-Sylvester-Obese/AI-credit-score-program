@@ -14,8 +14,8 @@ export interface ApiError {
 }
 
 export interface UserProfile {
-  id: number;
-  user_id: number;
+  id: string;
+  user_id: string;
   first_name?: string;
   last_name?: string;
   postal_address?: string;
@@ -62,6 +62,7 @@ export interface PredictionListResponse {
   total: number;
   limit: number;
   offset: number;
+  count: number;
 }
 
 export interface ScoreHistoryItem {

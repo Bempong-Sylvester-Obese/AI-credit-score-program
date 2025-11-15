@@ -3,7 +3,6 @@ FastAPI Backend for Credit Score Prediction
 Provides REST API endpoints for the ML credit scoring model
 """
 
-from fileinput import filename
 from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path

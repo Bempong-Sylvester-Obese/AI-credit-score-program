@@ -25,45 +25,43 @@ function App() {
   }, []);
 
   return (
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/generate-credit"
-          element={
-            <ProtectedRoute>
-              <GenerateCredit />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/analyses"
-          element={
-            <ProtectedRoute>
-              <CreditScoreEvaluation />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/take-credit"
-          element={
-            <ProtectedRoute>
-              <CreditCalculator />
-            </ProtectedRoute>
-          }
-        />
-        <Routes>
-  <Route path="/ai-insights" element={<AIInsights />} />
-  <Route
-    path="/settings"
-    element={
-      <ProtectedRoute>
-        <Settings />
-      </ProtectedRoute>
-    }
-  />
-</Routes>
-      </Routes>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/generate-credit"
+        element={
+          <ProtectedRoute>
+            <GenerateCredit />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/analyses"
+        element={
+          <ProtectedRoute>
+            <CreditScoreEvaluation />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/take-credit"
+        element={
+          <ProtectedRoute>
+            <CreditCalculator />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/ai-insights" element={<AIInsights />} />
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <Settings />
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
   );
 }
 

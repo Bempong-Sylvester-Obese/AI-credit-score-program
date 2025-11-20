@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Home, GenerateCredit, Login, AIInsights, Settings } from "./views";
 import CreditScoreEvaluation from "./views/creditScoreAnalyses/analyses";
 import CreditCalculator from "./views/takeCredit/takeCredit";
+import NotFound from "./views/404";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 
@@ -52,7 +53,14 @@ function App() {
           </ProtectedRoute>
         }
       />
-      <Route path="/ai-insights" element={<AIInsights />} />
+      <Route
+        path="/ai-insights"
+        element={
+          <ProtectedRoute>
+            <AIInsights />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path="/settings"
         element={
@@ -61,6 +69,7 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

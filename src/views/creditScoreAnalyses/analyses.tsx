@@ -17,21 +17,60 @@ import {
 import { ChevronDown } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
 import { getRiskThreshold } from '@/constants/credit';
-import type { PredictionResult } from '@/types/credit';
+import { getScoreHistory } from '@/lib/api';
+import type { PredictionResult, ScoreHistoryItem } from '@/types/credit';
+import { useState, useEffect } from 'react';
 import './analyses.css';
 
 const CreditScoreEvaluation = () => {
 	const location = useLocation();
 	const prediction = (location.state as { prediction: PredictionResult })?.prediction;
+	const [historyData, setHistoryData] = useState<ScoreHistoryItem[]>([]);
+	const [isLoadingHistory, setIsLoadingHistory] = useState(true);
+	const [historyError, setHistoryError] = useState<string>('');
+	const [selectedPeriod, setSelectedPeriod] = useState<3 | 6 | 12>(6);
 
-	const generateHistoricalData = (currentScore: number) => {
-		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-		const baseVariation = currentScore * 0.1;
-		return months.map((name, index) => ({
-			name,
-			score: Math.round(currentScore - baseVariation + (index * baseVariation) / months.length),
-		}));
-	};
+	// Fetch historical data from API
+	useEffect(() => {
+		const fetchHistory = async () => {
+			if (!prediction) {
+				setIsLoadingHistory(false);
+				return;
+			}
+
+			try {
+				setIsLoadingHistory(true);
+				setHistoryError('');
+				const history = await getScoreHistory(selectedPeriod);
+				setHistoryData(history);
+			} catch (err) {
+				setHistoryError(err instanceof Error ? err.message : 'Failed to load score history');
+				// Fallback to current score if history fails
+				if (prediction) {
+					setHistoryData([{
+						score: prediction.credit_score,
+						category: prediction.risk_category,
+						risk_probability: prediction.risk_probability,
+						date: new Date().toISOString(),
+					}]);
+				}
+			} finally {
+				setIsLoadingHistory(false);
+			}
+		};
+
+		fetchHistory();
+	}, [prediction, selectedPeriod]);
+
+	// Format data for chart
+	const chartData = historyData.map((item, index) => {
+		const date = item.date ? new Date(item.date) : new Date();
+		const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+		return {
+			name: monthNames[date.getMonth()] || `Month ${index + 1}`,
+			score: item.score,
+		};
+	}).reverse(); // Show oldest to newest
 
 	if (!prediction) {
 		return (
@@ -53,7 +92,17 @@ const CreditScoreEvaluation = () => {
 	}
 
 	const riskThreshold = getRiskThreshold(prediction.credit_score);
-	const chartData = generateHistoricalData(prediction.credit_score);
+
+	// Calculate percentage change for historical data
+	const getPercentageChange = () => {
+		if (chartData.length < 2) return null;
+		const current = chartData[chartData.length - 1]?.score || prediction.credit_score;
+		const previous = chartData[chartData.length - 2]?.score || current;
+		const change = ((current - previous) / previous) * 100;
+		return change > 0 ? `+${change.toFixed(1)}%` : `${change.toFixed(1)}%`;
+	};
+
+	const percentageChange = getPercentageChange();
 
 	return (
 		<div className="container mx-auto">
@@ -65,12 +114,12 @@ const CreditScoreEvaluation = () => {
 						</h2>
 						<DropdownMenu>
 							<DropdownMenuTrigger className="flex items-center text-gray-400">
-								Last 6 Months <ChevronDown className="ml-1 h-4 w-4" />
+								Last {selectedPeriod} Months <ChevronDown className="ml-1 h-4 w-4" />
 							</DropdownMenuTrigger>
 							<DropdownMenuContent>
-								<DropdownMenuItem>Last 3 Months</DropdownMenuItem>
-								<DropdownMenuItem>Last 6 Months</DropdownMenuItem>
-								<DropdownMenuItem>Last 12 Months</DropdownMenuItem>
+								<DropdownMenuItem onClick={() => setSelectedPeriod(3)}>Last 3 Months</DropdownMenuItem>
+								<DropdownMenuItem onClick={() => setSelectedPeriod(6)}>Last 6 Months</DropdownMenuItem>
+								<DropdownMenuItem onClick={() => setSelectedPeriod(12)}>Last 12 Months</DropdownMenuItem>
 							</DropdownMenuContent>
 						</DropdownMenu>
 					</div>
@@ -80,26 +129,47 @@ const CreditScoreEvaluation = () => {
 						<Badge className={`${riskThreshold.badgeColor} text-white`}>
 							{prediction.risk_category}
 						</Badge>
-						<span className="text-green-500">+1.5%</span>
+						{percentageChange && (
+							<span className={percentageChange.startsWith('+') ? 'text-green-500' : 'text-red-500'}>
+								{percentageChange}
+							</span>
+						)}
 					</div>
 
 					<div className="h-40 mt-4">
-						<ResponsiveContainer width="100%" height="100%">
-							<LineChart data={chartData}>
-								<XAxis dataKey="name" stroke="#aaa" />
-								<YAxis domain={[400, 1000]} stroke="#aaa" />
-								<Tooltip
-									contentStyle={{ backgroundColor: 'black', color: 'white' }}
-								/>
-								<Line
-									type="monotone"
-									dataKey="score"
-									stroke="#facc15"
-									strokeWidth={2}
-									dot={false}
-								/>
-							</LineChart>
-						</ResponsiveContainer>
+						{isLoadingHistory ? (
+							<div className="flex items-center justify-center h-full">
+								<div className="text-center">
+									<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400 mx-auto"></div>
+									<p className="mt-2 text-gray-400 text-sm">Loading history...</p>
+								</div>
+							</div>
+						) : historyError ? (
+							<div className="flex items-center justify-center h-full text-yellow-400 text-sm">
+								{historyError}
+							</div>
+						) : chartData.length > 0 ? (
+							<ResponsiveContainer width="100%" height="100%">
+								<LineChart data={chartData}>
+									<XAxis dataKey="name" stroke="#aaa" />
+									<YAxis domain={[400, 1000]} stroke="#aaa" />
+									<Tooltip
+										contentStyle={{ backgroundColor: 'black', color: 'white' }}
+									/>
+									<Line
+										type="monotone"
+										dataKey="score"
+										stroke="#facc15"
+										strokeWidth={2}
+										dot={false}
+									/>
+								</LineChart>
+							</ResponsiveContainer>
+						) : (
+							<div className="flex items-center justify-center h-full text-gray-400 text-sm">
+								No historical data available
+							</div>
+						)}
 					</div>
 
 					<div className="mt-4">

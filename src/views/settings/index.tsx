@@ -2,10 +2,14 @@ import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
+import { getUserProfile, updateUserProfile, createUserProfile } from '@/lib/api';
 
 const Settings = () => {
 	const [isSaving, setIsSaving] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState<string>('');
+	const [success, setSuccess] = useState<string>('');
 	const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'privacy' | 'data'>('profile');
 
 	const [profileData, setProfileData] = useState({
@@ -32,14 +36,65 @@ const Settings = () => {
 		dataRetentionPeriod: '12',
 	});
 
+	// Load user profile on mount
+	useEffect(() => {
+		const loadProfile = async () => {
+			try {
+				setIsLoading(true);
+				setError('');
+				const profile = await getUserProfile();
+				setProfileData({
+					firstName: profile.first_name || '',
+					lastName: profile.last_name || '',
+					email: profile.email || '',
+					mobile: profile.mobile || '',
+					postalAddress: profile.postal_address || '',
+					employmentStatus: profile.employment_status || '',
+				});
+			} catch (err) {
+				// Profile might not exist yet, which is okay
+				if (err instanceof Error && !err.message.includes('404')) {
+					setError('Failed to load profile. Please try again.');
+					console.error('Error loading profile:', err);
+				}
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		loadProfile();
+	}, []);
+
 	const handleProfileSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		setIsSaving(true);
-		// Simulate API call
-		setTimeout(() => {
+		setError('');
+		setSuccess('');
+
+		try {
+			const profileUpdate = {
+				first_name: profileData.firstName || undefined,
+				last_name: profileData.lastName || undefined,
+				email: profileData.email || undefined,
+				mobile: profileData.mobile || undefined,
+				postal_address: profileData.postalAddress || undefined,
+				employment_status: profileData.employmentStatus || undefined,
+			};
+
+			// Try to update first, if it fails, try to create
+			try {
+				await updateUserProfile(profileUpdate);
+				setSuccess('Profile updated successfully!');
+			} catch {
+				// If update fails, try creating new profile
+				await createUserProfile(profileUpdate);
+				setSuccess('Profile created successfully!');
+			}
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'Failed to save profile. Please try again.');
+		} finally {
 			setIsSaving(false);
-			alert('Profile updated successfully!');
-		}, 1000);
+		}
 	};
 
 	const handleNotificationChange = (key: keyof typeof notificationSettings) => {
@@ -139,7 +194,15 @@ const Settings = () => {
 				{activeTab === 'profile' && (
 					<Card className="p-8 animate fade-up delay-30">
 						<h2 className="text-2xl font-semibold mb-6">Profile Information</h2>
-						<form onSubmit={handleProfileSubmit} className="space-y-6">
+						{isLoading ? (
+							<div className="flex items-center justify-center py-12">
+								<div className="text-center">
+									<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+									<p className="mt-4 text-gray-600">Loading profile...</p>
+								</div>
+							</div>
+						) : (
+							<form onSubmit={handleProfileSubmit} className="space-y-6">
 							<div className="md:grid grid-cols-2 gap-6">
 								<div>
 									<label htmlFor="firstName" className="block text-sm font-medium mb-2">
@@ -227,6 +290,16 @@ const Settings = () => {
 								/>
 							</div>
 
+							{error && (
+								<div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+									{error}
+								</div>
+							)}
+							{success && (
+								<div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-700">
+									{success}
+								</div>
+							)}
 							<div className="flex gap-4">
 								<Button type="submit" variant="primary" disabled={isSaving}>
 									{isSaving ? 'Saving...' : 'Save Changes'}
@@ -240,6 +313,7 @@ const Settings = () => {
 								</Button>
 							</div>
 						</form>
+						)}
 					</Card>
 				)}
 

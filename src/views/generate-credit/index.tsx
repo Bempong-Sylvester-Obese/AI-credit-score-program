@@ -2,9 +2,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { FileUpload } from '@/components/ui/file-upload';
-import { predictCreditScore } from '@/lib/api';
+import { predictCreditScore, createUserProfile, updateUserProfile } from '@/lib/api';
 import type { PredictionResult } from '@/types/credit';
 import { FormEvent, useState, useRef } from 'react';
+
+// Validation helpers
+const validateEmail = (email: string): boolean => {
+	if (!email) return true; // Optional field
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return emailRegex.test(email);
+};
+
+const validatePhone = (phone: string): boolean => {
+	// Allow various phone formats: +1234567890, (123) 456-7890, 123-456-7890, 1234567890
+	const phoneRegex = /^[+]?[(]?\d{1,4}[)]?[-\s.]?[(]?\d{1,4}[)]?[-\s.]?\d{1,9}$/;
+	return phoneRegex.test(phone.replace(/\s/g, ''));
+};
 
 const GenerateCredit = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -38,6 +51,32 @@ const GenerateCredit = () => {
 		event.preventDefault();
 		setError('');
 
+		// Validate required fields
+		if (!formData.firstName.trim()) {
+			setError('First name is required');
+			return;
+		}
+
+		if (!formData.lastName.trim()) {
+			setError('Last name is required');
+			return;
+		}
+
+		if (!formData.mobile.trim()) {
+			setError('Mobile number is required');
+			return;
+		}
+
+		if (!validatePhone(formData.mobile)) {
+			setError('Please enter a valid mobile number');
+			return;
+		}
+
+		if (formData.email && !validateEmail(formData.email)) {
+			setError('Please enter a valid email address');
+			return;
+		}
+
 		if (!file) {
 			setError('Please upload a transaction CSV file');
 			return;
@@ -51,6 +90,24 @@ const GenerateCredit = () => {
 		setIsLoading(true);
 
 		try {
+			// Save or update user profile first
+			const profileData = {
+				first_name: formData.firstName.trim(),
+				last_name: formData.lastName.trim(),
+				postal_address: formData.postalAddress.trim() || undefined,
+				mobile: formData.mobile.trim(),
+				employment_status: formData.employmentStatus.trim() || undefined,
+				email: formData.email.trim() || undefined,
+			};
+
+			try {
+				await updateUserProfile(profileData);
+			} catch {
+				// If update fails, try creating new profile
+				await createUserProfile(profileData);
+			}
+
+			// Then generate credit score
 			const result: PredictionResult = await predictCreditScore(file);
 			navigate('/analyses', { state: { prediction: result, userData: formData } });
 		} catch (err) {

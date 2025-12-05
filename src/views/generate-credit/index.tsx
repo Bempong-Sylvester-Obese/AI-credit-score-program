@@ -67,6 +67,16 @@ const GenerateCredit = () => {
 			return;
 		}
 
+		if (!formData.postalAddress.trim()) {
+			setError('Postal address is required');
+			return;
+		}
+
+		if (!formData.employmentStatus.trim()) {
+			setError('Employment status is required');
+			return;
+		}
+
 		if (!validatePhone(formData.mobile)) {
 			setError('Please enter a valid mobile number');
 			return;
@@ -102,9 +112,17 @@ const GenerateCredit = () => {
 
 			try {
 				await updateUserProfile(profileData);
-			} catch {
-				// If update fails, try creating new profile
-				await createUserProfile(profileData);
+			} catch (updateError) {
+				// Only create if profile doesn't exist
+				if (updateError instanceof Error && 
+					(updateError.message.includes('404') || 
+					 updateError.message.includes('not found') ||
+					 updateError.message.includes('Not Found'))) {
+					await createUserProfile(profileData);
+				} else {
+					// Re-throw other errors (network, auth, validation, etc.)
+					throw updateError;
+				}
 			}
 
 			// Then generate credit score

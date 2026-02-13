@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { MobileNav } from '@/components/navigation/MobileNav';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { FileUpload } from '@/components/ui/file-upload';
@@ -138,20 +139,30 @@ const GenerateCredit = () => {
 		<div>
 			<nav>
 				<div className="nc-container flex items-center justify-between pt-8">
-					<img src="/logo-mono.png" alt="Logo Mono" />
+					<Link to="/">
+						<img src="/logo-mono.png" alt="Logo Mono" />
+					</Link>
 
-					<div className="secondary-navigation space-x-5">
+					<div className="hidden md:flex items-center gap-4 secondary-navigation space-x-5">
 						<Link to="/">Home</Link>
 						<Link to="/generate-credit">Generate Credit</Link>
 						<Link to="/take-credit">Credit Offers</Link>
 						<Link to="/ai-insights">AI Insights</Link>
 						<Link to="/settings">Settings</Link>
 					</div>
+
+					<MobileNav variant="light">
+						<Link to="/" className="block py-2 text-white hover:text-[#E2FF54] transition-colors">Home</Link>
+						<Link to="/generate-credit" className="block py-2 text-white hover:text-[#E2FF54] transition-colors">Generate Credit</Link>
+						<Link to="/take-credit" className="block py-2 text-white hover:text-[#E2FF54] transition-colors">Credit Offers</Link>
+						<Link to="/ai-insights" className="block py-2 text-white hover:text-[#E2FF54] transition-colors">AI Insights</Link>
+						<Link to="/settings" className="block py-2 text-white hover:text-[#E2FF54] transition-colors">Settings</Link>
+					</MobileNav>
 				</div>
 			</nav>
 
 			<main className="nc-container">
-				<h1 className="font-bold text-6xl max-w-[700px] leading-[1.2] font-montserrat py-10 animate fade-up">
+				<h1 className="font-bold text-3xl md:text-6xl max-w-[700px] leading-[1.2] font-montserrat py-10 animate fade-up">
 					Generate Your Financial Profile Score
 				</h1>
 

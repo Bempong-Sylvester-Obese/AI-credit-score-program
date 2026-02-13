@@ -9,6 +9,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
+import { MobileNav } from '@/components/navigation/MobileNav';
 import { ParticleSystem } from '@/components/backgrounds/ParticleSystem';
 import { MeshGradient } from '@/components/backgrounds/MeshGradient';
 import { BlobAnimation } from '@/components/backgrounds/BlobAnimation';
@@ -48,59 +49,98 @@ function Header() {
 				<ParticleSystem count={15} className="opacity-50" />
 			</div>
 
-			<nav className="main-navigation absolute left-0 right-0 text-center space-x-10 top-6 z-50">
-				<motion.div
-					initial={{ opacity: 0, y: -20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.6 }}
-					className="flex items-center justify-center gap-10"
-				>
-					<Link to="/" className="hover:text-[#E2FF54] transition-colors">Home</Link>
-					<Link to="/generate-credit" className="hover:text-[#E2FF54] transition-colors">Generate FPS</Link>
-					<Link to="/take-credit" className="hover:text-[#E2FF54] transition-colors">Credit Offers</Link>
-					<Link to="/ai-insights" className="hover:text-[#E2FF54] transition-colors">AI Insights</Link>
-					<Link to="/settings" className="hover:text-[#E2FF54] transition-colors">Settings</Link>
+			<nav className="main-navigation absolute left-0 right-0 top-6 z-50 px-4">
+				<div className="flex items-center justify-end md:justify-center">
+					<motion.div
+						initial={{ opacity: 0, y: -20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.6 }}
+						className="hidden md:flex items-center gap-4 md:gap-10"
+					>
+						<Link to="/" className="hover:text-[#E2FF54] transition-colors">Home</Link>
+						<Link to="/generate-credit" className="hover:text-[#E2FF54] transition-colors">Generate FPS</Link>
+						<Link to="/take-credit" className="hover:text-[#E2FF54] transition-colors">Credit Offers</Link>
+						<Link to="/ai-insights" className="hover:text-[#E2FF54] transition-colors">AI Insights</Link>
+						<Link to="/settings" className="hover:text-[#E2FF54] transition-colors">Settings</Link>
 
-					{loading ? (
-						<div className="inline-block ml-16">
-							<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-						</div>
-					) : user ? (
-						<DropdownMenu>
-							<DropdownMenuTrigger className="border bg-transparent text-white hover:border-[#E2FF54] ease-in-out duration-500 inline-flex items-center gap-2 whitespace-nowrap text-sm font-medium transition-all w-fit p-[1rem] rounded-full uppercase ml-16 ommit">
-								{user.photoURL && (
-									<img
-										src={user.photoURL}
-										alt={user.displayName || 'User'}
-										className="w-8 h-8 rounded-full"
-									/>
-								)}
-								<span className="z-20">{user.displayName || 'User'}</span>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align="end">
-								<DropdownMenuItem disabled>
-									<div className="flex flex-col">
-										<span className="font-semibold">{user.displayName}</span>
-										<span className="text-xs text-gray-500">{user.email}</span>
-									</div>
-								</DropdownMenuItem>
-								<DropdownMenuItem onClick={handleSignOut} disabled={isSigningOut}>
+						{loading ? (
+							<div className="inline-block ml-4 md:ml-16">
+								<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+							</div>
+						) : user ? (
+							<DropdownMenu>
+								<DropdownMenuTrigger className="border bg-transparent text-white hover:border-[#E2FF54] ease-in-out duration-500 inline-flex items-center gap-2 whitespace-nowrap text-sm font-medium transition-all w-fit p-[1rem] rounded-full uppercase ml-4 md:ml-16 ommit">
+									{user.photoURL && (
+										<img
+											src={user.photoURL}
+											alt={user.displayName || 'User'}
+											className="w-8 h-8 rounded-full"
+										/>
+									)}
+									<span className="z-20">{user.displayName || 'User'}</span>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent align="end">
+									<DropdownMenuItem disabled>
+										<div className="flex flex-col">
+											<span className="font-semibold">{user.displayName}</span>
+											<span className="text-xs text-gray-500">{user.email}</span>
+										</div>
+									</DropdownMenuItem>
+									<DropdownMenuItem onClick={handleSignOut} disabled={isSigningOut}>
+										{isSigningOut ? 'Signing out...' : 'Sign Out'}
+									</DropdownMenuItem>
+								</DropdownMenuContent>
+							</DropdownMenu>
+						) : (
+							<Link
+								to="/login"
+								className="border bg-transparent text-white !hover:text-[#E2FF54] hover:border-[#E2FF54] ease-in-out duration-500 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all w-fit !p-[1rem] rounded-full uppercase ml-4 md:ml-16 ommit"
+							>
+								<span className="z-20">Sign In/ Log In</span>
+							</Link>
+						)}
+					</motion.div>
+
+					<MobileNav>
+						<Link to="/" className="block py-2 text-white hover:text-[#E2FF54] transition-colors">Home</Link>
+						<Link to="/generate-credit" className="block py-2 text-white hover:text-[#E2FF54] transition-colors">Generate FPS</Link>
+						<Link to="/take-credit" className="block py-2 text-white hover:text-[#E2FF54] transition-colors">Credit Offers</Link>
+						<Link to="/ai-insights" className="block py-2 text-white hover:text-[#E2FF54] transition-colors">AI Insights</Link>
+						<Link to="/settings" className="block py-2 text-white hover:text-[#E2FF54] transition-colors">Settings</Link>
+						{loading ? (
+							<div className="py-2">
+								<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+							</div>
+						) : user ? (
+							<div className="pt-2 border-t border-white/20">
+								<div className="flex items-center gap-2 mb-2">
+									{user.photoURL && (
+										<img src={user.photoURL} alt="" className="w-8 h-8 rounded-full" />
+									)}
+									<span className="font-medium">{user.displayName || 'User'}</span>
+								</div>
+								<button
+									type="button"
+									onClick={handleSignOut}
+									disabled={isSigningOut}
+									className="text-sm text-[#E2FF54] hover:underline"
+								>
 									{isSigningOut ? 'Signing out...' : 'Sign Out'}
-								</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
-					) : (
-						<Link
-							to="/login"
-							className="border bg-transparent text-white !hover:text-[#E2FF54] hover:border-[#E2FF54] ease-in-out duration-500 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all w-fit !p-[1rem] rounded-full uppercase ml-16 ommit"
-						>
-							<span className="z-20">Sign In/ Log In</span>
-						</Link>
-					)}
-				</motion.div>
+								</button>
+							</div>
+						) : (
+							<Link
+								to="/login"
+								className="block py-2 text-center border border-white/40 rounded-full text-white hover:border-[#E2FF54] hover:text-[#E2FF54] transition-colors"
+							>
+								Sign In / Log In
+							</Link>
+						)}
+					</MobileNav>
+				</div>
 			</nav>
 
-			<header className="main-header pt-40 pb-16 relative z-10">
+			<header className="main-header pt-24 md:pt-40 pb-16 relative z-10">
 				<div className="nc-container">
 					<motion.div
 						initial="hidden"
@@ -120,7 +160,7 @@ function Header() {
 							</motion.p>
 							<motion.h1
 								variants={fadeInUp}
-								className="!text-6xl font-semibold uppercase tracking-[1px] leading-[1.2]"
+								className="text-3xl sm:text-4xl md:!text-6xl font-semibold uppercase tracking-[1px] leading-[1.2]"
 							>
 								Know Your Score. Own Your{' '}
 								<GradientText variant="primary">Future</GradientText>
@@ -155,7 +195,7 @@ function Header() {
 								animate={{ opacity: 1, scale: 1 }}
 								transition={{ duration: 0.8, delay: 0.3 }}
 								whileHover={{ scale: 1.05 }}
-								className="relative z-10"
+								className="relative z-10 max-w-full w-full md:w-auto"
 							/>
 						</motion.div>
 					</motion.div>

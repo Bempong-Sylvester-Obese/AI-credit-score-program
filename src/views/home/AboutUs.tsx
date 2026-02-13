@@ -6,7 +6,7 @@ import { fadeInLeft, fadeInUp, staggerContainer } from '@/lib/animations';
 const AboutUs = () => {
 	return (
 		<div className="nc-container py-32">
-			<section className="md:grid grid-cols-2 items-center gap-4">
+			<section className="flex flex-col md:grid grid-cols-2 items-center gap-4">
 				<ParallaxSection speed={0.3}>
 					<motion.img
 						src="/monthly_saving_stat.svg"
@@ -73,7 +73,7 @@ const AboutUs = () => {
 				</ScrollReveal>
 			</section>
 
-			<section className="md:grid grid-cols-2 items-center gap-4 mt-48 mb-20">
+			<section className="flex flex-col-reverse md:grid grid-cols-2 items-center gap-4 mt-24 md:mt-48 mb-20">
 				<ScrollReveal className="space-y-5">
 					<motion.p
 						variants={fadeInLeft}

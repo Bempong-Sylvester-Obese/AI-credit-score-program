@@ -76,7 +76,7 @@ const CreditScoreEvaluation = () => {
 
 	if (!prediction) {
 		return (
-			<div className="container mx-auto p-8">
+			<div className="container mx-auto p-4 md:p-8">
 				<Card className="p-12 bg-black text-white rounded-2xl shadow-lg text-center">
 					<h2 className="text-2xl font-semibold mb-4">No Credit Score Data</h2>
 					<p className="text-gray-400 mb-8">
@@ -111,11 +111,11 @@ const CreditScoreEvaluation = () => {
 			initial="hidden"
 			animate="visible"
 			variants={scaleIn}
-			className="container mx-auto"
+			className="container mx-auto p-4 md:p-8 min-w-0"
 		>
 			<div>
-				<Card hover glass className="p-6 bg-black text-white rounded-2xl shadow-lg w-full max-w-4xl">
-					<div className="flex justify-between items-center mb-4">
+				<Card hover glass className="p-4 md:p-6 bg-black text-white rounded-2xl shadow-lg w-full max-w-4xl min-w-0">
+					<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
 						<h2 className="text-lg font-semibold">
 							Financial Profile Score (FPS) Evaluation
 						</h2>
@@ -131,7 +131,7 @@ const CreditScoreEvaluation = () => {
 						</DropdownMenu>
 					</div>
 
-					<div className="flex items-center gap-2">
+					<div className="flex flex-col sm:flex-row sm:items-center gap-2">
 						<span className="text-4xl font-bold">{prediction.credit_score}</span>
 						<Badge className={`${riskThreshold.badgeColor} text-white`}>
 							{prediction.risk_category}
@@ -147,7 +147,7 @@ const CreditScoreEvaluation = () => {
 						initial="hidden"
 						animate="visible"
 						variants={fadeInUp}
-						className="h-40 mt-4"
+						className="h-40 mt-4 min-w-0"
 					>
 						{isLoadingHistory ? (
 							<div className="flex items-center justify-center h-full">
@@ -202,15 +202,15 @@ const CreditScoreEvaluation = () => {
 
 					<div className="mt-4">
 						<h2 className="text-lg font-semibold">Smart Credit Strategies</h2>
-						<div className="mt-2 space-y-1">
-							<div className="flex justify-between text-sm">
-								<span>On-time Payments</span>{' '}
+						<div className="mt-2 space-y-3">
+							<div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
+								<span className="font-medium">On-time Payments</span>
 								<span>
 									<p>Seamless, stress free payments- right on time!</p>
 								</span>
 							</div>
-							<div className="flex justify-between text-sm">
-								<span>Credit Utilization</span>{' '}
+							<div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
+								<span className="font-medium">Credit Utilization</span>
 								<span>
 									<p>
 										Use your good credit to finance assests that appreciate in
@@ -218,8 +218,8 @@ const CreditScoreEvaluation = () => {
 									</p>
 								</span>
 							</div>
-							<div className="flex justify-between text-sm">
-								<span>Credit Age</span>{' '}
+							<div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
+								<span className="font-medium">Credit Age</span>
 								<span>
 									<p>
 										Great Score! Grow your financial reputation with every
@@ -227,14 +227,14 @@ const CreditScoreEvaluation = () => {
 									</p>
 								</span>
 							</div>
-							<div className="flex justify-between text-sm">
-								<span>Spending vs. Savings </span>{' '}
+							<div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
+								<span className="font-medium">Spending vs. Savings</span>
 								<span>
 									<p>You deposit ₵500 weekly but withdraw 20% within 7 days.</p>
 								</span>
 							</div>
-							<div className="flex justify-between text-sm">
-								<span>Credit Mix</span>{' '}
+							<div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
+								<span className="font-medium">Credit Mix</span>
 								<span>
 									<p>Expand wisely. Know when to use credit cards or loans.</p>
 								</span>

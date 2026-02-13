@@ -2,25 +2,25 @@ const Partners = () => {
 	return (
 		<section className="bg-[#00B512]">
 			<div className="nc-container">
-				<div className="flex items-center justify-between w-full py-5 gap-4">
+				<div className="flex flex-wrap items-center justify-center md:justify-between w-full py-5 gap-4">
 					<img
 						src="/achieve-logo-transparent.svg"
 						alt="Spherule"
-						style={{ width: '90px' }}
+						className="w-12 h-8 md:w-[90px] md:h-auto object-contain"
 					/>
 					<img
 						src="/mtn-mobile-logo-icon.svg"
 						alt="MTN momo"
-						style={{ width: '90px', height: '50px' }}
+						className="w-12 h-8 md:w-[90px] md:h-[50px] object-contain"
 					/>
 					<img
 						src="/vodafone-icon.svg"
 						alt="telecel"
-						style={{ width: '90px', height: '50px' }}
+						className="w-12 h-8 md:w-[90px] md:h-[50px] object-contain"
 					/>
-					<img src="/amazon_pay.svg" alt="Amazon" />
-					<img src="/paypal.svg" alt="Paypal" />
-					<img src="/alipay.svg" alt="Alipay" />
+					<img src="/amazon_pay.svg" alt="Amazon" className="w-12 h-8 md:w-auto md:h-auto object-contain" />
+					<img src="/paypal.svg" alt="Paypal" className="w-12 h-8 md:w-auto md:h-auto object-contain" />
+					<img src="/alipay.svg" alt="Alipay" className="w-12 h-8 md:w-auto md:h-auto object-contain" />
 				</div>
 			</div>
 		</section>

@@ -2,12 +2,12 @@ const Trustworthiness = () => {
 	return (
 		<section className="py-[5.5rem] trustworthiness">
 			<div className="nc-container">
-				<div className=" md:grid grid-cols-2 items-center">
-					<img src="/visa_card.png" alt="Visa Card" />
+				<div className="grid grid-cols-1 md:grid-cols-2 items-center gap-6">
+					<img src="/visa_card.png" alt="Visa Card" className="max-w-full w-full md:w-auto order-1 md:order-none" />
 
-					<div className="space-y-3">
+					<div className="space-y-3 order-2 md:order-none">
 						<p className="tag">Trustworthiness</p>
-						<h2 className="text-5xl leading-[1.2]">
+						<h2 className="text-3xl md:text-5xl leading-[1.2]">
 							We value your trust and security
 						</h2>
 

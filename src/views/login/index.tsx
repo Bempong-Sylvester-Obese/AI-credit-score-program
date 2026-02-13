@@ -26,8 +26,8 @@ const Login = () => {
 
 	return (
 		<main className="">
-			<div className="nc-container md:grid grid-cols-3 min-h-screen">
-				<section className="col-span-2 mr-20">
+			<div className="nc-container flex flex-col md:grid md:grid-cols-3 min-h-screen">
+				<section className="hidden md:block md:col-span-2 mb-8 md:mb-0 md:mr-20">
 					<img
 						src="/login-banner.png"
 						alt="Login Banner"

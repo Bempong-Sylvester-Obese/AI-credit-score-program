@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { MobileNav } from '@/components/navigation/MobileNav';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -123,21 +124,32 @@ const Settings = () => {
 
 	return (
 		<div>
-			<nav className="main-navigation absolute left-0 right-0 text-center space-x-10 top-6 z-50">
-				<Link to="/">Home</Link>
-				<Link to="/generate-credit">Generate FPS</Link>
-				<Link to="/take-credit">Credit Offers</Link>
-				<Link to="/ai-insights">AI Insights</Link>
-				<Link to="/settings" className="font-semibold">
-					Settings
-				</Link>
+			<nav className="main-navigation absolute left-0 right-0 top-6 z-50 px-4">
+				<div className="flex items-center justify-end md:justify-center">
+					<div className="hidden md:flex items-center gap-4 md:gap-10">
+						<Link to="/">Home</Link>
+						<Link to="/generate-credit">Generate FPS</Link>
+						<Link to="/take-credit">Credit Offers</Link>
+						<Link to="/ai-insights">AI Insights</Link>
+						<Link to="/settings" className="font-semibold">
+							Settings
+						</Link>
+					</div>
+					<MobileNav>
+						<Link to="/" className="block py-2 text-white hover:text-[#E2FF54] transition-colors">Home</Link>
+						<Link to="/generate-credit" className="block py-2 text-white hover:text-[#E2FF54] transition-colors">Generate FPS</Link>
+						<Link to="/take-credit" className="block py-2 text-white hover:text-[#E2FF54] transition-colors">Credit Offers</Link>
+						<Link to="/ai-insights" className="block py-2 text-white hover:text-[#E2FF54] transition-colors">AI Insights</Link>
+						<Link to="/settings" className="block py-2 text-[#E2FF54] font-semibold">Settings</Link>
+					</MobileNav>
+				</div>
 			</nav>
 
-			<main className="nc-container pt-40 pb-20">
+			<main className="nc-container pt-24 md:pt-40 pb-20">
 				{/* Header */}
 				<section className="text-center mb-16 animate fade-up">
 					<p className="tag tag-no-emoji">Settings</p>
-					<h1 className="font-bold text-6xl max-w-[700px] mx-auto leading-[1.2] font-montserrat py-10">
+					<h1 className="font-bold text-3xl md:text-6xl max-w-[700px] mx-auto leading-[1.2] font-montserrat py-10">
 						Personalize Your Experience
 					</h1>
 					<p className="text-xl text-gray-600 max-w-[600px] mx-auto">

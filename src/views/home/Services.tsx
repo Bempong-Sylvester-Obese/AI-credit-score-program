@@ -19,7 +19,7 @@ const Services = () => {
 
 					<motion.h2
 						variants={fadeInUp}
-						className="text-5xl max-w-[615px] capitalize leading-[1.2] mx-auto mt-[1rem] mb-14"
+						className="text-2xl md:text-5xl max-w-[615px] capitalize leading-[1.2] mx-auto mt-[1rem] mb-14"
 					>
 						Can help you achieve financial success
 					</motion.h2>
@@ -33,18 +33,18 @@ const Services = () => {
 					className="space-y-6"
 				>
 					<StaggerItem>
-						<Card hover glass className="card-light md:grid grid-cols-2 items-center h-[352px] overflow-hidden">
+						<Card hover glass className="card-light md:grid grid-cols-2 items-center min-h-[200px] md:h-[352px] overflow-hidden">
 						<div className="flex justify-center">
 							<img
 								src="/neural_cash_mobile_preview.png"
 								alt="Neural Cash Mobile Preview"
-								className="fade-left animate-on-scroll"
+								className="fade-left animate-on-scroll max-w-full"
 							/>
 
 							<img
 								src="/convertor_screen.png"
 								alt="Convertor Screen Preview"
-								className="-ml-20 mt-10 fade-right animate-on-scroll"
+								className="hidden md:block -ml-20 mt-10 fade-right animate-on-scroll"
 							/>
 						</div>
 
@@ -102,12 +102,12 @@ const Services = () => {
 								<img
 									src="/dashboard_1.png"
 									alt="Dashboard"
-									className="fade-left animate-on-scroll"
+									className="fade-left animate-on-scroll max-w-full"
 								/>
 								<img
 									src="/total_balance.png"
 									alt="Total Balance"
-									className="absolute right-10 top-20 fade-right animate-on-scroll"
+									className="hidden md:block absolute right-10 top-20 fade-right animate-on-scroll"
 								/>
 							</div>
 						</Card>
@@ -118,7 +118,7 @@ const Services = () => {
 						<div className="md:grid grid-cols-3 gap-6 w-full text-left">
 							<motion.div
 								whileHover={{ scale: 1.05 }}
-								className="px-[31px] py-[64px] space-y-4 bg-[#E2FF54] rounded-[20px] transition-transform"
+								className="px-6 md:px-[31px] py-8 md:py-[64px] space-y-4 bg-[#E2FF54] rounded-[20px] transition-transform"
 							>
 							<h4 className="secondary-title !text-3xl capitalize">
 								100% <br /> Dedication
@@ -132,7 +132,7 @@ const Services = () => {
 
 							<motion.div
 								whileHover={{ scale: 1.05 }}
-								className="rounded-[20px] bg-[#F6F9F8] border border-[#0000000F] px-[31px] py-[64px] expense-details transition-transform"
+								className="rounded-[20px] bg-[#F6F9F8] border border-[#0000000F] px-6 md:px-[31px] py-8 md:py-[64px] expense-details transition-transform"
 							>
 								<img src="/chart_up.svg" alt="Chart Up" />
 								<h4 className="secondary-title !text-2xl capitalize mt-2">
@@ -142,7 +142,7 @@ const Services = () => {
 
 							<motion.div
 								whileHover={{ scale: 1.05 }}
-								className="rounded-[20px] bg-[#2D907A] text-white flex items-center justify-center px-[31px] py-[64px] transition-transform"
+								className="rounded-[20px] bg-[#2D907A] text-white flex items-center justify-center px-6 md:px-[31px] py-8 md:py-[64px] transition-transform"
 							>
 								<h4 className="secondary-title !text-3xl capitalize !text-center">
 									Visit our services pages

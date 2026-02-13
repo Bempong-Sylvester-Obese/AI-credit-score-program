@@ -34,7 +34,7 @@ function App() {
     <AnimatePresence mode="wait">
       <motion.div
         key={location.pathname}
-        initial="initial"
+        initial={false}
         animate="animate"
         exit="exit"
         variants={pageTransition}

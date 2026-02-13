@@ -16,53 +16,64 @@ const missingVars = Object.entries(requiredEnvVars)
   .filter(([, value]) => !value)
   .map(([key]) => key);
 
-if (missingVars.length > 0) {
-  const errorMessage = `Missing required Firebase environment variables: ${missingVars.join(', ')}`;
-  console.error(errorMessage);
-  if (import.meta.env.PROD) {
-    throw new Error(errorMessage);
+const hasValidConfig = missingVars.length === 0;
+
+if (!hasValidConfig) {
+  console.error(
+    `Missing required Firebase environment variables: ${missingVars.join(', ')}. Auth features will be disabled.`
+  );
+}
+
+// Initialize Firebase only when config is valid
+let app: FirebaseApp | null = null;
+let auth: Auth | null = null;
+let googleProvider: GoogleAuthProvider | null = null;
+let firebaseReady = false;
+
+if (hasValidConfig) {
+  try {
+    const firebaseConfig = {
+      apiKey: requiredEnvVars.apiKey,
+      authDomain: requiredEnvVars.authDomain,
+      projectId: requiredEnvVars.projectId,
+      storageBucket: requiredEnvVars.storageBucket,
+      messagingSenderId: requiredEnvVars.messagingSenderId,
+      appId: requiredEnvVars.appId,
+    };
+
+    const existingApps = getApps();
+    if (existingApps.length > 0) {
+      app = existingApps[0] as FirebaseApp;
+    } else {
+      app = initializeApp(firebaseConfig);
+    }
+
+    auth = getAuth(app);
+
+    if (import.meta.env.PROD) {
+      auth.settings.appVerificationDisabledForTesting = false;
+    }
+
+    googleProvider = new GoogleAuthProvider();
+    googleProvider.setCustomParameters({
+      prompt: 'select_account',
+    });
+
+    if (import.meta.env.PROD && !auth.app.options.authDomain) {
+      console.warn('Warning: Firebase authDomain may not be properly configured for production');
+    }
+
+    firebaseReady = true;
+  } catch (error) {
+    console.error('Firebase initialization failed:', error);
+    app = null;
+    auth = null;
+    googleProvider = null;
   }
 }
 
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: requiredEnvVars.apiKey,
-  authDomain: requiredEnvVars.authDomain,
-  projectId: requiredEnvVars.projectId,
-  storageBucket: requiredEnvVars.storageBucket,
-  messagingSenderId: requiredEnvVars.messagingSenderId,
-  appId: requiredEnvVars.appId,
-};
+export const isFirebaseReady = firebaseReady;
 
-// Initialize Firebase (avoid duplicate initialization)
-let app: FirebaseApp;
-const existingApps = getApps();
-if (existingApps.length > 0) {
-  app = existingApps[0];
-} else {
-  app = initializeApp(firebaseConfig);
-}
-
-// Initialize Firebase Authentication and get reference to the service
-export const auth: Auth = getAuth(app);
-
-// Configure auth settings for production
-if (import.meta.env.PROD) {
-  // Ensure proper domain configuration
-  auth.settings.appVerificationDisabledForTesting = false;
-}
-
-// Initialize Google Auth Provider
-export const googleProvider = new GoogleAuthProvider();
-
-// Set additional scopes and parameters
-googleProvider.setCustomParameters({
-  prompt: 'select_account',
-});
-
-// Add error handling for auth domain issues
-if (import.meta.env.PROD && !auth.app.options.authDomain) {
-  console.warn('Warning: Firebase authDomain may not be properly configured for production');
-}
+export { auth, googleProvider };
 
 export default app;

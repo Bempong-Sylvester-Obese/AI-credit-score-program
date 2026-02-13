@@ -6,7 +6,6 @@ import CreditScoreEvaluation from "./views/creditScoreAnalyses/analyses";
 import CreditCalculator from "./views/takeCredit/takeCredit";
 import NotFound from "./views/404";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { ScrollProgress } from "./components/navigation/ScrollProgress";
 import { pageTransition } from "./lib/animations";
 import { motion } from "framer-motion";
 import "./App.css";

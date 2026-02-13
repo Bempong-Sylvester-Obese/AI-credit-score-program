@@ -9,7 +9,6 @@ interface StickyNavProps {
 
 export function StickyNav({ children }: StickyNavProps) {
   const [isScrolled, setIsScrolled] = useState(false);
-  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {

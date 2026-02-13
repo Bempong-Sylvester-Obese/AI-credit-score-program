@@ -26,9 +26,10 @@ export function FadeIn({
   className,
 }: FadeInProps) {
   const variant = variants[direction];
+  const defaultTransition = { duration: 0.6 };
   const customTransition = duration
-    ? { ...variant.visible.transition, duration }
-    : variant.visible.transition;
+    ? { ...defaultTransition, duration }
+    : defaultTransition;
 
   return (
     <motion.div

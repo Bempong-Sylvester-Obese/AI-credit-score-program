@@ -36,3 +36,10 @@ node_modules/
 dist/
 dist-ssr/
 
+# TypeScript build info (not needed for deployment)
+*.tsbuildinfo
+node_modules/.tmp/
+
+# Environment files (should be set in Vercel dashboard)
+.env.local
+.env.development

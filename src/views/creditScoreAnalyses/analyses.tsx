@@ -1,15 +1,10 @@
 import {
-	LineChart,
-	Line,
 	XAxis,
 	YAxis,
 	Tooltip,
 	ResponsiveContainer,
 	Area,
 	AreaChart,
-	defs,
-	linearGradient,
-	stop,
 } from 'recharts';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';

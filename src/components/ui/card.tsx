@@ -1,31 +1,41 @@
 import * as React from "react"
-import { motion } from "framer-motion"
+import { motion, HTMLMotionProps } from "framer-motion"
 import { cn } from "@/lib/utils"
-import { hoverLift, hoverScale } from "@/lib/animations"
+import { hoverLift } from "@/lib/animations"
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface CardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onAnimationStart'> {
   glass?: boolean;
   hover?: boolean;
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, glass = false, hover = false, ...props }, ref) => {
-    const Component = hover ? motion.div : 'div';
-    const motionProps = hover ? {
-      whileHover: hoverLift,
-      transition: { duration: 0.3 }
-    } : {};
+    if (hover) {
+      const MotionCard = motion.div;
+      return (
+        <MotionCard
+          ref={ref}
+          className={cn(
+            "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm transition-all duration-300",
+            glass && "glass backdrop-blur-md bg-white/10 border-white/20",
+            "cursor-pointer",
+            className
+          )}
+          whileHover={hoverLift}
+          transition={{ duration: 0.3 }}
+          {...(props as HTMLMotionProps<'div'>)}
+        />
+      );
+    }
 
     return (
-      <Component
+      <div
         ref={ref}
         className={cn(
           "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm transition-all duration-300",
           glass && "glass backdrop-blur-md bg-white/10 border-white/20",
-          hover && "cursor-pointer",
           className
         )}
-        {...motionProps}
         {...props}
       />
     );

@@ -1,7 +1,7 @@
 import { ScrollReveal, StaggerItem } from '@/components/animations/ScrollReveal';
 import { ParallaxSection } from '@/components/animations/ParallaxSection';
 import { motion } from 'framer-motion';
-import { fadeInLeft, fadeInRight, fadeInUp, staggerContainer } from '@/lib/animations';
+import { fadeInLeft, fadeInUp, staggerContainer } from '@/lib/animations';
 
 const AboutUs = () => {
 	return (

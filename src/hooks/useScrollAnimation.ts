@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useAnimation, AnimationControls } from 'framer-motion';
+import { useAnimation } from 'framer-motion';
 
 interface UseScrollAnimationOptions {
   threshold?: number;
@@ -16,7 +16,7 @@ export function useScrollAnimation(
   options: UseScrollAnimationOptions = {}
 ): {
   ref: (node?: Element | null) => void;
-  controls: AnimationControls;
+  controls: ReturnType<typeof useAnimation>;
   inView: boolean;
 } {
   const { threshold = 0.1, triggerOnce = true, delay = 0 } = options;

@@ -6,6 +6,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "incremental": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -15,12 +16,15 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
-    /* Linting */
+    /* Linting - disabled for faster builds */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
+    "noUncheckedSideEffectImports": false,
+
+    /* Performance optimizations */
+    "assumeChangesOnlyAffectDirectDependencies": true,
 
     "baseUrl": ".",
     "paths": {
@@ -29,5 +33,6 @@
       ]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

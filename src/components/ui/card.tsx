@@ -1,19 +1,36 @@
 import * as React from "react"
+import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
+import { hoverLift, hoverScale } from "@/lib/animations"
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
-      className
-    )}
-    {...props}
-  />
-))
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  glass?: boolean;
+  hover?: boolean;
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, glass = false, hover = false, ...props }, ref) => {
+    const Component = hover ? motion.div : 'div';
+    const motionProps = hover ? {
+      whileHover: hoverLift,
+      transition: { duration: 0.3 }
+    } : {};
+
+    return (
+      <Component
+        ref={ref}
+        className={cn(
+          "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm transition-all duration-300",
+          glass && "glass backdrop-blur-md bg-white/10 border-white/20",
+          hover && "cursor-pointer",
+          className
+        )}
+        {...motionProps}
+        {...props}
+      />
+    );
+  }
+)
 Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<

@@ -5,7 +5,13 @@ import {
 	YAxis,
 	Tooltip,
 	ResponsiveContainer,
+	Area,
+	AreaChart,
+	defs,
+	linearGradient,
+	stop,
 } from 'recharts';
+import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -20,6 +26,7 @@ import { getRiskThreshold } from '@/constants/credit';
 import { getScoreHistory } from '@/lib/api';
 import type { PredictionResult, ScoreHistoryItem } from '@/types/credit';
 import { useState, useEffect } from 'react';
+import { fadeInUp, scaleIn } from '@/lib/animations';
 import './analyses.css';
 
 const CreditScoreEvaluation = () => {
@@ -105,9 +112,14 @@ const CreditScoreEvaluation = () => {
 	const percentageChange = getPercentageChange();
 
 	return (
-		<div className="container mx-auto">
+		<motion.div
+			initial="hidden"
+			animate="visible"
+			variants={scaleIn}
+			className="container mx-auto"
+		>
 			<div>
-				<Card className="p-6 bg-black text-white rounded-2xl shadow-lg w-full max-w-4xl">
+				<Card hover glass className="p-6 bg-black text-white rounded-2xl shadow-lg w-full max-w-4xl">
 					<div className="flex justify-between items-center mb-4">
 						<h2 className="text-lg font-semibold">
 							Financial Profile Score (FPS) Evaluation
@@ -136,7 +148,12 @@ const CreditScoreEvaluation = () => {
 						)}
 					</div>
 
-					<div className="h-40 mt-4">
+					<motion.div
+						initial="hidden"
+						animate="visible"
+						variants={fadeInUp}
+						className="h-40 mt-4"
+					>
 						{isLoadingHistory ? (
 							<div className="flex items-center justify-center h-full">
 								<div className="text-center">
@@ -150,27 +167,43 @@ const CreditScoreEvaluation = () => {
 							</div>
 						) : chartData.length > 0 ? (
 							<ResponsiveContainer width="100%" height="100%">
-								<LineChart data={chartData}>
+								<AreaChart data={chartData}>
+									<defs>
+										<linearGradient id="scoreGradient" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="5%" stopColor="#facc15" stopOpacity={0.8} />
+											<stop offset="95%" stopColor="#facc15" stopOpacity={0} />
+										</linearGradient>
+									</defs>
 									<XAxis dataKey="name" stroke="#aaa" />
 									<YAxis domain={[400, 1000]} stroke="#aaa" />
 									<Tooltip
-										contentStyle={{ backgroundColor: 'black', color: 'white' }}
+										contentStyle={{
+											backgroundColor: 'rgba(0, 0, 0, 0.9)',
+											color: 'white',
+											border: '1px solid rgba(250, 204, 21, 0.3)',
+											borderRadius: '8px',
+											padding: '8px 12px',
+										}}
+										cursor={{ stroke: '#facc15', strokeWidth: 2 }}
 									/>
-									<Line
+									<Area
 										type="monotone"
 										dataKey="score"
 										stroke="#facc15"
-										strokeWidth={2}
-										dot={false}
+										strokeWidth={3}
+										fill="url(#scoreGradient)"
+										dot={{ fill: '#facc15', r: 4 }}
+										animationDuration={1000}
+										animationBegin={0}
 									/>
-								</LineChart>
+								</AreaChart>
 							</ResponsiveContainer>
 						) : (
 							<div className="flex items-center justify-center h-full text-gray-400 text-sm">
 								No historical data available
 							</div>
 						)}
-					</div>
+					</motion.div>
 
 					<div className="mt-4">
 						<h2 className="text-lg font-semibold">Smart Credit Strategies</h2>
@@ -215,7 +248,7 @@ const CreditScoreEvaluation = () => {
 					</div>
 				</Card>
 			</div>
-		</div>
+		</motion.div>
 	);
 };
 

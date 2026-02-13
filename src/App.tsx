@@ -31,47 +31,23 @@ function App() {
   }, []);
 
   return (
-    <>
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route
-            path="/"
-            element={
-              <motion.div
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                variants={pageTransition}
-              >
-                <Home />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <motion.div
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                variants={pageTransition}
-              >
-                <Login />
-              </motion.div>
-            }
-          />
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={pageTransition}
+        style={{ minHeight: "100%" }}
+      >
+        <Routes location={location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route
             path="/generate-credit"
             element={
               <ProtectedRoute>
-                <motion.div
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  variants={pageTransition}
-                >
-                  <GenerateCredit />
-                </motion.div>
+                <GenerateCredit />
               </ProtectedRoute>
             }
           />
@@ -79,14 +55,7 @@ function App() {
             path="/analyses"
             element={
               <ProtectedRoute>
-                <motion.div
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  variants={pageTransition}
-                >
-                  <CreditScoreEvaluation />
-                </motion.div>
+                <CreditScoreEvaluation />
               </ProtectedRoute>
             }
           />
@@ -94,14 +63,7 @@ function App() {
             path="/take-credit"
             element={
               <ProtectedRoute>
-                <motion.div
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  variants={pageTransition}
-                >
-                  <CreditCalculator />
-                </motion.div>
+                <CreditCalculator />
               </ProtectedRoute>
             }
           />
@@ -109,14 +71,7 @@ function App() {
             path="/ai-insights"
             element={
               <ProtectedRoute>
-                <motion.div
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  variants={pageTransition}
-                >
-                  <AIInsights />
-                </motion.div>
+                <AIInsights />
               </ProtectedRoute>
             }
           />
@@ -124,33 +79,14 @@ function App() {
             path="/settings"
             element={
               <ProtectedRoute>
-                <motion.div
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  variants={pageTransition}
-                >
-                  <Settings />
-                </motion.div>
+                <Settings />
               </ProtectedRoute>
             }
           />
-          <Route
-            path="*"
-            element={
-              <motion.div
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                variants={pageTransition}
-              >
-                <NotFound />
-              </motion.div>
-            }
-          />
+          <Route path="*" element={<NotFound />} />
         </Routes>
-      </AnimatePresence>
-    </>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 

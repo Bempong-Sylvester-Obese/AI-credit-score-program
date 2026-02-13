@@ -150,7 +150,10 @@ h1 {
 @layer base {
   * {
     border: var(--border);
-    outline: 50% solid var(--ring);
+    outline: 2px solid transparent;
+  }
+  *:focus-visible {
+    outline-color: var(--ring);
   }
   body {
     background-color: var(--background);

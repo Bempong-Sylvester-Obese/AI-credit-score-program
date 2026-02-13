@@ -83,7 +83,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     };
   }, []);
 
-  if (loading) return <div>Loading authentication...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0f0f0f] text-white">
+        <div className="animate-pulse">Loading authentication...</div>
+      </div>
+    );
+  }
 
   const value: AuthContextType = {
     user,

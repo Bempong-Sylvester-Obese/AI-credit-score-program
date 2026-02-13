@@ -34,11 +34,11 @@ function App() {
     <AnimatePresence mode="wait">
       <motion.div
         key={location.pathname}
-        initial={false}
-        animate="animate"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 1 }}
         exit="exit"
         variants={pageTransition}
-        style={{ minHeight: "100%" }}
+        style={{ minHeight: "100%", opacity: 1 }}
       >
         <Routes location={location}>
           <Route path="/" element={<Home />} />

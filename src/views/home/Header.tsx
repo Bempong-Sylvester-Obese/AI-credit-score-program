@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/useAuth';
@@ -21,6 +21,11 @@ function Header() {
 	const navigate = useNavigate();
 	const { user, signOutUser, loading } = useAuth();
 	const [isSigningOut, setIsSigningOut] = useState(false);
+	const [showEffects, setShowEffects] = useState(false);
+	useEffect(() => {
+		const t = setTimeout(() => setShowEffects(true), 100);
+		return () => clearTimeout(t);
+	}, []);
 
 	const handleNavigateToGenerateCredit = () => {
 		return navigate('/generate-credit');
@@ -44,9 +49,13 @@ function Header() {
 			{/* Background Effects */}
 			<div className="absolute inset-0 z-0">
 				<MeshGradient className="absolute inset-0" />
-				<BlobAnimation size={600} color="rgba(0, 181, 18, 0.15)" className="top-20 -right-40" />
-				<BlobAnimation size={500} color="rgba(226, 255, 84, 0.1)" className="bottom-20 -left-40" />
-				<ParticleSystem count={15} className="opacity-50" />
+				{showEffects && (
+					<>
+						<BlobAnimation size={600} color="rgba(0, 181, 18, 0.15)" className="top-20 -right-40" />
+						<BlobAnimation size={500} color="rgba(226, 255, 84, 0.1)" className="bottom-20 -left-40" />
+						<ParticleSystem count={5} className="opacity-40" />
+					</>
+				)}
 			</div>
 
 			<nav className="main-navigation absolute left-0 right-0 top-6 z-50 px-4">

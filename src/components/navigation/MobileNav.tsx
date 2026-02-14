@@ -61,7 +61,7 @@ export function MobileNav({ children, variant = 'dark' }: MobileNavProps) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2 }}
-              className="fixed top-16 left-4 right-4 z-50 bg-[#001027] border border-white/10 rounded-lg shadow-xl overflow-hidden"
+              className="fixed top-16 left-4 right-4 z-50 bg-[#0f0f0f] border border-white/10 rounded-lg shadow-xl overflow-hidden"
             >
               <div
                 className="flex flex-col gap-4 p-6"

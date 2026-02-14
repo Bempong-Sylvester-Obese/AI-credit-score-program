@@ -4,9 +4,9 @@ import { Variants } from 'framer-motion';
  * Common animation variants for consistent motion throughout the app
  */
 
-// Easing functions
+// Easing functions (Iso-inspired: smooth, subtle)
 export const easings = {
-  easeOut: [0.16, 1, 0.3, 1],
+  easeOut: [0.25, 0.1, 0.25, 1],
   easeInOut: [0.4, 0, 0.2, 1],
   easeOutExpo: [0.19, 1, 0.22, 1],
   spring: [0.68, -0.55, 0.265, 1.55],
@@ -27,13 +27,13 @@ export const fadeIn: Variants = {
 export const fadeInUp: Variants = {
   hidden: {
     opacity: 0,
-    y: 30,
+    y: 20,
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
+      duration: 0.7,
       ease: easings.easeOut,
     },
   },
@@ -42,7 +42,7 @@ export const fadeInUp: Variants = {
 export const fadeInDown: Variants = {
   hidden: {
     opacity: 0,
-    y: -30,
+    y: -20,
   },
   visible: {
     opacity: 1,
@@ -57,7 +57,7 @@ export const fadeInDown: Variants = {
 export const fadeInLeft: Variants = {
   hidden: {
     opacity: 0,
-    x: -50,
+    x: -30,
   },
   visible: {
     opacity: 1,
@@ -72,7 +72,7 @@ export const fadeInLeft: Variants = {
 export const fadeInRight: Variants = {
   hidden: {
     opacity: 0,
-    x: 50,
+    x: 30,
   },
   visible: {
     opacity: 1,
@@ -141,9 +141,9 @@ export const slideUp: Variants = {
   },
 };
 
-// Hover animations
+// Hover animations (subtle, Iso-inspired)
 export const hoverScale = {
-  scale: 1.05,
+  scale: 1.02,
   transition: {
     duration: 0.3,
     ease: easings.easeOut,
@@ -151,7 +151,7 @@ export const hoverScale = {
 };
 
 export const hoverLift = {
-  y: -8,
+  y: -4,
   transition: {
     duration: 0.3,
     ease: easings.easeOut,

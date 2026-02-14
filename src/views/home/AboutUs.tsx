@@ -1,130 +1,118 @@
 import { ScrollReveal, StaggerItem } from '@/components/animations/ScrollReveal';
-import { ParallaxSection } from '@/components/animations/ParallaxSection';
 import { motion } from 'framer-motion';
-import { fadeInLeft, fadeInUp, staggerContainer } from '@/lib/animations';
+import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 const AboutUs = () => {
 	return (
-		<div className="nc-container py-32">
-			<section className="flex flex-col md:grid grid-cols-2 items-center gap-4">
-				<ParallaxSection speed={0.3}>
-					<motion.img
-						src="/monthly_saving_stat.svg"
-						alt="Monthly Saving Stat"
-						initial={{ opacity: 0, x: -50 }}
-						whileInView={{ opacity: 1, x: 0 }}
-						viewport={{ once: true }}
-						transition={{ duration: 0.6 }}
-					/>
-				</ParallaxSection>
+		<>
+			{/* Section 1 -- subtle tinted background */}
+			<section className="py-20 md:py-40" style={{ background: 'rgba(255,255,255,0.02)' }}>
+				<div className="nc-container">
+					<div className="flex flex-col md:grid grid-cols-2 items-center gap-8 md:gap-16">
+						<ScrollReveal>
+							<motion.img
+								variants={fadeInUp}
+								src="/monthly_saving_stat.svg"
+								alt="Monthly Saving Stat"
+								className="max-w-full"
+							/>
+						</ScrollReveal>
 
-				<ScrollReveal className="space-y-5">
-					<motion.p
-						variants={fadeInUp}
-						className="tag tag-white"
-					>
-						About Us
-					</motion.p>
-					<motion.h2
-						variants={fadeInUp}
-						className="subtitle"
-					>
-						Revolutionizing Finance, One Score at a Time
-					</motion.h2>
+						<ScrollReveal className="space-y-8">
+							<motion.p variants={fadeInUp} className="section-label section-label--green">
+								About Us
+							</motion.p>
+							<motion.h2
+								variants={fadeInUp}
+								className="subtitle"
+							>
+								Revolutionizing Finance, One Score at a Time
+							</motion.h2>
 
-					<motion.ul
-						variants={staggerContainer}
-						initial="hidden"
-						whileInView="visible"
-						viewport={{ once: true }}
-						className="space-y-[12px] features"
-					>
-						<StaggerItem>
-							<li>
-								<h4>AI-Driven Accuracy</h4>
-								<p>Smarter assessments, better decisions with our AI system</p>
-							</li>
-						</StaggerItem>
+							<motion.ul
+								variants={staggerContainer}
+								initial="hidden"
+								whileInView="visible"
+								viewport={{ once: true }}
+								className="space-y-3 features"
+							>
+								<StaggerItem>
+									<li>
+										<h4>AI-Driven Accuracy</h4>
+										<p>Smarter assessments, better decisions with our AI system</p>
+									</li>
+								</StaggerItem>
 
-						<StaggerItem>
-							<li>
-								<h4>Secure and Private</h4>
-								<p>Your data, protected with cutting edge encryption</p>
-							</li>
-						</StaggerItem>
+								<StaggerItem>
+									<li>
+										<h4>Secure and Private</h4>
+										<p>Your data, protected with cutting-edge encryption</p>
+									</li>
+								</StaggerItem>
 
-						<StaggerItem>
-							<li>
-								<h4>Real-Time Insights</h4>
-								<p>
-									We're committed to giving instant feedback on your financial
-									standing
-								</p>
-							</li>
-						</StaggerItem>
-
-						<StaggerItem>
-							<li>
-								<h4>More Awesome Features</h4>
-								<p>We're committed to adding more exciting features!</p>
-							</li>
-						</StaggerItem>
-					</motion.ul>
-				</ScrollReveal>
+								<StaggerItem>
+									<li>
+										<h4>Real-Time Insights</h4>
+										<p>
+											Instant feedback on your financial
+											standing so you can act fast
+										</p>
+									</li>
+								</StaggerItem>
+							</motion.ul>
+						</ScrollReveal>
+					</div>
+				</div>
 			</section>
 
-			<section className="flex flex-col-reverse md:grid grid-cols-2 items-center gap-4 mt-24 md:mt-48 mb-20">
-				<ScrollReveal className="space-y-5">
-					<motion.p
-						variants={fadeInLeft}
-						className="tag tag-white"
-					>
-						Featured
-					</motion.p>
-					<motion.h2
-						variants={fadeInLeft}
-						className="subtitle"
-					>
-						Having Financial Troubles?. You Can Apply For Credit Today!
-					</motion.h2>
+			{/* Section 2 -- plain dark background */}
+			<section className="py-20 md:py-40">
+				<div className="nc-container">
+					<div className="flex flex-col-reverse md:grid grid-cols-2 items-center gap-8 md:gap-16">
+						<ScrollReveal className="space-y-8">
+							<motion.p variants={fadeInUp} className="section-label section-label--green">
+								Get Started
+							</motion.p>
+							<motion.h2
+								variants={fadeInUp}
+								className="subtitle"
+							>
+								Having Financial Troubles? Apply For Credit Today
+							</motion.h2>
 
-					<motion.ul
-						variants={staggerContainer}
-						initial="hidden"
-						whileInView="visible"
-						viewport={{ once: true }}
-						className="space-y-[12px] benefits"
-					>
-						<StaggerItem>
-							<li>Extra Spending Power when you have Neural Cash</li>
-						</StaggerItem>
-						<StaggerItem>
-							<li>Your data, protected with cutting-edge encryption</li>
-						</StaggerItem>
-						<StaggerItem>
-							<li>
-								We're committed to giving instant feedback on your financial
-								standings
-							</li>
-						</StaggerItem>
-						<StaggerItem>
-							<li>We're committed to adding more exciting features soon!</li>
-						</StaggerItem>
-					</motion.ul>
-				</ScrollReveal>
+							<motion.ul
+								variants={staggerContainer}
+								initial="hidden"
+								whileInView="visible"
+								viewport={{ once: true }}
+								className="space-y-3 benefits"
+							>
+								<StaggerItem>
+									<li>Upload your mobile money statement in seconds</li>
+								</StaggerItem>
+								<StaggerItem>
+									<li>Get a personalised credit score powered by AI</li>
+								</StaggerItem>
+								<StaggerItem>
+									<li>
+										Browse credit offers matched to your profile
+									</li>
+								</StaggerItem>
+							</motion.ul>
+						</ScrollReveal>
 
-				<ParallaxSection speed={0.2}>
-					<motion.img
-						src="/credit_score_simplified.svg"
-						alt="Credit Score Simplified"
-						initial={{ opacity: 0, y: 30 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						viewport={{ once: true }}
-						transition={{ duration: 0.6, delay: 0.3 }}
-					/>
-				</ParallaxSection>
+						<ScrollReveal>
+							<motion.img
+								variants={fadeInUp}
+								src="/credit_score_simplified.svg"
+								alt="Credit Score Simplified"
+								className="max-w-full"
+							/>
+						</ScrollReveal>
+					</div>
+				</div>
 			</section>
-		</div>
+		</>
 	);
 };
 

@@ -68,9 +68,9 @@ function Header() {
 						{/* Logo */}
 						<Link to="/" className="flex items-center">
 							<img
-								src="/brand_logo.png"
+								src="/favicon.svg"
 								alt="Neural Cash"
-								className="h-6 md:h-8 invert brightness-200"
+								className="h-6 md:h-8"
 							/>
 						</Link>
 

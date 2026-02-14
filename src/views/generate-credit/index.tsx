@@ -143,7 +143,7 @@ const GenerateCredit = () => {
 			<nav className="fixed left-0 right-0 top-0 z-50 bg-[#0f0f0f]/80 backdrop-blur-md border-b border-white/10">
 				<div className="nc-container flex items-center justify-between py-5">
 					<Link to="/" className="flex items-center">
-						<img src="/brand_logo.png" alt="Neural Cash" className="h-6 md:h-8 invert brightness-200" />
+						<img src="/favicon.svg" alt="Neural Cash" className="h-6 md:h-8" />
 					</Link>
 					<div className="hidden md:flex items-center gap-12">
 						<Link to="/" className="text-sm text-white/70 hover:text-white transition-colors">Home</Link>
@@ -305,7 +305,7 @@ const GenerateCredit = () => {
 				<footer className="py-10 mt-10" style={{ background: '#0a0a0a', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
 					<div className="nc-container flex flex-col sm:flex-row items-center justify-between gap-4">
 						<Link to="/" className="flex items-center">
-							<img src="/brand_logo.png" alt="Neural Cash" className="h-5 invert brightness-200" />
+							<img src="/favicon.svg" alt="Neural Cash" className="h-5" />
 						</Link>
 						<p className="text-xs text-white/30">&copy; {new Date().getFullYear()} Neural Cash</p>
 					</div>

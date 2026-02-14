@@ -1,7 +1,4 @@
 import { Component, ReactNode, ErrorInfo } from 'react';
-import { Link } from 'react-router-dom';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 
 interface Props {
 	children: ReactNode;
@@ -50,36 +47,93 @@ class ErrorBoundary extends Component<Props, State> {
 	render() {
 		if (this.state.hasError) {
 			return (
-				<div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-					<Card className="p-8 max-w-2xl w-full">
-						<div className="text-center mb-6">
-							<h1 className="text-4xl font-bold text-red-600 mb-4">Something went wrong</h1>
-							<p className="text-gray-600 mb-6">
-								We're sorry, but something unexpected happened. Please try refreshing the page or contact support if the problem persists.
+				<div style={{
+					minHeight: '100vh',
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+					backgroundColor: '#0f0f0f',
+					padding: '1rem',
+					fontFamily: 'system-ui, sans-serif',
+				}}>
+					<div style={{
+						maxWidth: '32rem',
+						width: '100%',
+						backgroundColor: '#1a1a2e',
+						borderRadius: '0.75rem',
+						padding: '2rem',
+						border: '1px solid rgba(255,255,255,0.1)',
+					}}>
+						<div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+							<h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#ef4444', marginBottom: '1rem' }}>
+								Something went wrong
+							</h1>
+							<p style={{ color: '#9ca3af', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+								We're sorry, but something unexpected happened. Please try refreshing the page.
 							</p>
 						</div>
 
 						{import.meta.env.DEV && this.state.error && (
-							<div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-								<h2 className="font-semibold text-red-900 mb-2">Error Details (Development Only):</h2>
-								<pre className="text-xs text-red-800 overflow-auto max-h-64">
+							<div style={{
+								marginBottom: '1.5rem',
+								padding: '1rem',
+								backgroundColor: 'rgba(239, 68, 68, 0.1)',
+								border: '1px solid rgba(239, 68, 68, 0.3)',
+								borderRadius: '0.5rem',
+							}}>
+								<h2 style={{ fontWeight: 600, color: '#fca5a5', marginBottom: '0.5rem', fontSize: '0.875rem' }}>
+									Error Details (Development Only):
+								</h2>
+								<pre style={{
+									fontSize: '0.75rem',
+									color: '#fca5a5',
+									overflow: 'auto',
+									maxHeight: '16rem',
+									whiteSpace: 'pre-wrap',
+									wordBreak: 'break-word',
+								}}>
 									{this.state.error.toString()}
 									{this.state.errorInfo?.componentStack}
 								</pre>
 							</div>
 						)}
 
-						<div className="flex flex-col sm:flex-row gap-4 justify-center">
-							<Button variant="primary" onClick={this.handleReset}>
+						<div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+							<button
+								onClick={this.handleReset}
+								style={{
+									padding: '0.625rem 1.25rem',
+									backgroundColor: '#00B512',
+									color: 'white',
+									border: 'none',
+									borderRadius: '0.5rem',
+									cursor: 'pointer',
+									fontWeight: 500,
+									fontSize: '0.875rem',
+								}}
+							>
 								Try Again
-							</Button>
-							<Link to="/">
-								<Button variant="outline-secondary">
-									Go to Homepage
-								</Button>
-							</Link>
+							</button>
+							<a
+								href="/"
+								style={{
+									padding: '0.625rem 1.25rem',
+									backgroundColor: 'transparent',
+									color: '#9ca3af',
+									border: '1px solid rgba(255,255,255,0.2)',
+									borderRadius: '0.5rem',
+									cursor: 'pointer',
+									fontWeight: 500,
+									fontSize: '0.875rem',
+									textDecoration: 'none',
+									display: 'inline-flex',
+									alignItems: 'center',
+								}}
+							>
+								Go to Homepage
+							</a>
 						</div>
-					</Card>
+					</div>
 				</div>
 			);
 		}
@@ -89,4 +143,3 @@ class ErrorBoundary extends Component<Props, State> {
 }
 
 export default ErrorBoundary;
-

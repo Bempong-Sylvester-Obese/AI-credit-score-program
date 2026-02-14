@@ -1,0 +1,9 @@
+# Neural Cash - robots.txt
+User-agent: *
+Allow: /
+Disallow: /settings
+Disallow: /analyses
+Disallow: /generate-credit
+
+# Sitemap
+Sitemap: https://neuralcash.vercel.app/sitemap.xml

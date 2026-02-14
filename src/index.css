@@ -159,7 +159,7 @@ h1 {
 
 @layer base {
   * {
-    border: var(--border);
+    border-color: var(--border);
     outline: 2px solid transparent;
   }
   *:focus-visible {
@@ -275,13 +275,6 @@ h1 {
 
 .transform-3d {
   transform-style: preserve-3d;
-}
-
-/* Smooth Transitions */
-* {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 }
 
 /* Reduced Motion Support */

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="12" fill="#0f0f0f"/>
+  <!-- N lettermark matching Neural Cash geometric style -->
+  <path d="M16 48V16h6l16 22V16h6v32h-6L22 26v22h-6z" fill="white"/>
+</svg>

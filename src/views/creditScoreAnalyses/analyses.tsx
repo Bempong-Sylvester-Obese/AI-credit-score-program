@@ -1,11 +1,12 @@
 import {
-	LineChart,
-	Line,
 	XAxis,
 	YAxis,
 	Tooltip,
 	ResponsiveContainer,
+	Area,
+	AreaChart,
 } from 'recharts';
+import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -20,6 +21,7 @@ import { getRiskThreshold } from '@/constants/credit';
 import { getScoreHistory } from '@/lib/api';
 import type { PredictionResult, ScoreHistoryItem } from '@/types/credit';
 import { useState, useEffect } from 'react';
+import { fadeInUp, scaleIn } from '@/lib/animations';
 import './analyses.css';
 
 const CreditScoreEvaluation = () => {
@@ -74,19 +76,20 @@ const CreditScoreEvaluation = () => {
 
 	if (!prediction) {
 		return (
-			<div className="container mx-auto p-8">
-				<Card className="p-12 bg-black text-white rounded-2xl shadow-lg text-center">
-					<h2 className="text-2xl font-semibold mb-4">No Credit Score Data</h2>
-					<p className="text-gray-400 mb-8">
+			<div className="nc-container py-20 md:py-32">
+				<div className="max-w-md mx-auto text-center">
+					<p className="section-label section-label--green mb-6">Credit Analysis</p>
+					<h2 className="text-2xl font-semibold mb-4 text-white">No Credit Score Data</h2>
+					<p className="text-white/50 mb-8">
 						Please generate your Financial Profile Score first
 					</p>
 					<Link
 						to="/generate-credit"
-						className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+						className="inline-block px-8 py-3 bg-[#00B512] text-white rounded-xl hover:bg-[#00a010] transition-colors font-medium"
 					>
-						Generate FPS
+						Generate Score
 					</Link>
-				</Card>
+				</div>
 			</div>
 		);
 	}
@@ -105,10 +108,16 @@ const CreditScoreEvaluation = () => {
 	const percentageChange = getPercentageChange();
 
 	return (
-		<div className="container mx-auto">
+		<motion.div
+			initial="hidden"
+			animate="visible"
+			variants={scaleIn}
+			className="nc-container py-10 md:py-16 min-w-0"
+		>
+			<p className="section-label section-label--green mb-6">Credit Analysis</p>
 			<div>
-				<Card className="p-6 bg-black text-white rounded-2xl shadow-lg w-full max-w-4xl">
-					<div className="flex justify-between items-center mb-4">
+				<Card hover glass className="p-6 md:p-10 text-white rounded-2xl w-full max-w-4xl min-w-0" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+					<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
 						<h2 className="text-lg font-semibold">
 							Financial Profile Score (FPS) Evaluation
 						</h2>
@@ -124,7 +133,7 @@ const CreditScoreEvaluation = () => {
 						</DropdownMenu>
 					</div>
 
-					<div className="flex items-center gap-2">
+					<div className="flex flex-col sm:flex-row sm:items-center gap-2">
 						<span className="text-4xl font-bold">{prediction.credit_score}</span>
 						<Badge className={`${riskThreshold.badgeColor} text-white`}>
 							{prediction.risk_category}
@@ -136,7 +145,12 @@ const CreditScoreEvaluation = () => {
 						)}
 					</div>
 
-					<div className="h-40 mt-4">
+					<motion.div
+						initial="hidden"
+						animate="visible"
+						variants={fadeInUp}
+						className="h-40 mt-4 min-w-0"
+					>
 						{isLoadingHistory ? (
 							<div className="flex items-center justify-center h-full">
 								<div className="text-center">
@@ -150,39 +164,55 @@ const CreditScoreEvaluation = () => {
 							</div>
 						) : chartData.length > 0 ? (
 							<ResponsiveContainer width="100%" height="100%">
-								<LineChart data={chartData}>
+								<AreaChart data={chartData}>
+									<defs>
+										<linearGradient id="scoreGradient" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="5%" stopColor="#facc15" stopOpacity={0.8} />
+											<stop offset="95%" stopColor="#facc15" stopOpacity={0} />
+										</linearGradient>
+									</defs>
 									<XAxis dataKey="name" stroke="#aaa" />
 									<YAxis domain={[400, 1000]} stroke="#aaa" />
 									<Tooltip
-										contentStyle={{ backgroundColor: 'black', color: 'white' }}
+										contentStyle={{
+											backgroundColor: 'rgba(0, 0, 0, 0.9)',
+											color: 'white',
+											border: '1px solid rgba(250, 204, 21, 0.3)',
+											borderRadius: '8px',
+											padding: '8px 12px',
+										}}
+										cursor={{ stroke: '#facc15', strokeWidth: 2 }}
 									/>
-									<Line
+									<Area
 										type="monotone"
 										dataKey="score"
 										stroke="#facc15"
-										strokeWidth={2}
-										dot={false}
+										strokeWidth={3}
+										fill="url(#scoreGradient)"
+										dot={{ fill: '#facc15', r: 4 }}
+										animationDuration={1000}
+										animationBegin={0}
 									/>
-								</LineChart>
+								</AreaChart>
 							</ResponsiveContainer>
 						) : (
 							<div className="flex items-center justify-center h-full text-gray-400 text-sm">
 								No historical data available
 							</div>
 						)}
-					</div>
+					</motion.div>
 
-					<div className="mt-4">
-						<h2 className="text-lg font-semibold">Smart Credit Strategies</h2>
-						<div className="mt-2 space-y-1">
-							<div className="flex justify-between text-sm">
-								<span>On-time Payments</span>{' '}
+					<div className="mt-8 pt-6 border-t border-white/10">
+						<h2 className="text-lg font-semibold text-white/90 mb-4">Smart Credit Strategies</h2>
+						<div className="space-y-4">
+							<div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
+								<span className="font-medium">On-time Payments</span>
 								<span>
 									<p>Seamless, stress free payments- right on time!</p>
 								</span>
 							</div>
-							<div className="flex justify-between text-sm">
-								<span>Credit Utilization</span>{' '}
+							<div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
+								<span className="font-medium">Credit Utilization</span>
 								<span>
 									<p>
 										Use your good credit to finance assests that appreciate in
@@ -190,8 +220,8 @@ const CreditScoreEvaluation = () => {
 									</p>
 								</span>
 							</div>
-							<div className="flex justify-between text-sm">
-								<span>Credit Age</span>{' '}
+							<div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
+								<span className="font-medium">Credit Age</span>
 								<span>
 									<p>
 										Great Score! Grow your financial reputation with every
@@ -199,14 +229,14 @@ const CreditScoreEvaluation = () => {
 									</p>
 								</span>
 							</div>
-							<div className="flex justify-between text-sm">
-								<span>Spending vs. Savings </span>{' '}
+							<div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
+								<span className="font-medium">Spending vs. Savings</span>
 								<span>
 									<p>You deposit ₵500 weekly but withdraw 20% within 7 days.</p>
 								</span>
 							</div>
-							<div className="flex justify-between text-sm">
-								<span>Credit Mix</span>{' '}
+							<div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
+								<span className="font-medium">Credit Mix</span>
 								<span>
 									<p>Expand wisely. Know when to use credit cards or loans.</p>
 								</span>
@@ -215,7 +245,7 @@ const CreditScoreEvaluation = () => {
 					</div>
 				</Card>
 			</div>
-		</div>
+		</motion.div>
 	);
 };
 

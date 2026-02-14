@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { MobileNav } from '@/components/navigation/MobileNav';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { FileUpload } from '@/components/ui/file-upload';
@@ -114,10 +115,10 @@ const GenerateCredit = () => {
 				await updateUserProfile(profileData);
 			} catch (updateError) {
 				// Only create if profile doesn't exist
-				if (updateError instanceof Error && 
-					(updateError.message.includes('404') || 
-					 updateError.message.includes('not found') ||
-					 updateError.message.includes('Not Found'))) {
+				if (updateError instanceof Error &&
+					(updateError.message.includes('404') ||
+						updateError.message.includes('not found') ||
+						updateError.message.includes('Not Found'))) {
 					await createUserProfile(profileData);
 				} else {
 					// Re-throw other errors (network, auth, validation, etc.)
@@ -134,32 +135,44 @@ const GenerateCredit = () => {
 		}
 	};
 
+	const inputDarkClass =
+		'bg-white/5 border-white/20 text-white placeholder:text-white/50 focus-visible:border-[#00B512]';
+
 	return (
 		<div>
-			<nav>
-				<div className="nc-container flex items-center justify-between pt-8">
-					<img src="/logo-mono.png" alt="Logo Mono" />
-
-					<div className="secondary-navigation space-x-5">
-						<Link to="/">Home</Link>
-						<Link to="/generate-credit">Generate Credit</Link>
-						<Link to="/take-credit">Credit Offers</Link>
-						<Link to="/ai-insights">AI Insights</Link>
-						<Link to="/settings">Settings</Link>
+			<nav className="fixed left-0 right-0 top-0 z-50 bg-[#0f0f0f]/80 backdrop-blur-md border-b border-white/10">
+				<div className="nc-container flex items-center justify-between py-5">
+					<Link to="/" className="flex items-center">
+						<img src="/brand_logo.png" alt="Neural Cash" className="h-6 md:h-8 invert brightness-200" />
+					</Link>
+					<div className="hidden md:flex items-center gap-12">
+						<Link to="/" className="text-sm text-white/70 hover:text-white transition-colors">Home</Link>
+						<Link to="/generate-credit" className="text-sm text-white font-medium transition-colors">Generate Score</Link>
+						<Link to="/take-credit" className="text-sm text-white/70 hover:text-white transition-colors">Credit Offers</Link>
+						<Link to="/ai-insights" className="text-sm text-white/70 hover:text-white transition-colors">AI Insights</Link>
+						<Link to="/settings" className="text-sm text-white/70 hover:text-white transition-colors">Settings</Link>
 					</div>
+					<MobileNav>
+						<Link to="/" className="block py-2 text-white/80 hover:text-white transition-colors">Home</Link>
+						<Link to="/generate-credit" className="block py-2 text-[#00B512] font-semibold">Generate Score</Link>
+						<Link to="/take-credit" className="block py-2 text-white/80 hover:text-white transition-colors">Credit Offers</Link>
+						<Link to="/ai-insights" className="block py-2 text-white/80 hover:text-white transition-colors">AI Insights</Link>
+						<Link to="/settings" className="block py-2 text-white/80 hover:text-white transition-colors">Settings</Link>
+					</MobileNav>
 				</div>
 			</nav>
 
-			<main className="nc-container">
-				<h1 className="font-bold text-6xl max-w-[700px] leading-[1.2] font-montserrat py-10 animate fade-up">
+			<main className="nc-container pt-28 md:pt-40 pb-20">
+				<p className="section-label section-label--green mb-4">Generate Score</p>
+				<h1 className="font-bold text-3xl md:text-6xl max-w-[700px] leading-[1.2] font-montserrat text-white animate fade-up">
 					Generate Your Financial Profile Score
 				</h1>
 
 				<form onSubmit={handleFormSubmit} className="animate fade-up delay-30">
 					<div className="space-y-8">
-						<div className="md:grid grid-cols-2 md:gap-16 md:gap-x-30">
+						<div className="space-y-6 md:space-y-0 md:grid grid-cols-2 md:gap-16">
 							<div>
-								<label htmlFor="firstName" className="block text-sm font-medium mb-2">
+								<label htmlFor="firstName" className="block text-sm font-medium mb-2 text-white/70">
 									First Name *
 								</label>
 								<Input
@@ -169,10 +182,11 @@ const GenerateCredit = () => {
 									value={formData.firstName}
 									onChange={handleInputChange}
 									required
+									className={inputDarkClass}
 								/>
 							</div>
 							<div>
-								<label htmlFor="lastName" className="block text-sm font-medium mb-2">
+								<label htmlFor="lastName" className="block text-sm font-medium mb-2 text-white/70">
 									Last Name *
 								</label>
 								<Input
@@ -182,10 +196,11 @@ const GenerateCredit = () => {
 									value={formData.lastName}
 									onChange={handleInputChange}
 									required
+									className={inputDarkClass}
 								/>
 							</div>
 							<div>
-								<label htmlFor="postalAddress" className="block text-sm font-medium mb-2">
+								<label htmlFor="postalAddress" className="block text-sm font-medium mb-2 text-white/70">
 									Postal Address *
 								</label>
 								<Input
@@ -195,10 +210,11 @@ const GenerateCredit = () => {
 									value={formData.postalAddress}
 									onChange={handleInputChange}
 									required
+									className={inputDarkClass}
 								/>
 							</div>
 							<div>
-								<label htmlFor="mobile" className="block text-sm font-medium mb-2">
+								<label htmlFor="mobile" className="block text-sm font-medium mb-2 text-white/70">
 									Mobile Number *
 								</label>
 								<Input
@@ -208,10 +224,11 @@ const GenerateCredit = () => {
 									value={formData.mobile}
 									onChange={handleInputChange}
 									required
+									className={inputDarkClass}
 								/>
 							</div>
 							<div>
-								<label htmlFor="employmentStatus" className="block text-sm font-medium mb-2">
+								<label htmlFor="employmentStatus" className="block text-sm font-medium mb-2 text-white/70">
 									Employment Status *
 								</label>
 								<Input
@@ -221,10 +238,11 @@ const GenerateCredit = () => {
 									value={formData.employmentStatus}
 									onChange={handleInputChange}
 									required
+									className={inputDarkClass}
 								/>
 							</div>
 							<div>
-								<label htmlFor="email" className="block text-sm font-medium mb-2">
+								<label htmlFor="email" className="block text-sm font-medium mb-2 text-white/70">
 									Email (Optional)
 								</label>
 								<Input
@@ -233,12 +251,13 @@ const GenerateCredit = () => {
 									placeholder="Email (Optional)"
 									value={formData.email}
 									onChange={handleInputChange}
+									className={inputDarkClass}
 								/>
 							</div>
 						</div>
 
 						<div>
-							<label htmlFor="file-upload" className="block text-sm font-medium mb-2">
+							<label htmlFor="file-upload" className="block text-sm font-medium mb-2 text-white/70">
 								Upload Transaction CSV File *
 							</label>
 							<FileUpload
@@ -248,6 +267,7 @@ const GenerateCredit = () => {
 								onFileChange={setFile}
 								accept=".csv"
 								error={error && !file ? error : undefined}
+								className="[&_.text-gray-900]:text-white [&_.text-gray-500]:text-white/60 [&_.text-gray-700]:text-white/80 [&_.border-gray-300]:border-white/30 [&_.text-gray-400]:text-white/50 [&_.bg-green-100]:bg-green-500/20 [&_.text-green-600]:text-green-400 [&_.text-red-600]:text-red-400"
 							/>
 						</div>
 					</div>
@@ -259,14 +279,15 @@ const GenerateCredit = () => {
 							checked={formData.termsAccepted}
 							onChange={handleInputChange}
 							required
+							className="accent-[#00B512]"
 						/>
-						<label htmlFor="terms" className="ml-2">
+						<label htmlFor="terms" className="ml-2 text-white/70">
 							I agree to give my data to NeuralCash for information purposes.
 						</label>
 					</div>
 
 					{error && (
-						<div className="mt-4 text-red-600 text-sm text-center">{error}</div>
+						<div className="mt-4 text-red-400 text-sm text-center">{error}</div>
 					)}
 
 					<Button
@@ -281,11 +302,14 @@ const GenerateCredit = () => {
 					</Button>
 				</form>
 
-				<img
-					src="/footer-links.svg"
-					alt="Dummy Footer section for the sake of time. Please!"
-					className="mx-auto mb-20"
-				/>
+				<footer className="py-10 mt-10" style={{ background: '#0a0a0a', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+					<div className="nc-container flex flex-col sm:flex-row items-center justify-between gap-4">
+						<Link to="/" className="flex items-center">
+							<img src="/brand_logo.png" alt="Neural Cash" className="h-5 invert brightness-200" />
+						</Link>
+						<p className="text-xs text-white/30">&copy; {new Date().getFullYear()} Neural Cash</p>
+					</div>
+				</footer>
 			</main>
 		</div>
 	);

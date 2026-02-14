@@ -15,6 +15,8 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000
  * Get authentication token from Firebase
  */
 const getAuthToken = async (): Promise<string | null> => {
+  if (!auth) return null;
+
   const user = auth.currentUser;
   if (!user) return null;
 

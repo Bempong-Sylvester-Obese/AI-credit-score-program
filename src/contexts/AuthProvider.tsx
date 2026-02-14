@@ -1,7 +1,9 @@
 import { useEffect, useState, ReactNode } from 'react';
 import { User, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
-import { auth, googleProvider } from '@/lib/firebase';
+import { auth, googleProvider, isFirebaseReady } from '@/lib/firebase';
 import { AuthContext, AuthContextType } from './AuthContext';
+
+const AUTH_LOADING_TIMEOUT_MS = 3000;
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -9,23 +11,24 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(isFirebaseReady);
 
   const signInWithGoogle = async () => {
+    if (!auth || !googleProvider) {
+      throw new Error(
+        'Authentication is not available. Please configure Firebase environment variables.'
+      );
+    }
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      // Verify the user was successfully authenticated
       if (!result.user) {
         throw new Error('Authentication failed: No user returned');
       }
-      // User state will be updated via onAuthStateChanged
     } catch (error: unknown) {
       console.error('Error signing in with Google:', error);
-      
-      // Provide more helpful error messages
+
       let errorMessage = 'Failed to sign in with Google';
-      
-      // Type guard for Firebase errors (they have a 'code' property)
+
       if (error && typeof error === 'object' && 'code' in error) {
         const firebaseError = error as { code: string; message?: string };
         if (firebaseError.code === 'auth/popup-closed-by-user') {
@@ -42,12 +45,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       } else if (error instanceof Error) {
         errorMessage = error.message;
       }
-      
+
       throw new Error(errorMessage);
     }
   };
 
   const signOutUser = async () => {
+    if (!auth) {
+      throw new Error('Authentication is not available.');
+    }
     try {
       await signOut(auth);
     } catch (error) {
@@ -57,15 +63,33 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   useEffect(() => {
+    if (!isFirebaseReady || !auth) {
+      setLoading(false);
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+    }, AUTH_LOADING_TIMEOUT_MS);
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      clearTimeout(timeoutId);
+      unsubscribe();
+    };
   }, []);
 
-  if (loading) return <div>Loading authentication...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0f0f0f] text-white">
+        <div className="animate-pulse">Loading authentication...</div>
+      </div>
+    );
+  }
 
   const value: AuthContextType = {
     user,

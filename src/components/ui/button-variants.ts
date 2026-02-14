@@ -5,16 +5,16 @@ export const buttonVariants = cva(
 	{
 		variants: {
 			variant: {
-				default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-				primary: 'bg-[#00B512] text-white !p-8 shadow-xs hover:bg-[#00B512]/90',
+				default: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg',
+				primary: 'bg-gradient-to-r from-[#00B512] to-[#29ad8d] text-white !p-8 shadow-lg hover:shadow-xl hover:from-[#00B512]/90 hover:to-[#29ad8d]/90 transition-all duration-300',
 				destructive:
 					'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
 				outline:
-					'border bg-transparent text-white hover:text-[#E2FF54] hover:border-[#E2FF54] transition-all ease-in-out duration-500',
+					'border bg-transparent text-white hover:text-[#E2FF54] hover:border-[#E2FF54] transition-all ease-in-out duration-500 hover:bg-white/5',
 				'outline-secondary':
-					'border text-[#000] bg-transparent border-[#00B512] font-bold !p-8 btn-secondary hover:border-[#001027] transition-all ease-in-out duration-500',
+					'border text-[#000] bg-transparent border-[#00B512] font-bold !p-8 btn-secondary hover:border-[#001027] hover:bg-[#00B512]/10 transition-all ease-in-out duration-500',
 				secondary:
-					'bg-secondary text-secondary-foreground  hover:bg-secondary/80',
+					'bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-md hover:shadow-lg',
 				ghost:
 					'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
 				link: 'text-primary underline-offset-4 hover:underline',

@@ -1,74 +1,118 @@
+import { ScrollReveal, StaggerItem } from '@/components/animations/ScrollReveal';
+import { motion } from 'framer-motion';
+import { fadeInUp, staggerContainer } from '@/lib/animations';
+
 const AboutUs = () => {
 	return (
-		<div className="nc-container py-32">
-			<section className="md:grid grid-cols-2 items-center gap-4">
-				<img
-					src="/monthly_saving_stat.svg"
-					alt="Monthly Saving Stat"
-					className="fade-right animate-on-scroll"
-				/>
+		<>
+			{/* Section 1 -- subtle tinted background */}
+			<section className="py-20 md:py-40" style={{ background: 'rgba(255,255,255,0.02)' }}>
+				<div className="nc-container">
+					<div className="flex flex-col md:grid grid-cols-2 items-center gap-8 md:gap-16">
+						<ScrollReveal>
+							<motion.img
+								variants={fadeInUp}
+								src="/monthly_saving_stat.svg"
+								alt="Monthly Saving Stat"
+								className="max-w-full"
+							/>
+						</ScrollReveal>
 
-				<div className="space-y-5 fade-up animate-on-scroll">
-					<p className="tag tag-white">About Us</p>
-					<h2 className="subtitle">
-						Revolutionizing Finance, One Score at a Time
-					</h2>
+						<ScrollReveal className="space-y-8">
+							<motion.p variants={fadeInUp} className="section-label section-label--green">
+								About Us
+							</motion.p>
+							<motion.h2
+								variants={fadeInUp}
+								className="subtitle"
+							>
+								Revolutionizing Finance, One Score at a Time
+							</motion.h2>
 
-					<ul className="space-y-[12px] features">
-						<li>
-							<h4>AI-Driven Accuracy</h4>
-							<p>Smarter assessments, better decisions with our AI system</p>
-						</li>
+							<motion.ul
+								variants={staggerContainer}
+								initial="hidden"
+								whileInView="visible"
+								viewport={{ once: true }}
+								className="space-y-3 features"
+							>
+								<StaggerItem>
+									<li>
+										<h4>AI-Driven Accuracy</h4>
+										<p>Smarter assessments, better decisions with our AI system</p>
+									</li>
+								</StaggerItem>
 
-						<li>
-							<h4>Secure and Private</h4>
-							<p>Your data, protected with cutting edge encryption</p>
-						</li>
+								<StaggerItem>
+									<li>
+										<h4>Secure and Private</h4>
+										<p>Your data, protected with cutting-edge encryption</p>
+									</li>
+								</StaggerItem>
 
-						<li>
-							<h4>Real-Time Insights</h4>
-							<p>
-								We're committed to giving instant feedback on your financial
-								standing
-							</p>
-						</li>
-
-						<li>
-							<h4>More Awesome Features</h4>
-							<p>We're committed to adding more exciting features!</p>
-						</li>
-					</ul>
+								<StaggerItem>
+									<li>
+										<h4>Real-Time Insights</h4>
+										<p>
+											Instant feedback on your financial
+											standing so you can act fast
+										</p>
+									</li>
+								</StaggerItem>
+							</motion.ul>
+						</ScrollReveal>
+					</div>
 				</div>
 			</section>
 
-			<section className="md:grid grid-cols-2 items-center gap-4 mt-48 mb-20">
-				<div className="space-y-5 fade-left animate-on-scroll">
-					<p className="tag tag-white">Featured</p>
-					<h2 className="subtitle">
-						Having Financial Troubles?. You Can Apply For Credit Today!
-					</h2>
+			{/* Section 2 -- plain dark background */}
+			<section className="py-20 md:py-40">
+				<div className="nc-container">
+					<div className="flex flex-col-reverse md:grid grid-cols-2 items-center gap-8 md:gap-16">
+						<ScrollReveal className="space-y-8">
+							<motion.p variants={fadeInUp} className="section-label section-label--green">
+								Get Started
+							</motion.p>
+							<motion.h2
+								variants={fadeInUp}
+								className="subtitle"
+							>
+								Having Financial Troubles? Apply For Credit Today
+							</motion.h2>
 
-					<ul className="space-y-[12px] benefits">
-						<li>Extra Spending Power when you have Neural Cash</li>
+							<motion.ul
+								variants={staggerContainer}
+								initial="hidden"
+								whileInView="visible"
+								viewport={{ once: true }}
+								className="space-y-3 benefits"
+							>
+								<StaggerItem>
+									<li>Upload your mobile money statement in seconds</li>
+								</StaggerItem>
+								<StaggerItem>
+									<li>Get a personalised credit score powered by AI</li>
+								</StaggerItem>
+								<StaggerItem>
+									<li>
+										Browse credit offers matched to your profile
+									</li>
+								</StaggerItem>
+							</motion.ul>
+						</ScrollReveal>
 
-						<li>Your data, protected with cutting-edge encryption</li>
-
-						<li>
-							We're committed to giving instant feedback on your financial
-							standings
-						</li>
-
-						<li>We're committed to adding more exciting features soon!</li>
-					</ul>
+						<ScrollReveal>
+							<motion.img
+								variants={fadeInUp}
+								src="/credit_score_simplified.svg"
+								alt="Credit Score Simplified"
+								className="max-w-full"
+							/>
+						</ScrollReveal>
+					</div>
 				</div>
-
-				<img
-					src="/credit_score_simplified.svg"
-					alt="Credit Score Simplified"
-					className="fade-up animate-on-scroll delay-3"
-				/>
 			</section>
-		</div>
+		</>
 	);
 };
 

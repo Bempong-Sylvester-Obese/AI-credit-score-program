@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { MobileNav } from '@/components/navigation/MobileNav';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -32,7 +33,6 @@ const Settings = () => {
 
 	const [privacySettings, setPrivacySettings] = useState({
 		shareDataForResearch: false,
-		showScorePublicly: false,
 		dataRetentionPeriod: '12',
 	});
 
@@ -122,90 +122,102 @@ const Settings = () => {
 	};
 
 	return (
-		<div>
-			<nav className="main-navigation absolute left-0 right-0 text-center space-x-10 top-6 z-50">
-				<Link to="/">Home</Link>
-				<Link to="/generate-credit">Generate FPS</Link>
-				<Link to="/take-credit">Credit Offers</Link>
-				<Link to="/ai-insights">AI Insights</Link>
-				<Link to="/settings" className="font-semibold">
-					Settings
-				</Link>
+		<div className="min-h-screen bg-[#0a0a0a]">
+			<nav className="main-navigation fixed left-0 right-0 top-0 z-50 bg-[#0f0f0f]/80 backdrop-blur-md border-b border-white/10 px-4">
+				<div className="nc-container flex items-center justify-between py-5">
+					<Link to="/" className="flex items-center">
+						<img src="/brand_logo.png" alt="Neural Cash" className="h-6 md:h-8 invert brightness-200" />
+					</Link>
+					<div className="hidden md:flex items-center gap-12">
+						<Link to="/" className="text-sm text-white/70 hover:text-white transition-colors">Home</Link>
+						<Link to="/generate-credit" className="text-sm text-white/70 hover:text-white transition-colors">Generate Score</Link>
+						<Link to="/take-credit" className="text-sm text-white/70 hover:text-white transition-colors">Credit Offers</Link>
+						<Link to="/ai-insights" className="text-sm text-white/70 hover:text-white transition-colors">AI Insights</Link>
+						<Link to="/settings" className="text-sm text-white font-medium transition-colors">Settings</Link>
+					</div>
+					<MobileNav>
+						<Link to="/" className="block py-2 text-white/80 hover:text-white transition-colors">Home</Link>
+						<Link to="/generate-credit" className="block py-2 text-white/80 hover:text-white transition-colors">Generate Score</Link>
+						<Link to="/take-credit" className="block py-2 text-white/80 hover:text-white transition-colors">Credit Offers</Link>
+						<Link to="/ai-insights" className="block py-2 text-white/80 hover:text-white transition-colors">AI Insights</Link>
+						<Link to="/settings" className="block py-2 text-[#00B512] font-semibold">Settings</Link>
+					</MobileNav>
+				</div>
 			</nav>
 
-			<main className="nc-container pt-40 pb-20">
+			<main className="nc-container pt-28 md:pt-44 pb-20">
 				{/* Header */}
 				<section className="text-center mb-16 animate fade-up">
-					<p className="tag tag-no-emoji">Settings</p>
-					<h1 className="font-bold text-6xl max-w-[700px] mx-auto leading-[1.2] font-montserrat py-10">
+					<p className="section-label section-label--green">Settings</p>
+					<h1 className="font-bold text-3xl md:text-6xl max-w-[700px] mx-auto leading-[1.2] font-montserrat py-10 text-white">
 						Personalize Your Experience
 					</h1>
-					<p className="text-xl text-gray-600 max-w-[600px] mx-auto">
+					<p className="text-xl text-white/50 max-w-[600px] mx-auto">
 						Manage your profile, preferences, and account settings to get the most out of
 						NeuralCash.
 					</p>
 				</section>
 
 				{/* Tabs */}
-				<div className="flex flex-wrap gap-4 mb-12 border-b border-gray-200 animate fade-up delay-30">
-					<button
-						onClick={() => setActiveTab('profile')}
-						className={`px-6 py-3 font-medium transition-colors ${
-							activeTab === 'profile'
-								? 'border-b-2 border-blue-600 text-blue-600'
-								: 'text-gray-600 hover:text-gray-900'
-						}`}
-					>
-						Profile
-					</button>
-					<button
-						onClick={() => setActiveTab('notifications')}
-						className={`px-6 py-3 font-medium transition-colors ${
-							activeTab === 'notifications'
-								? 'border-b-2 border-blue-600 text-blue-600'
-								: 'text-gray-600 hover:text-gray-900'
-						}`}
-					>
-						Notifications
-					</button>
-					<button
-						onClick={() => setActiveTab('privacy')}
-						className={`px-6 py-3 font-medium transition-colors ${
-							activeTab === 'privacy'
-								? 'border-b-2 border-blue-600 text-blue-600'
-								: 'text-gray-600 hover:text-gray-900'
-						}`}
-					>
-						Privacy
-					</button>
-					<button
-						onClick={() => setActiveTab('data')}
-						className={`px-6 py-3 font-medium transition-colors ${
-							activeTab === 'data'
-								? 'border-b-2 border-blue-600 text-blue-600'
-								: 'text-gray-600 hover:text-gray-900'
-						}`}
-					>
-						Data Management
-					</button>
-				</div>
+			<div className="flex flex-wrap gap-2 md:gap-4 mb-12 border-b border-white/10 animate fade-up delay-30">
+				<button
+					onClick={() => setActiveTab('profile')}
+					className={`px-3 py-2 text-sm md:px-6 md:py-3 md:text-base font-medium transition-colors ${
+						activeTab === 'profile'
+							? 'border-b-2 border-[#00B512] text-[#00B512]'
+							: 'text-white/50 hover:text-white/80'
+					}`}
+				>
+					Profile
+				</button>
+				<button
+					onClick={() => setActiveTab('notifications')}
+					className={`px-3 py-2 text-sm md:px-6 md:py-3 md:text-base font-medium transition-colors ${
+						activeTab === 'notifications'
+							? 'border-b-2 border-[#00B512] text-[#00B512]'
+							: 'text-white/50 hover:text-white/80'
+					}`}
+				>
+					Notifications
+				</button>
+				<button
+					onClick={() => setActiveTab('privacy')}
+					className={`px-3 py-2 text-sm md:px-6 md:py-3 md:text-base font-medium transition-colors ${
+						activeTab === 'privacy'
+							? 'border-b-2 border-[#00B512] text-[#00B512]'
+							: 'text-white/50 hover:text-white/80'
+					}`}
+				>
+					Privacy
+				</button>
+				<button
+					onClick={() => setActiveTab('data')}
+					className={`px-3 py-2 text-sm md:px-6 md:py-3 md:text-base font-medium transition-colors ${
+						activeTab === 'data'
+							? 'border-b-2 border-[#00B512] text-[#00B512]'
+							: 'text-white/50 hover:text-white/80'
+					}`}
+				>
+					Data Management
+				</button>
+			</div>
 
 				{/* Profile Tab */}
 				{activeTab === 'profile' && (
-					<Card className="p-8 animate fade-up delay-30">
-						<h2 className="text-2xl font-semibold mb-6">Profile Information</h2>
+				<Card className="p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl animate fade-up delay-30" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+					<h2 className="text-2xl font-semibold mb-6 text-white/90">Profile Information</h2>
 						{isLoading ? (
 							<div className="flex items-center justify-center py-12">
 								<div className="text-center">
-									<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-									<p className="mt-4 text-gray-600">Loading profile...</p>
+									<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00B512] mx-auto"></div>
+									<p className="mt-4 text-white/50">Loading profile...</p>
 								</div>
 							</div>
 						) : (
 							<form onSubmit={handleProfileSubmit} className="space-y-6">
 							<div className="md:grid grid-cols-2 gap-6">
 								<div>
-									<label htmlFor="firstName" className="block text-sm font-medium mb-2">
+									<label htmlFor="firstName" className="block text-sm font-medium mb-2 text-white/70">
 										First Name
 									</label>
 									<Input
@@ -215,10 +227,11 @@ const Settings = () => {
 											setProfileData((prev) => ({ ...prev, firstName: e.target.value }))
 										}
 										placeholder="Enter your first name"
+										className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
 									/>
 								</div>
 								<div>
-									<label htmlFor="lastName" className="block text-sm font-medium mb-2">
+									<label htmlFor="lastName" className="block text-sm font-medium mb-2 text-white/70">
 										Last Name
 									</label>
 									<Input
@@ -228,12 +241,13 @@ const Settings = () => {
 											setProfileData((prev) => ({ ...prev, lastName: e.target.value }))
 										}
 										placeholder="Enter your last name"
+										className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
 									/>
 								</div>
 							</div>
 
 							<div>
-								<label htmlFor="email" className="block text-sm font-medium mb-2">
+								<label htmlFor="email" className="block text-sm font-medium mb-2 text-white/70">
 									Email Address
 								</label>
 								<Input
@@ -244,11 +258,12 @@ const Settings = () => {
 										setProfileData((prev) => ({ ...prev, email: e.target.value }))
 									}
 									placeholder="Enter your email address"
+									className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
 								/>
 							</div>
 
 							<div>
-								<label htmlFor="mobile" className="block text-sm font-medium mb-2">
+								<label htmlFor="mobile" className="block text-sm font-medium mb-2 text-white/70">
 									Mobile Number
 								</label>
 								<Input
@@ -259,11 +274,12 @@ const Settings = () => {
 										setProfileData((prev) => ({ ...prev, mobile: e.target.value }))
 									}
 									placeholder="Enter your mobile number"
+									className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
 								/>
 							</div>
 
 							<div>
-								<label htmlFor="postalAddress" className="block text-sm font-medium mb-2">
+								<label htmlFor="postalAddress" className="block text-sm font-medium mb-2 text-white/70">
 									Postal Address
 								</label>
 								<Input
@@ -273,11 +289,12 @@ const Settings = () => {
 										setProfileData((prev) => ({ ...prev, postalAddress: e.target.value }))
 									}
 									placeholder="Enter your postal address"
+									className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
 								/>
 							</div>
 
 							<div>
-								<label htmlFor="employmentStatus" className="block text-sm font-medium mb-2">
+								<label htmlFor="employmentStatus" className="block text-sm font-medium mb-2 text-white/70">
 									Employment Status
 								</label>
 								<Input
@@ -287,16 +304,17 @@ const Settings = () => {
 										setProfileData((prev) => ({ ...prev, employmentStatus: e.target.value }))
 									}
 									placeholder="e.g., Employed, Self-employed, Student"
+									className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
 								/>
 							</div>
 
 							{error && (
-								<div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+								<div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400">
 									{error}
 								</div>
 							)}
 							{success && (
-								<div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-700">
+								<div className="p-4 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400">
 									{success}
 								</div>
 							)}
@@ -319,18 +337,18 @@ const Settings = () => {
 
 				{/* Notifications Tab */}
 				{activeTab === 'notifications' && (
-					<Card className="p-8 animate fade-up delay-30">
-						<h2 className="text-2xl font-semibold mb-6">Notification Preferences</h2>
-						<p className="text-gray-600 mb-8">
+					<Card className="p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl animate fade-up delay-30" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+					<h2 className="text-2xl font-semibold mb-6 text-white/90">Notification Preferences</h2>
+						<p className="text-white/50 mb-8">
 							Choose how you want to be notified about your financial profile and account
 							updates.
 						</p>
 
 						<div className="space-y-6">
-							<div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+							<div className="flex items-center justify-between p-4 border border-white/10 rounded-lg">
 								<div>
-									<h3 className="font-semibold mb-1">Email Notifications</h3>
-									<p className="text-sm text-gray-600">
+									<h3 className="font-semibold mb-1 text-white/90">Email Notifications</h3>
+									<p className="text-sm text-white/50">
 										Receive important updates via email
 									</p>
 								</div>
@@ -341,14 +359,14 @@ const Settings = () => {
 										onChange={() => handleNotificationChange('emailNotifications')}
 										className="sr-only peer"
 									/>
-									<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+									<div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00B512]"></div>
 								</label>
 							</div>
 
-							<div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+							<div className="flex items-center justify-between p-4 border border-white/10 rounded-lg">
 								<div>
-									<h3 className="font-semibold mb-1">SMS Notifications</h3>
-									<p className="text-sm text-gray-600">
+									<h3 className="font-semibold mb-1 text-white/90">SMS Notifications</h3>
+									<p className="text-sm text-white/50">
 										Receive updates via text message
 									</p>
 								</div>
@@ -359,14 +377,14 @@ const Settings = () => {
 										onChange={() => handleNotificationChange('smsNotifications')}
 										className="sr-only peer"
 									/>
-									<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+									<div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00B512]"></div>
 								</label>
 							</div>
 
-							<div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+							<div className="flex items-center justify-between p-4 border border-white/10 rounded-lg">
 								<div>
-									<h3 className="font-semibold mb-1">Score Updates</h3>
-									<p className="text-sm text-gray-600">
+									<h3 className="font-semibold mb-1 text-white/90">Score Updates</h3>
+									<p className="text-sm text-white/50">
 										Get notified when your credit score changes
 									</p>
 								</div>
@@ -377,14 +395,14 @@ const Settings = () => {
 										onChange={() => handleNotificationChange('scoreUpdates')}
 										className="sr-only peer"
 									/>
-									<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+									<div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00B512]"></div>
 								</label>
 							</div>
 
-							<div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+							<div className="flex items-center justify-between p-4 border border-white/10 rounded-lg">
 								<div>
-									<h3 className="font-semibold mb-1">Credit Offers</h3>
-									<p className="text-sm text-gray-600">
+									<h3 className="font-semibold mb-1 text-white/90">Credit Offers</h3>
+									<p className="text-sm text-white/50">
 										Receive personalized credit offers and recommendations
 									</p>
 								</div>
@@ -395,14 +413,14 @@ const Settings = () => {
 										onChange={() => handleNotificationChange('creditOffers')}
 										className="sr-only peer"
 									/>
-									<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+									<div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00B512]"></div>
 								</label>
 							</div>
 
-							<div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+							<div className="flex items-center justify-between p-4 border border-white/10 rounded-lg">
 								<div>
-									<h3 className="font-semibold mb-1">Weekly Reports</h3>
-									<p className="text-sm text-gray-600">
+									<h3 className="font-semibold mb-1 text-white/90">Weekly Reports</h3>
+									<p className="text-sm text-white/50">
 										Receive weekly financial summary reports
 									</p>
 								</div>
@@ -413,14 +431,14 @@ const Settings = () => {
 										onChange={() => handleNotificationChange('weeklyReports')}
 										className="sr-only peer"
 									/>
-									<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+									<div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00B512]"></div>
 								</label>
 							</div>
 
-							<div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+							<div className="flex items-center justify-between p-4 border border-white/10 rounded-lg">
 								<div>
-									<h3 className="font-semibold mb-1">Security Alerts</h3>
-									<p className="text-sm text-gray-600">
+									<h3 className="font-semibold mb-1 text-white/90">Security Alerts</h3>
+									<p className="text-sm text-white/50">
 										Get notified about important security events
 									</p>
 								</div>
@@ -431,7 +449,7 @@ const Settings = () => {
 										onChange={() => handleNotificationChange('securityAlerts')}
 										className="sr-only peer"
 									/>
-									<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+									<div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00B512]"></div>
 								</label>
 							</div>
 						</div>
@@ -440,17 +458,17 @@ const Settings = () => {
 
 				{/* Privacy Tab */}
 				{activeTab === 'privacy' && (
-					<Card className="p-8 animate fade-up delay-30">
-						<h2 className="text-2xl font-semibold mb-6">Privacy Settings</h2>
-						<p className="text-gray-600 mb-8">
+					<Card className="p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl animate fade-up delay-30" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+					<h2 className="text-2xl font-semibold mb-6 text-white/90">Privacy Settings</h2>
+						<p className="text-white/50 mb-8">
 							Control how your data is used and shared to protect your privacy.
 						</p>
 
 						<div className="space-y-6">
-							<div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+							<div className="flex items-center justify-between p-4 border border-white/10 rounded-lg">
 								<div>
-									<h3 className="font-semibold mb-1">Share Data for Research</h3>
-									<p className="text-sm text-gray-600">
+									<h3 className="font-semibold mb-1 text-white/90">Share Data for Research</h3>
+									<p className="text-sm text-white/50">
 										Allow anonymized data to be used for improving our AI models
 									</p>
 								</div>
@@ -461,30 +479,12 @@ const Settings = () => {
 										onChange={() => handlePrivacyChange('shareDataForResearch')}
 										className="sr-only peer"
 									/>
-									<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+									<div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00B512]"></div>
 								</label>
 							</div>
 
-							<div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-								<div>
-									<h3 className="font-semibold mb-1">Show Score Publicly</h3>
-									<p className="text-sm text-gray-600">
-										Allow your credit score to be visible in public rankings
-									</p>
-								</div>
-								<label className="relative inline-flex items-center cursor-pointer">
-									<input
-										type="checkbox"
-										checked={privacySettings.showScorePublicly}
-										onChange={() => handlePrivacyChange('showScorePublicly')}
-										className="sr-only peer"
-									/>
-									<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-								</label>
-							</div>
-
-							<div className="p-4 border border-gray-200 rounded-lg">
-								<label htmlFor="dataRetention" className="block font-semibold mb-3">
+							<div className="p-4 border border-white/10 rounded-lg">
+								<label htmlFor="dataRetention" className="block font-semibold mb-3 text-white/70">
 									Data Retention Period
 								</label>
 								<select
@@ -496,15 +496,15 @@ const Settings = () => {
 											dataRetentionPeriod: e.target.value,
 										}))
 									}
-									className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+									className="w-full p-3 bg-transparent border border-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00B512]"
 								>
-									<option value="3">3 months</option>
-									<option value="6">6 months</option>
-									<option value="12">12 months</option>
-									<option value="24">24 months</option>
-									<option value="indefinite">Keep indefinitely</option>
+									<option value="3" className="bg-[#0f0f0f]">3 months</option>
+									<option value="6" className="bg-[#0f0f0f]">6 months</option>
+									<option value="12" className="bg-[#0f0f0f]">12 months</option>
+									<option value="24" className="bg-[#0f0f0f]">24 months</option>
+									<option value="indefinite" className="bg-[#0f0f0f]">Keep indefinitely</option>
 								</select>
-								<p className="text-sm text-gray-600 mt-2">
+								<p className="text-sm text-white/50 mt-2">
 									How long to keep your transaction data for credit score calculation
 								</p>
 							</div>
@@ -515,16 +515,16 @@ const Settings = () => {
 				{/* Data Management Tab */}
 				{activeTab === 'data' && (
 					<div className="space-y-6 animate fade-up delay-30">
-						<Card className="p-8">
-							<h2 className="text-2xl font-semibold mb-6">Data Management</h2>
-							<p className="text-gray-600 mb-8">
+						<Card className="p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+						<h2 className="text-2xl font-semibold mb-6 text-white/90">Data Management</h2>
+							<p className="text-white/50 mb-8">
 								Download your data or manage your account information.
 							</p>
 
 							<div className="space-y-6">
-								<div className="p-6 border border-gray-200 rounded-lg">
-									<h3 className="font-semibold mb-2">Export Your Data</h3>
-									<p className="text-sm text-gray-600 mb-4">
+								<div className="p-6 border border-white/10 rounded-lg">
+									<h3 className="font-semibold mb-2 text-white/90">Export Your Data</h3>
+									<p className="text-sm text-white/50 mb-4">
 										Download a copy of your financial profile, transaction history, and
 										credit score data in CSV format.
 									</p>
@@ -533,11 +533,11 @@ const Settings = () => {
 									</Button>
 								</div>
 
-								<div className="p-6 border border-red-200 rounded-lg bg-red-50">
-									<h3 className="font-semibold mb-2 text-red-900">
+								<div className="p-6 rounded-lg bg-red-500/10 border border-red-500/20">
+									<h3 className="font-semibold mb-2 text-red-400">
 										Danger Zone
 									</h3>
-									<p className="text-sm text-red-700 mb-4">
+									<p className="text-sm text-red-400 mb-4">
 										Permanently delete your account and all associated data. This action
 										cannot be undone.
 									</p>
@@ -556,22 +556,17 @@ const Settings = () => {
 			</main>
 
 			{/* Footer */}
-			<footer className="py-[7rem] bg-[#F6F9F8] mt-20">
-				<div className="nc-container">
-					<img
-						src="/brand_logo.png"
-						alt="Neural Cash logo"
-						className="my-20 mx-auto"
-					/>
-					<div className="text-center space-x-10 footer-links">
-						<Link to="/">Home</Link>
-						<Link to="/generate-credit">Credit Score</Link>
-						<Link to="/take-credit">Loan Offers</Link>
-						<Link to="/ai-insights">AI Insights</Link>
-						<Link to="/settings" className="font-semibold">
-							Settings
-						</Link>
+			<footer className="py-10 mt-20" style={{ background: '#0a0a0a', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+				<div className="nc-container flex flex-col sm:flex-row items-center justify-between gap-4">
+					<Link to="/" className="flex items-center">
+						<img src="/brand_logo.png" alt="Neural Cash" className="h-5 invert brightness-200" />
+					</Link>
+					<div className="flex flex-wrap gap-6 text-sm">
+						<Link to="/" className="text-white/40 hover:text-white transition-colors">Home</Link>
+						<Link to="/generate-credit" className="text-white/40 hover:text-white transition-colors">Credit Score</Link>
+						<Link to="/settings" className="text-white/60 font-medium">Settings</Link>
 					</div>
+					<p className="text-xs text-white/30">&copy; {new Date().getFullYear()} Neural Cash</p>
 				</div>
 			</footer>
 		</div>
@@ -579,4 +574,3 @@ const Settings = () => {
 };
 
 export default Settings;
-

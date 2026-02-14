@@ -173,35 +173,6 @@ We welcome contributions! Please see our contributing guidelines:
 4. **Push** to the branch (`git push origin feature/amazing-feature`)
 5. **Open** a Pull Request
 
-## 👥 Team
-
-<div align="center">
-
-| Role                                  | Contributor                                           |
-| ------------------------------------- | ----------------------------------------------------- |
-| **AI & Data Visualization**     | [Sylvester Bempong](mailto:Sylvesterobese6665@gmail.com) |
-| **UI Development & Mentorship** | Numo Francis                                          |
-| **UX Design**                   | Felicitas Christo                                     |
-| **Backend Development**         | Julien Addy                                           |
-| **Testing & Debugging**         | Ramzy Konde                                           |
-
-</div>
-
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-## 📞 Contact
-
-- **Email**: [Sylvesterobese6665@gmail.com](mailto:Sylvesterobese6665@gmail.com)
-- **GitHub**: [Project Repository](https://github.com/your-username/ai-credit-score-program)
-
----
-
-<div align="center">
-
-**Built with ❤️ by the Neural Cash Team**
-
 *Empowering financial literacy through AI*
 
 </div>

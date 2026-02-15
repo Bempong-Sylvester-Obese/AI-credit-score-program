@@ -62,6 +62,24 @@
         </div>
       </div>
     </noscript>
+    <!-- Catch fatal JS errors that kill the module script before React can mount -->
+    <script>
+      window.onerror = function(msg, src, line, col, err) {
+        var el = document.getElementById('app-loader');
+        if (el) {
+          el.innerHTML =
+            '<div style="text-align:center;color:white;padding:2rem;max-width:36rem">' +
+              '<h1 style="font-size:1.25rem;color:#ef4444;margin-bottom:0.75rem">Failed to load application</h1>' +
+              '<p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin-bottom:1rem;word-break:break-word">' + msg + '</p>' +
+              '<button onclick="location.reload()" style="padding:0.5rem 1.5rem;background:#00B512;color:white;border:none;border-radius:0.5rem;cursor:pointer;font-size:0.875rem">Reload</button>' +
+            '</div>';
+        }
+      };
+      window.addEventListener('unhandledrejection', function(e) {
+        var msg = e.reason && e.reason.message ? e.reason.message : String(e.reason);
+        window.onerror(msg, '', 0, 0, e.reason);
+      });
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

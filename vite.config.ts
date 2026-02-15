@@ -12,7 +12,7 @@ export default defineConfig({
 	},
 	build: {
 		minify: 'esbuild',
-		target: 'esnext',
+		target: 'es2022',
 		cssMinify: 'esbuild',
 		sourcemap: false,
 		reportCompressedSize: false,
@@ -20,10 +20,16 @@ export default defineConfig({
 			output: {
 				manualChunks: (id) => {
 					if (id.includes('node_modules')) {
-						if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+						// Match only the core react packages, not every package with "react" in its name
+						if (id.includes('/react/') || id.includes('/react-dom/') || id.includes('/react-router')) {
 							return 'vendor-react';
 						}
-						if (id.includes('framer-motion')) {
+						if (
+							id.includes('framer-motion') ||
+							id.includes('motion-dom') ||
+							id.includes('motion-utils') ||
+							id.includes('tslib')
+						) {
 							return 'vendor-animations';
 						}
 						if (id.includes('recharts')) {
@@ -32,7 +38,6 @@ export default defineConfig({
 						if (id.includes('firebase')) {
 							return 'vendor-firebase';
 						}
-						return 'vendor';
 					}
 				},
 			},

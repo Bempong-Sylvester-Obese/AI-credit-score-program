@@ -12,31 +12,11 @@ export default defineConfig({
 	},
 	build: {
 		minify: 'esbuild',
-		target: 'esnext',
+		target: 'es2022',
 		cssMinify: 'esbuild',
 		sourcemap: false,
 		reportCompressedSize: false,
-		rollupOptions: {
-			output: {
-				manualChunks: (id) => {
-					if (id.includes('node_modules')) {
-						if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-							return 'vendor-react';
-						}
-						if (id.includes('framer-motion')) {
-							return 'vendor-animations';
-						}
-						if (id.includes('recharts')) {
-							return 'vendor-charts';
-						}
-						if (id.includes('firebase')) {
-							return 'vendor-firebase';
-						}
-						return 'vendor';
-					}
-				},
-			},
-		},
+		chunkSizeWarningLimit: 600,
 	},
 	optimizeDeps: {
 		include: ['react', 'react-dom', 'react-router-dom', 'framer-motion', 'firebase/app', 'firebase/auth'],

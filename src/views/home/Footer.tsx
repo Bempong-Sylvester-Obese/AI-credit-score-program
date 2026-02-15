@@ -113,9 +113,9 @@ const Footer = () => {
 				<div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
 					<Link to="/" className="flex items-center">
 						<img
-							src="/brand_logo.png"
+							src="/favicon.svg"
 							alt="Neural Cash"
-							className="h-5 invert brightness-200"
+							className="h-5"
 						/>
 					</Link>
 					<p className="text-xs text-white/30">

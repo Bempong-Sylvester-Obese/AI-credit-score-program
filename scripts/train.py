@@ -27,13 +27,14 @@ class CreditScorer:
     def predict(self, raw_data):
         try:
             processed_data = engineer_features(raw_data)
-            available_features = [f for f in self.features if f in processed_data.columns]
             
-            if len(available_features) != len(self.features):
-                missing = set(self.features) - set(processed_data.columns)
-                print(f"Warning: Missing features {missing} - using available features")
+            missing = set(self.features) - set(processed_data.columns)
+            if missing:
+                print(f"Warning: Missing features {missing} - filling with 0")
+                for col in missing:
+                    processed_data[col] = 0
                 
-            scaled_data = self.scaler.transform(processed_data[available_features])
+            scaled_data = self.scaler.transform(processed_data[self.features])
             return float(self.model.predict_proba(scaled_data)[0, 1])
             
         except Exception as e:

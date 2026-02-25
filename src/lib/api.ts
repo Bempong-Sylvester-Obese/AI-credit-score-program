@@ -8,8 +8,14 @@ import type {
   ScoreHistoryItem,
 } from '@/types/credit';
 import { auth } from '@/lib/firebase';
+import { logger } from '@/lib/logger';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+
+const MAX_RETRIES = 2;
+const RETRYABLE_STATUS_CODES = new Set([429, 502, 503, 504]);
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 /**
  * Get authentication token from Firebase
@@ -23,37 +29,59 @@ const getAuthToken = async (): Promise<string | null> => {
   try {
     return await user.getIdToken();
   } catch (error) {
-    console.error('Error getting auth token:', error);
+    logger.error('Error getting auth token:', error);
     return null;
   }
 };
 
 /**
- * Make authenticated API request
+ * Make authenticated API request with retry-on-transient-failure.
+ * Rejects immediately if no auth token is available.
  */
 const authenticatedFetch = async (
   url: string,
   options: RequestInit = {}
 ): Promise<Response> => {
   const token = await getAuthToken();
-  const headers: HeadersInit = {
-    ...options.headers,
-  };
 
-  if (token) {
-    (headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
+  if (!token) {
+    throw new Error('Authentication required. Please sign in and try again.');
   }
 
-  return fetch(url, {
-    ...options,
-    headers,
-  });
+  const headers: HeadersInit = {
+    ...options.headers,
+    Authorization: `Bearer ${token}`,
+  };
+
+  let lastResponse: Response | undefined;
+
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    lastResponse = await fetch(url, { ...options, headers });
+
+    if (!RETRYABLE_STATUS_CODES.has(lastResponse.status)) {
+      return lastResponse;
+    }
+
+    if (lastResponse.status === 429) {
+      const retryAfter = lastResponse.headers.get('Retry-After');
+      const waitMs = retryAfter ? parseInt(retryAfter, 10) * 1000 : 1000 * 2 ** attempt;
+      await sleep(Math.min(waitMs, 10_000));
+    } else {
+      await sleep(1000 * 2 ** attempt);
+    }
+  }
+
+  return lastResponse!;
 };
 
 /**
  * Handle API errors
  */
 const handleApiError = async (response: Response): Promise<never> => {
+  if (response.status === 429) {
+    throw new Error('Too many requests. Please wait a moment and try again.');
+  }
+
   const errorData: ApiError = await response.json().catch(() => ({
     error: 'Unknown error',
     message: `HTTP ${response.status}: ${response.statusText}`,
@@ -75,12 +103,14 @@ export const predictCreditScore = async (file: File): Promise<PredictionResult> 
 
   try {
     const token = await getAuthToken();
-    const headers: HeadersInit = {};
-    if (token) headers['Authorization'] = `Bearer ${token}`;
+    if (!token) {
+      clearTimeout(timeoutId);
+      throw new Error('Authentication required. Please sign in and try again.');
+    }
 
     const response = await fetch(`${API_BASE_URL}/api/predict`, {
       method: 'POST',
-      headers,
+      headers: { Authorization: `Bearer ${token}` },
       body: formData,
       signal: controller.signal,
     });

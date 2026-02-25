@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { MobileNav } from '@/components/navigation/MobileNav';
 import { GradientText } from '@/components/typography/GradientText';
+import { logger } from '@/lib/logger';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 function Header() {
@@ -36,7 +37,7 @@ function Header() {
 			await signOutUser();
 			navigate('/');
 		} catch (error) {
-			console.error('Error signing out:', error);
+			logger.error('Error signing out:', error);
 		} finally {
 			setIsSigningOut(false);
 		}

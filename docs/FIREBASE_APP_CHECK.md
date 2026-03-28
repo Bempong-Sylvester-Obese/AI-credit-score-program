@@ -41,8 +41,8 @@ Firebase App Check helps protect your backend resources from abuse by ensuring r
    - Add `VITE_RECAPTCHA_SITE_KEY` to your `.env` (from reCAPTCHA Enterprise key)
 
 5. **Test in debug mode**
-   - For local development, use the debug token from Firebase Console → App Check → Manage debug tokens
-   - Add `?debug=true` to your URL or set a debug token in the browser console
+   - For local development, add `self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;` before `initializeAppCheck()` (gated behind a dev/environment check)
+   - The SDK will print a debug token to the console — register it in Firebase Console → App Check → Manage debug tokens
 
 ## 2. Restrict the API Key in Google Cloud Console
 

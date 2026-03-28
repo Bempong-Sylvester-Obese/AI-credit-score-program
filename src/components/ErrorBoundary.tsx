@@ -30,7 +30,9 @@ class ErrorBoundary extends Component<Props, State> {
 	}
 
 	componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-		logger.error('ErrorBoundary caught an error:', error, errorInfo);
+		// Always log — this is the last line of defense for React render errors
+		console.error('ErrorBoundary caught an error:', error, errorInfo);
+		// TODO: integrate with external error reporting (e.g., Sentry)
 		this.setState({
 			error,
 			errorInfo,

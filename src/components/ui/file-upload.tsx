@@ -1,18 +1,23 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 
+const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
+const ALLOWED_CSV_TYPES = new Set(['text/csv', 'application/vnd.ms-excel', 'text/plain']);
+
 interface FileUploadProps {
   id: string;
   file: File | null;
   onFileChange: (file: File | null) => void;
   accept?: string;
+  maxSizeBytes?: number;
   error?: string;
   className?: string;
 }
 
 const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
-  ({ id, file, onFileChange, accept = '.csv', error, className }, ref) => {
+  ({ id, file, onFileChange, accept = '.csv', maxSizeBytes = MAX_FILE_SIZE_BYTES, error, className }, ref) => {
     const [isDragging, setIsDragging] = React.useState(false);
+    const [validationError, setValidationError] = React.useState<string | null>(null);
 
     const handleDragOver = (e: React.DragEvent) => {
       e.preventDefault();
@@ -40,12 +45,36 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
       }
     };
 
-    const validateAndSetFile = (file: File) => {
-      if (accept && !file.name.toLowerCase().endsWith(accept.replace('.', ''))) {
+    const validateAndSetFile = (incoming: File) => {
+      setValidationError(null);
+
+      const ext = incoming.name.toLowerCase().split('.').pop();
+      if (accept && ext !== accept.replace('.', '')) {
+        setValidationError(`Invalid file type. Only ${accept} files are accepted.`);
         onFileChange(null);
         return;
       }
-      onFileChange(file);
+
+      if (incoming.type && !ALLOWED_CSV_TYPES.has(incoming.type)) {
+        setValidationError('Invalid file type. Please upload a valid CSV file.');
+        onFileChange(null);
+        return;
+      }
+
+      if (incoming.size > maxSizeBytes) {
+        const maxMB = (maxSizeBytes / (1024 * 1024)).toFixed(0);
+        setValidationError(`File is too large. Maximum size is ${maxMB} MB.`);
+        onFileChange(null);
+        return;
+      }
+
+      if (incoming.size === 0) {
+        setValidationError('File is empty. Please upload a valid CSV file.');
+        onFileChange(null);
+        return;
+      }
+
+      onFileChange(incoming);
     };
 
     const formatFileSize = (bytes: number): string => {
@@ -129,13 +158,15 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
                     Drag and drop your CSV file here
                   </p>
                   <p className="text-xs text-gray-500 mt-1">or click to browse</p>
-                  <p className="text-xs text-gray-400 mt-2">Accepted: CSV files only</p>
+                  <p className="text-xs text-gray-400 mt-2">Accepted: CSV files only (max {(maxSizeBytes / (1024 * 1024)).toFixed(0)} MB)</p>
                 </div>
               </label>
             </div>
           )}
         </div>
-        {error && <p className="text-xs text-red-600">{error}</p>}
+        {(validationError || error) && (
+          <p className="text-xs text-red-600">{validationError || error}</p>
+        )}
       </div>
     );
   }

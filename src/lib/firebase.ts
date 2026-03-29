@@ -1,5 +1,29 @@
 import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, Auth } from 'firebase/auth';
+import { logger } from '@/lib/logger';
+
+/*
+ * SECURITY: Firebase App Check & API Key Restrictions
+ *
+ * Before deploying to production, complete these steps:
+ *
+ * 1. Enable Firebase App Check in the Firebase Console:
+ *    - Go to Firebase Console > App Check
+ *    - Register your web app with reCAPTCHA Enterprise
+ *    - Enforce App Check on Auth and any other Firebase services you use
+ *    - Install firebase/app-check and call initializeAppCheck(app, { provider, isTokenAutoRefreshEnabled: true })
+ *
+ * 2. Restrict the API key in Google Cloud Console:
+ *    - Go to https://console.cloud.google.com/apis/credentials
+ *    - Click on the API key used by this project
+ *    - Under "Application restrictions", select "HTTP referrers"
+ *    - Add your production domain(s) (e.g., https://yourdomain.com/*)
+ *    - Under "API restrictions", restrict to only: Firebase Auth API, Identity Toolkit API
+ *
+ * 3. Configure authorized domains in Firebase Console:
+ *    - Go to Firebase Console > Authentication > Settings > Authorized domains
+ *    - Ensure only your production domain and localhost are listed
+ */
 
 // Validate required environment variables
 const requiredEnvVars = {
@@ -19,7 +43,7 @@ const missingVars = Object.entries(requiredEnvVars)
 const hasValidConfig = missingVars.length === 0;
 
 if (!hasValidConfig) {
-  console.error(
+  logger.error(
     `Missing required Firebase environment variables: ${missingVars.join(', ')}. Auth features will be disabled.`
   );
 }
@@ -60,12 +84,12 @@ if (hasValidConfig) {
     });
 
     if (import.meta.env.PROD && !auth.app.options.authDomain) {
-      console.warn('Warning: Firebase authDomain may not be properly configured for production');
+      logger.warn('Firebase authDomain may not be properly configured for production');
     }
 
     firebaseReady = true;
   } catch (error) {
-    console.error('Firebase initialization failed:', error);
+    logger.error('Firebase initialization failed:', error);
     app = null;
     auth = null;
     googleProvider = null;

@@ -1,6 +1,7 @@
 import { useEffect, useState, ReactNode } from 'react';
 import { User, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 import { auth, googleProvider, isFirebaseReady } from '@/lib/firebase';
+import { logger } from '@/lib/logger';
 import { AuthContext, AuthContextType } from './AuthContext';
 
 const AUTH_LOADING_TIMEOUT_MS = 3000;
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         throw new Error('Authentication failed: No user returned');
       }
     } catch (error: unknown) {
-      console.error('Error signing in with Google:', error);
+      logger.error('Error signing in with Google:', error);
 
       let errorMessage = 'Failed to sign in with Google';
 
@@ -57,7 +58,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       await signOut(auth);
     } catch (error) {
-      console.error('Error signing out:', error);
+      logger.error('Error signing out:', error);
       throw error;
     }
   };

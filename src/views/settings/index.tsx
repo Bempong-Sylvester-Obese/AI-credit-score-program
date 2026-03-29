@@ -4,7 +4,10 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useState, FormEvent, useEffect } from 'react';
+import { useSubmitGuard } from '@/hooks/useSubmitGuard';
 import { getUserProfile, updateUserProfile, createUserProfile } from '@/lib/api';
+import { sanitizeProfileData } from '@/lib/sanitize';
+import { logger } from '@/lib/logger';
 
 const Settings = () => {
 	const [isSaving, setIsSaving] = useState(false);
@@ -12,6 +15,7 @@ const Settings = () => {
 	const [error, setError] = useState<string>('');
 	const [success, setSuccess] = useState<string>('');
 	const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'privacy' | 'data'>('profile');
+	const { guard: submitGuard, release: releaseSubmit } = useSubmitGuard();
 
 	const [profileData, setProfileData] = useState({
 		firstName: '',
@@ -55,7 +59,7 @@ const Settings = () => {
 				// Profile might not exist yet, which is okay
 				if (err instanceof Error && !err.message.includes('404')) {
 					setError('Failed to load profile. Please try again.');
-					console.error('Error loading profile:', err);
+					logger.error('Error loading profile:', err);
 				}
 			} finally {
 				setIsLoading(false);
@@ -67,19 +71,20 @@ const Settings = () => {
 
 	const handleProfileSubmit = async (e: FormEvent) => {
 		e.preventDefault();
+		if (!submitGuard()) return;
 		setIsSaving(true);
 		setError('');
 		setSuccess('');
 
 		try {
-			const profileUpdate = {
+			const profileUpdate = sanitizeProfileData({
 				first_name: profileData.firstName || undefined,
 				last_name: profileData.lastName || undefined,
 				email: profileData.email || undefined,
 				mobile: profileData.mobile || undefined,
 				postal_address: profileData.postalAddress || undefined,
 				employment_status: profileData.employmentStatus || undefined,
-			};
+			});
 
 			// Try to update first, if it fails, try to create
 			try {
@@ -94,6 +99,7 @@ const Settings = () => {
 			setError(err instanceof Error ? err.message : 'Failed to save profile. Please try again.');
 		} finally {
 			setIsSaving(false);
+			releaseSubmit();
 		}
 	};
 
@@ -112,13 +118,11 @@ const Settings = () => {
 	};
 
 	const handleDataExport = () => {
-		alert('Your data export will be sent to your email shortly.');
+		setError('Data export is not yet available. This feature is coming soon.');
 	};
 
 	const handleAccountDeletion = () => {
-		if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-			alert('Account deletion request submitted. We will process it within 30 days.');
-		}
+		setError('Account deletion is not yet available. This feature is coming soon.');
 	};
 
 	return (
@@ -338,10 +342,16 @@ const Settings = () => {
 				{/* Notifications Tab */}
 				{activeTab === 'notifications' && (
 					<Card className="p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl animate fade-up delay-30" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-					<h2 className="text-2xl font-semibold mb-6 text-white/90">Notification Preferences</h2>
-						<p className="text-white/50 mb-8">
+					<div className="flex items-center gap-3 mb-6">
+						<h2 className="text-2xl font-semibold text-white/90">Notification Preferences</h2>
+						<span className="text-xs px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">Preview</span>
+					</div>
+						<p className="text-white/50 mb-4">
 							Choose how you want to be notified about your financial profile and account
 							updates.
+						</p>
+						<p className="text-sm text-yellow-400/80 mb-8">
+							These preferences are not yet saved to your account. Persistence is coming soon.
 						</p>
 
 						<div className="space-y-6">
@@ -459,9 +469,15 @@ const Settings = () => {
 				{/* Privacy Tab */}
 				{activeTab === 'privacy' && (
 					<Card className="p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl animate fade-up delay-30" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-					<h2 className="text-2xl font-semibold mb-6 text-white/90">Privacy Settings</h2>
-						<p className="text-white/50 mb-8">
+					<div className="flex items-center gap-3 mb-6">
+						<h2 className="text-2xl font-semibold text-white/90">Privacy Settings</h2>
+						<span className="text-xs px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">Preview</span>
+					</div>
+						<p className="text-white/50 mb-4">
 							Control how your data is used and shared to protect your privacy.
+						</p>
+						<p className="text-sm text-yellow-400/80 mb-8">
+							These preferences are not yet saved to your account. Persistence is coming soon.
 						</p>
 
 						<div className="space-y-6">
@@ -523,20 +539,24 @@ const Settings = () => {
 
 							<div className="space-y-6">
 								<div className="p-6 border border-white/10 rounded-lg">
-									<h3 className="font-semibold mb-2 text-white/90">Export Your Data</h3>
+									<div className="flex items-center gap-3 mb-2">
+										<h3 className="font-semibold text-white/90">Export Your Data</h3>
+										<span className="text-xs px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">Coming Soon</span>
+									</div>
 									<p className="text-sm text-white/50 mb-4">
 										Download a copy of your financial profile, transaction history, and
 										credit score data in CSV format.
 									</p>
-									<Button variant="primary" onClick={handleDataExport}>
+									<Button variant="primary" onClick={handleDataExport} disabled title="This feature is not yet available">
 										Export Data
 									</Button>
 								</div>
 
 								<div className="p-6 rounded-lg bg-red-500/10 border border-red-500/20">
-									<h3 className="font-semibold mb-2 text-red-400">
-										Danger Zone
-									</h3>
+									<div className="flex items-center gap-3 mb-2">
+										<h3 className="font-semibold text-red-400">Danger Zone</h3>
+										<span className="text-xs px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">Coming Soon</span>
+									</div>
 									<p className="text-sm text-red-400 mb-4">
 										Permanently delete your account and all associated data. This action
 										cannot be undone.
@@ -544,6 +564,8 @@ const Settings = () => {
 									<Button
 										variant="destructive"
 										onClick={handleAccountDeletion}
+										disabled
+										title="This feature is not yet available"
 										className="bg-red-600 hover:bg-red-700"
 									>
 										Delete Account

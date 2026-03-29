@@ -4,8 +4,10 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { FileUpload } from '@/components/ui/file-upload';
 import { predictCreditScore, createUserProfile, updateUserProfile } from '@/lib/api';
+import { sanitizeProfileData } from '@/lib/sanitize';
 import type { PredictionResult } from '@/types/credit';
 import { FormEvent, useState, useRef } from 'react';
+import { useSubmitGuard } from '@/hooks/useSubmitGuard';
 
 // Validation helpers
 const validateEmail = (email: string): boolean => {
@@ -35,6 +37,7 @@ const GenerateCredit = () => {
 	});
 	const fileUploadRef = useRef<HTMLInputElement>(null);
 	const navigate = useNavigate();
+	const { guard: submitGuard, release: releaseSubmit } = useSubmitGuard();
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { id, value, type, checked } = e.target;
@@ -98,18 +101,18 @@ const GenerateCredit = () => {
 			return;
 		}
 
+		if (!submitGuard()) return;
 		setIsLoading(true);
 
 		try {
-			// Save or update user profile first
-			const profileData = {
-				first_name: formData.firstName.trim(),
-				last_name: formData.lastName.trim(),
-				postal_address: formData.postalAddress.trim() || undefined,
-				mobile: formData.mobile.trim(),
-				employment_status: formData.employmentStatus.trim() || undefined,
-				email: formData.email.trim() || undefined,
-			};
+			const profileData = sanitizeProfileData({
+				first_name: formData.firstName,
+				last_name: formData.lastName,
+				postal_address: formData.postalAddress || undefined,
+				mobile: formData.mobile,
+				employment_status: formData.employmentStatus || undefined,
+				email: formData.email || undefined,
+			});
 
 			try {
 				await updateUserProfile(profileData);
@@ -128,10 +131,11 @@ const GenerateCredit = () => {
 
 			// Then generate credit score
 			const result: PredictionResult = await predictCreditScore(file);
-			navigate('/analyses', { state: { prediction: result, userData: formData } });
+			navigate('/analyses', { state: { prediction: result } });
 		} catch (err) {
 			setError(err instanceof Error ? err.message : 'Failed to generate credit score');
 			setIsLoading(false);
+			releaseSubmit();
 		}
 	};
 

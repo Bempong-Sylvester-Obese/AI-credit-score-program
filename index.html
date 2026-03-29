@@ -64,6 +64,26 @@
     </noscript>
     <!-- Catch fatal JS errors that kill the module script before React can mount -->
     <script>
+      window.onerror = function(msg) {
+        var el = document.getElementById('app-loader');
+        if (el) {
+          el.textContent = '';
+          var wrapper = document.createElement('div');
+          wrapper.setAttribute('style', 'text-align:center;color:white;padding:2rem;max-width:36rem');
+          var h1 = document.createElement('h1');
+          h1.setAttribute('style', 'font-size:1.25rem;color:#ef4444;margin-bottom:0.75rem');
+          h1.textContent = 'Failed to load application';
+          var p = document.createElement('p');
+          p.setAttribute('style', 'color:rgba(255,255,255,0.5);font-size:0.8rem;margin-bottom:1rem;word-break:break-word');
+          p.textContent = typeof msg === 'string' ? msg : 'An unexpected error occurred';
+          var btn = document.createElement('button');
+          btn.setAttribute('style', 'padding:0.5rem 1.5rem;background:#00B512;color:white;border:none;border-radius:0.5rem;cursor:pointer;font-size:0.875rem');
+          btn.textContent = 'Reload';
+          btn.onclick = function() { location.reload(); };
+          wrapper.appendChild(h1);
+          wrapper.appendChild(p);
+          wrapper.appendChild(btn);
+          el.appendChild(wrapper);
       window.onerror = function(msg, src, line, col, err) {
         var el = document.getElementById('app-loader');
         if (el) {
@@ -77,6 +97,7 @@
       };
       window.addEventListener('unhandledrejection', function(e) {
         var msg = e.reason && e.reason.message ? e.reason.message : String(e.reason);
+        window.onerror(msg);
         window.onerror(msg, '', 0, 0, e.reason);
       });
     </script>
